@@ -1,0 +1,13 @@
+{
+    "cSpell.enableFiletypes": [
+        "makefile",
+        "markdown"
+    ],
+    "cSpell.enabled": true,
+    "cSpell.language": "en,en-US,en-GB",
+    "spellright.language": [],
+    "spellright.documentTypes": [
+        "latex",
+        "plaintext"
+    ]
+}
