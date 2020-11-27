@@ -609,3 +609,5 @@ pip-selfcheck.json
 
 # End of https://www.toptal.com/developers/gitignore/api/vscode,latex,python,jetbrains+all,pycharm+all,virtualenv,jupyternotebooks
 
+.history/
+.history/*
