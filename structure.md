@@ -4,7 +4,7 @@ Maximum paper length: 6 pages
 
 ## Title Page and Abstract [0.5 page]
 
-## Introduction [1.5 Pages]
+## Introduction [1 Page]
 
 ### Networked Control Systems [0.5 page]
 
@@ -21,36 +21,43 @@ Maximum paper length: 6 pages
 - NCSBench and others.
 - Highlight our main difference: fully emulated plant, communication over real network.
 
-## CLEAVE - ControL bEnchmArking serVice on the Edge [2 - 2.5 pages]
+## CLEAVE - ControL bEnchmArking serVice on the Edge [1.5 pages]
 
-### Fundamental concepts for CLEAVE [0.5 - 1 page]
+### Fundamental concepts for CLEAVE [0.5 page]
 
 - Emulation-based: Plant is emulated on general purpose hardware, whereas we use the real network and a real controller.
 - Everything runs in real-time.
 - Design geared towards as general an approach as possible, ensuring that almost any plant can be emulated.
 
-### General architecture [1.5 pages]
+### General architecture [1 page]
 
 This section should mimic somewhat what we currently have on the [online documentation.](https://cleave.readthedocs.io/en/latest/usage.html#building-a-ncs-emulation-from-scratch).
 
 - Plants:
-    - State
-    - Semantic Variables
-    - Sensors
-    - Actuators
-    - Internal event loop
-    - Networking abstractions
-    
-- Controller Services:
-    - Controller
-    - Networking abstractions
+  - State
+  - Semantic Variables
+  - Sensors
+  - Actuators
+  - Internal event loop
+  - Networking abstractions
 
-## Experimental Validation [1 - 1.5 pages]
+- Controller Services:
+  - Controller
+  - Networking abstractions
+
+## Experimental Validation [2 - 2.5 pages]
 
 - Introduce our inverted pendulum implementation.
-- Describe experimentation: setups and parameters.
-- Present a few results, but we really can't fit much here, can we?
-
+- Describe experimentation:
+  - Present benchmarks for plant update rate on RaspPi
+  - Present benchmarks sampling rates (whithout the network, just to get an idea of what's the limit for plant stability.)
+  - Discuss metrics for quality of control (QoC) vs. sampling rate
+  - Discuss metrics for network contention vs sampling rate
+- Present experiments:
+  - Number of clients (15 ish?)
+  - Range of sampling rates
+  - Network setup (WLAN, etc)
+- Present results and tradeoffs in QoC and network contention.
 ## Conclusions, Future Work and References [0.5 page]
 
 ...
