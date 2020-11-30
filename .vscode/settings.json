@@ -5,7 +5,9 @@
     ],
     "cSpell.enabled": true,
     "cSpell.language": "en,en-US,en-GB",
-    "spellright.language": [],
+    "spellright.language": [
+        "en_US"
+    ],
     "spellright.documentTypes": [
         "latex",
         "plaintext"

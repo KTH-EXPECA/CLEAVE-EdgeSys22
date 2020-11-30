@@ -378,11 +378,7 @@
 % make the title area
 \maketitle
 
-% As a general rule, do not put math, special symbols or citations
-% in the abstract
-\begin{abstract}
-\todo[inline]{TODO}
-\end{abstract}
+\input{abstract.tex}
 
 % no keywords
 
@@ -396,14 +392,15 @@
 % creates the second title. It will be ignored for other modes.
 \IEEEpeerreviewmaketitle
 
-\section{Introduction}
+% actual paper
 
+\input{intro.tex}
 
+\input{cleave.tex}
 
-\section*{Acknowledgments}
+\input{experiments.tex}
 
-
-The authors would like to thank...
+\input{acks.tex}
 
 
 
