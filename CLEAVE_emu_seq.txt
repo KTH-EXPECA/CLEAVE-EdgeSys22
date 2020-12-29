@@ -1,0 +1,43 @@
+title CLEAVE Emulation Sequence
+participantgroup #lightgreen Client 
+participant #darkgreen Plant
+activecolor Plant #darkgreen
+end
+participantgroup #pink Backend
+participant #purple Dispatcher
+activecolor Dispatcher #purple
+participant #darkred Controller
+activecolor Controller #darkred
+activate Plant
+Plant -> Dispatcher: spawn controller
+deactivate Plant
+activate Dispatcher
+Dispatcher ->* Controller:spawn
+end
+Dispatcher -->Plant: spawned <id>
+activate Plant
+deactivate Dispatcher
+Plant -> Plant: emulation start
+activate Plant
+loop #orange t < target time
+Plant ->(1) Controller: <samples>
+activate Controller
+Controller -->(1) Plant: <commands>
+deactivate Controller
+end
+Plant -> Plant: emulation end
+deactivate Plant
+Plant ->Dispatcher: shutdown <id>
+deactivate Plant
+activate Dispatcher
+parallel on
+Dispatcher -> Controller: shutdown
+Controller -> ]: Logs
+destroy Controller
+parallel off
+parallel on
+Dispatcher -> Plant: success
+deactivate Dispatcher
+Plant -> [: Logs
+destroy Plant
+parallel off
