@@ -49,15 +49,18 @@ CLEAVE tackles this challenge through a number of key design decisions that we w
 from cleave.api.plant import SimpleConstantActuator, SimpleSensor
 from cleave.impl.inverted_pendulum import InvPendulumState
 
-host = 'localhost'
-port = 8080
+host = '0.0.0.0'  # address of dispatch server
+port = 8080       # providing Controllers
 
+# Controller parameters
 controller_class = 'InvPendulumController'
+controller_params = {'ref': 0.0}
 
+# Plant emulation parameters 
 tick_rate = 100
 emu_duration = '30m'
-
-state = InvPendulumState(fail_angle_rad=-1)
+state = InvPendulumState(fail_angle_rad=0.34)
+output_dir = './plant_metrics'
 
 sensors = [
     SimpleSensor('position', 100),
@@ -69,33 +72,11 @@ sensors = [
 actuators = [
     SimpleConstantActuator(initial_value=0, prop_name='force')
 ]
-
-output_dir = './plant_metrics'
     \end{minted}
-    \caption{Example configuration file.}
+    \caption{
+        Example configuration file.
+        Users are simply required to define a number of top-level variables, but are otherwise free to include arbitrary code.
+        This allows for the easy extension of emulations.
+    }
     \label{lst:config}
 \end{listing}
-
-
-\todo[inline]{Fill in core concepts}
-\todo[inline]{Link to repo}
-
-\subsection{General architecture}
-
-The general architecture of CLEAVE centers around two components:
-
-\begin{enumerate}
-    \item the Plant, corresponding to the emulated physical system running on some arbitrary client device;
-    \item the Controller Service running on some arbitrary cloudlet, which receives samples of the state of the Plant and produces control commands;
-\end{enumerate}
-
-These components are connected through the real network 
-
-In the following, we will briefly discuss the design and implementation of these components.
-
-\subsubsection{Plant}
-
-As 
-
-\subsubsection{Controller Service}
-\subsection{Network}
