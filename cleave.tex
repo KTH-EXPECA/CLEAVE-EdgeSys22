@@ -1,9 +1,9 @@
 \pagebreak
 \section{Approach}
 
-A system for the benchmarking of Networked Control Systems needs to be able to 
-\todo[inline]{Explain what it needs}
-Existing platforms take one of two approaches.
+% A system for the benchmarking of Networked Control Systems needs to be able to 
+% \todo[inline]{Explain what it needs}
+Existing platforms for NCS benchmarking take one of two approaches.
 The first is a fully simulated approach, in which the plant, network and controller reside in a completely simulated environment.
 This allows for unparalleled flexibility, as parts of the system can be swapped out or modified without greater difficulty.
 However, this comes at the cost of realism, as these models are always approximations of reality; and time, as these simulations are often very computationally expensive.
@@ -14,6 +14,9 @@ This of course allows for great realism, but provides very little flexibility in
 CLEAVE tries to mitigate the shortcomings of these approaches by walking the line between them.
 We employ a third strategy based on having a real-time emulated representation of a control system interacting with a real network.
 This allows for great flexibility when it comes to the components of the control system, as these are as easily switched out as in the fully simulated approach, while maintaining the realism of arguably the most complex and limiting component of an NCS, namely the network itself.
+
+In the following we will explain the approach taken in CLEAVE by walking the reader through the steps necessary to deploy an arbitrary NCS emulation on top of the framework.
+An overview of the structure of an NCS emulation on CLEAVE can be seen in \cref{fig:cleave:ncs:struct}.
 
 \begin{figure*}
     \centering
@@ -27,69 +30,68 @@ This allows for great flexibility when it comes to the components of the control
         The values of the Sensed Variables are then, at the end of each time step, sampled and passed on to the Sensor objects, which in turn process them (for instance, to add noise) and send the processed values to the Controller.
         The Controller uses these values to calculate the new actuation commands and sends these to the Actuators.
         Finally, the Actuators process the actuation commands and hold the new values for the Actuated Variables until they are read at the next time step.
-    }
+    }\label{fig:cleave:ncs:struct}
 \end{figure*}
 
-Concretely, in the following we describe the procedure for benchmarking an NCS on the CLEAVE framework:
+\subsection{Defining a Plant}
 
-\begin{enumerate}
-    \item A discrete-time emulation of the target Plant is implemented.
-    CLEAVE provides a simple API for this task in the form of an \emph{abstract base class} \mintinline{Python}{class State(abc.ABC)} users need to extend.
-    This class provides an abstract method \mintinline{Python}{State.advance(delta_t: float)} which is called by CLEAVE on each emulation time step with the number of seconds since the previous iteration.
-    Additionally, the class provides functionality for the assigning special instance variables that can be sampled from or actuated upon during the emulation.
+The first step in developing an NCS emulation on top of CLEAVE is the definition of a Plant which represents the physical system to be controlled.
 
-    \item A Controller for the Plant is developed.
-    Once again, CLEAVE provides an API for this in the form of the \mintinline{Python}{class Controller(abc.ABC)} abstract base class.
-    Users need to extend this class and implement the \mintinline[breaklines]{Python}{Controller.process(sensor_values: Mapping) -> Mapping} method, which will be called with a mapping from property names to sampled values and should return a mapping from property names to actuated values.
-    
-    \item A configuration file for the benchmarking run is written.
-    Deployments in CLEAVE are configured through fully-featured Python scripts which simply need to define a number of required (and some optional) top-level variables.
-    These top-level variables include, for instance, a \mintinline[breaklines]{Python}{state} variable pointing to an instance of the target Plant emulation implementation and the name of the Controller class to use for the run, among other emulation parameters.
-    
-\end{enumerate}
+In abstract terms, Plants in CLEAVE can be understood to be composed of
+\begin{enumerate*}[itemjoin={{; }}, itemjoin*={{; and }}]
+    \item\label{item:plant:state} an emulation of a physical system which is updated in a discrete-time fashion
+    \item\label{item:plant:actuators} procedures to modify or act upon the physical emulation at each time-step
+    \item\label{item:plant:sensors} procedures to sample relevant values from the physical emulation at each time-step
+    \item\label{item:plant:network} procedures to interact with the network and send and receive data from the Controller.
+\end{enumerate*}
 
-\section{The CLEAVE Framework}\label{sec:cleave}
+While \cref{item:plant:network} is handled transparently by CLEAVE, by hiding it through layers of abstraction, the rest of the items need to be provided in more explicit ways by the user.
 
-CLEAVE (\emph{ControL bEnchmArking serVice on the Edge}) is our framework for quick, robust, and repeatable benchmarking of networked control systems.
-CLEAVE tackles this challenge through a number of key design decisions that we will discuss in the following.
+For \cref{item:plant:state}, the user needs to extend an abstract base class \texttt{State} provided by the framework.
+This class provides the base functionality and defines a simple API for the implementation of discrete-time emulations by
+\begin{enumerate*}[itemjoin={{; }}, itemjoin*={{; and }}]
+    \item automatically tracking variables that can be modified and/or sampled by the framework
+    \item defining a single abstract method \texttt{State.advance()} which is invoked by the framework on each time step of the emulation.
+\end{enumerate*}
 
-\begin{description}[wide]
-    \item[Emulation approach.] 
-    Existing benchmarking platforms for NCS either take a fully simulated approach --- running plant, network, and controller inside a completely simulated environment --- or one requiring an actual physical plant that interacts with a real network and controller.
-    CLEAVE walks the line between these two approaches, employing a strategy based on having a real-time emulated representation of a Plant interact with the real network and controller.
-    \item[Plant- and Controller-agnosticism.] 
-    CLEAVE makes as few assumptions as possible about the inner workings of both the Plant and the Controller. 
-    The only requirements for a system to be able to be emulated in CLEAVE are
-    \begin{enumerate*}[itemjoin*={{ and }}]
-        \item that its behavior can be described in a discrete-time fashion;
-        \item that its state and the actions performed on it can be described by a finite number of scalar and/or vector variables.
-    \end{enumerate*} 
+\Cref{item:plant:actuators,item:plant:sensors} are in the same way provided by the user through the extension of the \texttt{Actuator} and \texttt{Sensor} abstract base classes, respectively.
+\texttt{Actuator} objects process the outputs of the Controller and update the values of the \texttt{State} accordingly.
+Conversely \texttt{Sensor} objects sample relevant values from the \texttt{State} object, process them, and finally pass them on to the Controller through the network.
 
+\subsection{Defining a Controller}
 
-    \item[API based on well-defined components.]
-    The previously mentioned agnosticism is achieved through careful abstraction of the the system into an API based around the following components:
-    \begin{itemize}
-        \item A \texttt{State} object, which implements the discrete-time evolution of the physical system being controlled.
-        This object also holds a number of named properties that can be measured or actuated upon.
-        \item An arbitrary number of \texttt{Sensor} objects which measure named properties of the \texttt{State}, and potentially transform them (for instance, to add noise).
-        \item A \texttt{Controller} object which receives values of named properties processed by the \texttt{Sensor} objects and returns new values for the named properties of the \texttt{State} that can be actuated upon.
-        \item Finally, an arbitrary number of \texttt{Actuator} objects which receive the values generated by the \texttt{Controller} and process them before passing them on the \texttt{State}.
-    \end{itemize}
-    Users implement their desired behavior by extending the abstract base classes defining these components provided by the framework.
+After the Plant has been defined, users need to implement a Controller for it.
+This is once again done by extending an abstract base class, \texttt{Controller}, provided by CLEAVE.
+This class defines a single abstract method, \texttt{Controller.process()} which is called by the framework whenever samples are provided by the Plant.
+When invoked, it is passed a mapping of property names to sampled values.
+The framework also expects implementations of this method to return yet another mapping, this time of actuated property names to target values.
+Users are otherwise free to implement any kind of logic or process within extending classes.
 
-    \item[Plain Python configuration.]
-    As mentioned above, users implement their desired behavior for the core components by extending classes provided by the framework.
-    This is done in configuration files written in full-featured Python simply defining a number of required top-level variables and which are then passed to the main script provided with CLEAVE.
-    This allows for easy configuration of arbitrarily complex emulations.
-    
-\end{description}
+\subsection{Configuring and running the emulation}
+
+Once the core components for the emulation have been defined and implemented, the emulation needs to be configured to register them with the framework.
+This is done through fully-featured Python scripts which simply define a number of required (and some optional) top-level variables.
+These Python configuration files are then passed as arguments to the \texttt{cleave} bash command provided by the framework, which sets up and executes the emulation.
+The use of Python scripts for configuration allows for a high degree of flexibility and complexity in the definition of emulation setups.
+
+At this point, yet another core component of CLEAVE needs to be mentioned: the Dispatcher server.
+Although Controllers in CLEAVE can be started manually, this quickly becomes cumbersome when performing experimentation with more than a few Plants.
+The CLEAVE Dispatcher server solves this by providing a way for remote deployment of Controllers through a RESTful HTTP service that the Plant connects to (see \cref{fig:cleave:dispatch}).
+
+Example configuration files for a Plant and the Dispatcher are presented in \cref{lst:config:plant,lst:config:dispatcher}.
 
 \begin{figure}
     \centering
-    \includegraphics[width=3cm]{example-image-a}
-    \caption{Execution flow of a time step in CLEAVE.}
+    \includegraphics[width=.85\columnwidth]{images/CLEAVE_dispatcher.png}
+    \caption{
+        Diagram of the interaction between CLEAVE Plant, Dispatcher and Controller.
+        The Dispatcher is instantiated and listens on a specific port on the Controller Host. 
+        As the Plant initializes its emulation, it requests a Controller from the Dispatcher; the Dispatcher spawns the corresponding Controller and returns the host and port on which it is listening.
+        The Plant proceeds to execute its emulation configuration.
+        Finally, on shutdown, the Plant once again communicates with the Dispatcher to request the shutdown of the associated Controller.
+    }\label{fig:cleave:dispatch}
 \end{figure}
-    
+
 \begin{listing}
     \begin{minted}[linenos=true,
         breaklines, 
@@ -123,9 +125,30 @@ actuators = [
 ]
     \end{minted}
     \caption{
-        Example configuration file.
-        Users are simply required to define a number of top-level variables, but are otherwise free to include arbitrary code.
-        This allows for the easy extension of emulations.
+        Example configuration file for a CLEAVE Plant.
     }
-    \label{lst:config}
+    \label{lst:config:plant}
+\end{listing}
+
+\begin{listing}
+    \begin{minted}[linenos=true,
+        breaklines, 
+        breakafter=d,
+        fontsize=\small]{Python}
+from cleave.impl.inverted_pendulum import InvPendulumController
+
+host = 'localhost'
+port = 8080
+
+controllers = {
+    'InvPendulumController': InvPendulumController,
+}
+
+output_dir = './controllers'
+    \end{minted}
+    \caption{
+        Example configuration file for the CLEAVE Dispatcher.
+        The previously defined Controller is registered with the framework and will then be available from the Dispatcher server for use with a Plant.
+    }
+    \label{lst:config:dispatcher}
 \end{listing}
