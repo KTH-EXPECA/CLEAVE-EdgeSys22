@@ -611,3 +611,6 @@ pip-selfcheck.json
 
 .history/
 .history/*
+
+# dont sync the compiled paper
+/*.pdf
