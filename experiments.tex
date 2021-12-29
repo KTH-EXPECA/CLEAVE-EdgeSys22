@@ -2,26 +2,33 @@
 
 \todo[inline]{WIP}
 
-In this section, we validate the utility of the CLEAVE framework through scalability measurements of a networked control system running on a WiFi link.
-We aim to answer questions about the ability of CLEAVE to provide relevant and accurate metrics on the performance of such setups as \emph{system load} increases.
-In this context, we will focus on the load as it manifests on the network link in terms of the reliability of the link and the associated latencies. 
-We adopt this constrained view of load due to the characteristics of NCS, where controllers are usually relatively lightweight in terms of computing resources, leaving the network link as the principal bottleneck in the system.
+In this section, we aim to validate the utility of the CLEAVE framework through a series of experiments.
 
-Our experimental setup is depicted in \cref{fig:cleave:expsetup}.
-A number between 1 and 12 of CLEAVE Plants running on dedicated light-weight general purpose computing devices (in this case, Raspberry Pi 4's) connect wirelessly to an 802.11n WiFi Access Point (AP).
-This AP in turn connects via Ethernet to a host on which the CLEAVE Dispatcher and Controllers are executed.
+\todo[inline]{talk about goal of experiments}
+
+Our experimental setup is depicted in \cref{fig:cleave:expsetup}, consisting of a single control loop deployed across a pair of consumer-grade computing devices.
+We employ a Raspberry Pi 4B single-board computer together with a general-purpose \verb|x86_64|-based workstation.
+These devices are connected through an 802.11n WiFi link.
+For ease of deployment and reparametrization, we deploy our CLEAVE control loop as a pair of Docker~\cite{merkel2014docker} containers\todo{add link to image?}; one for the plant, running on the Rasberry Pi device, and one for the Controller, running on the workstation. 
+These instances are then connected through an overlay network configured through Docker.
 
 \begin{figure}
     \centering
     \includegraphics[width=.95\columnwidth]{images/CLEAVE_experiment_setup}
-    \caption{Experiment setup}\label{fig:cleave:expsetup}
+    \caption{Experimental setup. Containerized versions of the core CLEAVE emulation components are deployed inside a Docker Overlay Network spanning a Raspberry Pi 4B Plant host connected to an x86 Controller host over a 802.11n WiFi link.}\label{fig:cleave:expsetup}
 \end{figure}
 
-In terms of the control system deployed on top of CLEAVE for the experiments, we chose a two-dimensional inverted pendulum system.
-This system was chosen due to its relative simplicity and prevalence in the field of automatic control as one of the fundamental examples basically every control engineer has encountered at some point.
-
+We chose a two-dimensional inverted pendulum system for the control system deployed inside CLEAVE for the experiments, 
+This system was chosen due to its relative simplicity and prevalence in the field of automatic control as one of the fundamental examples of linear control.
 The physical system, represented in \cref{fig:invpend}, was implemented using CLEAVE's API and a 2D physics library~\autocite{chipmunk2d,pymunk}.
 For the controller, a proportional-differential strategy was employed, implemented using the framework Controller API and the NumPy numeric computation library~\autocite{harris2020array}.
+
+This setup is then used to run a series of experiments with varying parametrization of the controlled system.
+Specifically, we modify:
+\begin{itemize}
+    \item the sampling rate of the Plant state, and set it to \SIlist[list-units=single,list-final-separator={, or }]{5;10;20;40;60;120}{\hertz};
+    \item the responsiveness of the Controller, by adding fixed delays of  \SIlist[list-units=single,list-final-separator={, or }]{0;25;50;100;200}{\milli\second} after the processing of each sample.
+\end{itemize}
 
 \begin{figure}
     \centering

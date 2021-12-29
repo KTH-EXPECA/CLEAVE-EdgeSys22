@@ -71,26 +71,9 @@ Users are otherwise free to implement any kind of logic or process within extend
 
 Once the core components for the emulation have been defined and implemented, the emulation needs to be configured to register them with the framework.
 This is done through fully-featured Python scripts which simply define a number of required (and some optional) top-level variables.
+An example of such a configuration file can be seen in \cref{lst:config:plant}.
 These Python configuration files are then passed as arguments to the \texttt{cleave} bash command provided by the framework, which sets up and executes the emulation.
 The use of Python scripts for configuration allows for a high degree of flexibility and complexity in the definition of emulation setups.
-
-At this point, yet another core component of CLEAVE needs to be mentioned: the Dispatcher server.
-Although Controllers in CLEAVE can be started manually, this quickly becomes cumbersome when performing experimentation with more than a few Plants.
-The CLEAVE Dispatcher server solves this by providing a way for remote deployment of Controllers through a RESTful HTTP service that the Plant connects to (see \cref{fig:cleave:dispatch}).
-
-Example configuration files for a Plant and the Dispatcher are presented in \cref{lst:config:plant,lst:config:dispatcher}.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=.85\columnwidth]{images/CLEAVE_dispatcher.png}
-    \caption{
-        Diagram of the interaction between CLEAVE Plant, Dispatcher and Controller.
-        The Dispatcher is instantiated and listens on a specific port on the Controller Host. 
-        As the Plant initializes its emulation, it requests a Controller from the Dispatcher; the Dispatcher spawns the corresponding Controller and returns the host and port on which it is listening.
-        The Plant proceeds to execute its emulation configuration.
-        Finally, on shutdown, the Plant once again communicates with the Dispatcher to request the shutdown of the associated Controller.
-    }\label{fig:cleave:dispatch}
-\end{figure}
 
 \begin{listing}
     \begin{minted}[linenos=true,
@@ -99,13 +82,6 @@ Example configuration files for a Plant and the Dispatcher are presented in \cre
         fontsize=\small]{Python}
 from cleave.api.plant import SimpleConstantActuator, SimpleSensor
 from cleave.impl.inverted_pendulum import InvPendulumState
-
-host = '0.0.0.0'  # address of dispatch server
-port = 8080       # providing Controllers
-
-# Controller parameters
-controller_class = 'InvPendulumController'
-controller_params = {'ref': 0.0}
 
 # Plant emulation parameters
 tick_rate = 100
@@ -129,33 +105,9 @@ actuators = [
     \end{minted}
     \caption{
         Example configuration file for a CLEAVE Plant, defining the parameters for a single emulation.
-        The ``controller parameters'' define the class of Controller to request from the Dispatcher.
         ``Plant emulation parameters'' define key emulation parameters, such as the emulation discrete-time update rate (the \emph{tick rate}).
         The Sensors and Actuators are then provided in lists, each Sensor and Actuator attached to a specific property identified by a string.
         Additionally, Sensors have a sampling rate in Hz which needs to be provided as an integer.
     }
     \label{lst:config:plant}
-\end{listing}
-
-\begin{listing}
-    \begin{minted}[linenos=true,
-        breaklines, 
-        breakafter=d,
-        fontsize=\small]{Python}
-from cleave.impl.inverted_pendulum import InvPendulumController
-
-host = 'localhost'
-port = 8080
-
-controllers = {
-    'InvPendulumController': InvPendulumController,
-}
-
-output_dir = './controllers'
-    \end{minted}
-    \caption{
-        Example configuration file for the CLEAVE Dispatcher.
-        The previously defined Controller is registered with the framework and will then be available from the Dispatcher server for use with a Plant.
-    }
-    \label{lst:config:dispatcher}
 \end{listing}
