@@ -323,6 +323,7 @@
 \begin{acronym}
   \acro{CPS}{Cyber-Physical System}
   \acro{NCS}{Networked Control System}
+  \acroindefinite{NCS}{an}{a}
   \acro{LAN}{Local-Area Network}
   \acro{WLAN}{Wireless Local-Area Network}
   \acro{KPI}{Key Performance Indicator}
@@ -331,10 +332,15 @@
 % references
 \usepackage[
   style=ieee,
-  maxcitenames=3,
-  maxbibnames=3,
+  sorting=none,
+  sortcites,
+  hyperref,
+  mincitenames=1,
+  maxcitenames=2,
+  maxbibnames=2,
   minbibnames=1,
-  citestyle=numeric-comp  % for [1, 2] instead of [1], [2]
+  citestyle=numeric-comp, % for [1, 2] instead of [1], [2]
+  backend=biber
 ]{biblatex}
 \bibliography{bibliography.bib}
 

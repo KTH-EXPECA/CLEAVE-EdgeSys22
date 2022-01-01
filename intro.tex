@@ -1,32 +1,45 @@
 \section{Introduction}\label{sec:intro}
 
-The number and applications of \acp{CPS} --- that is, systems in which a real, physical mechanism is controlled by a computer --- have exploded in later years.
+\todo[inline]{references}
+
+The number and applications of \acp{CPS}~\cite{Rajkumar2010CPS} --- that is, systems in which a real, physical mechanism is controlled by a computer --- have exploded in later years.
 This rise in popularity is in great part driven by the advent of novel wireless communication technologies as well as networking paradigms, such as cellular 5G and Edge Computing.
-\todo[inline]{references}
 
-In particular, \acp{NCS}, a type of \ac{CPS} wherein multiple networked actuators and sensors form a part of the same automatic control system, have been of great interest to the scientific community in the last decade.
-Due to their potential advantages for industrial settings, a large body of work exists dedicated to the modelling and performance characterization of these systems.
-\acp{NCS} enhance the flexibility of and improve existing control systems by allowing for the distribution of control functions over and across networks.
+In particular, \acp{NCS}~\cite{Gupta2010NCSOverview}, a type of \ac{CPS} wherein multiple networked actuators and sensors form a part of the same automatic control system, have been of great interest to the scientific community in the last decade.
+Due to their potential advantages for industrial settings~\cite{Lu2015WSAN}, a large body of work exists dedicated to the modelling and performance characterization of these systems~\cite{Hespanha2007Survey,Zhang2013Survey,Zhang2016Survey}.
+\Acp{NCS} enhance the flexibility of and improve existing control systems by allowing for the distribution of control functions over and across networks.
 This allows for --- for instance --- simultaneous centralized coordination, control, and monitoring of potentially hundreds of devices.
-\todo[inline]{references}
 
-In spite of this, however, we identify a gap in the literature pertaining to the reproducibility and comparison of experimental studies on \ac{NCS}.
-Experimental research in the literature has been conducted on a huge variety of heterogeneous hardware and software platforms, as well as methodologies and \acp{KPI}.
-This stems from the inherent inter-domain nature of \acp{NCS}, which intertwines knowledge from the fields of communications, computing, and control theory.
-This leads to hardware, software, and methodology fragmentation, as different studies tend to prefer approaches more favored in their respective communities.
+Most of the large literature concerning \acp{NCS}, however, follows a theoretical approach, and only a small fraction of it deals with experimental studies.
+The inherent inter-domain nature of \acp{NCS}, which intertwines knowledge from the fields of communications, computing, and control theory, coupled with the complexity of experimental platforms make these kinds of studies hard to perform.
+Moreover, we identify a gap in knowledge pertaining to the reproducibility and comparison of experimental studies on these systems.
+Existing experimental research includes a large variety of heterogeneous hardware and software platforms, as well as methodologies and \acp{KPI}.
+In turn, this leads to hardware, software, and methodology fragmentation, as different studies tend to prefer approaches more favored in their respective communities.
 Additionally, existing studies tend to focus on individual aspects and components of a system, thus producing results which do not provide a complete image of the \ac{NCS}.
 
+The most straightforward approach to experimental research in \ac{NCS} use setups in which the complete system uses real hardware.
+\cite{Drew2005NCSWLAN,Baumann2018LowPower} are examples of studies employing this approach.
+\textcite{Drew2005NCSWLAN} present \iac{NCS} model which considers both random packet delay and loss on both the sensor and actuator sides of the feedback loop; \textcite{Baumann2018LowPower}, on the other hand, develop an evaluation methodology for wireless \ac{NCS}.
+Both works validate their results on physical testbeds, consisting of inverted penduli plants controlled wirelessly over WiFi from a central computation point.
+\todo[inline]{More examples?}
 
-\todo[inline]{
-With the advent of the Internet of Things and Industry 4.0, the number and applications of cyber physical systems is ever increasing [1].
-Cyber-Physical Systems (CPS) are formed by an integration of computational and physical processes, namely, it comprises of actuators and sensors connected by virtue of a computational process [2]. A Networked Control System (NCS) is composed of a CPS wherein multiple networked actuators and sensors form a part of the same automatic control system [3].
-Zhang et al. in [4] proposed a control communication co-design approach wherein the stabilization of an NCS in which telemetry between the sensors and actuators of the plant with a remote controller utilizing a shared communication medium is discussed.
-Zoppi et al. in [5] proposed a platform called NCSBench, to be used for reproducible benchmarking in NCS.
-Their methodology utilizes joint knowledge of control, computation, and communication.
-In their work various architectural elements and the corresponding delays associated with the NCS are modelled.
-Multiple experimental parameters and certain observable Key Performance Indicators (KPIs) are defined and utilized in the implementation.
-This work however utilizes a physical LEGO [6] based plant for the implementation, preventing instantaneous changes in the plant characteristics and their nature, in terms of flexibility.
-We overcome this issue by proposing a completely virtual plant allowing for unparalleled flexibility in changing the plant model and characteristic features of the experiments.
-This work experiments over Ethernet and Wireless Local Area Network (WLAN) based networks.
-We perform experiments with similar network configurations and additionally benchmark the number of plants which can be simultaneously sustained by the controller at the same time over varying physical sampling frequencies and tick rates.
-}
+Other 
+
+
+\textcite{Zoppi2020NCSBench} made a first attempt at tackling this issue through their \emph{NCSbench} platform.
+\todo[inline]{Describe NCSbench}
+
+
+% \todo[inline]{
+% With the advent of the Internet of Things and Industry 4.0, the number and applications of cyber physical systems is ever increasing [1].
+% Cyber-Physical Systems (CPS) are formed by an integration of computational and physical processes, namely, it comprises of actuators and sensors connected by virtue of a computational process [2]. A Networked Control System (NCS) is composed of a CPS wherein multiple networked actuators and sensors form a part of the same automatic control system [3].
+% Zhang et al. in [4] proposed a control communication co-design approach wherein the stabilization of an NCS in which telemetry between the sensors and actuators of the plant with a remote controller utilizing a shared communication medium is discussed.
+% Zoppi et al. in [5] proposed a platform called NCSBench, to be used for reproducible benchmarking in NCS.
+% Their methodology utilizes joint knowledge of control, computation, and communication.
+% In their work various architectural elements and the corresponding delays associated with the NCS are modelled.
+% Multiple experimental parameters and certain observable Key Performance Indicators (KPIs) are defined and utilized in the implementation.
+% This work however utilizes a physical LEGO [6] based plant for the implementation, preventing instantaneous changes in the plant characteristics and their nature, in terms of flexibility.
+% We overcome this issue by proposing a completely virtual plant allowing for unparalleled flexibility in changing the plant model and characteristic features of the experiments.
+% This work experiments over Ethernet and Wireless Local Area Network (WLAN) based networks.
+% We perform experiments with similar network configurations and additionally benchmark the number of plants which can be simultaneously sustained by the controller at the same time over varying physical sampling frequencies and tick rates.
+% }
