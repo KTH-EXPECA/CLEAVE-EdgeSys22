@@ -15,19 +15,28 @@ The inherent inter-domain nature of \acp{NCS}, which intertwines knowledge from 
 Moreover, we identify a gap in knowledge pertaining to the reproducibility and comparison of experimental studies on these systems.
 Existing experimental research includes a large variety of heterogeneous hardware and software platforms, as well as methodologies and \acp{KPI}.
 In turn, this leads to hardware, software, and methodology fragmentation, as different studies tend to prefer approaches more favored in their respective communities.
-Additionally, existing studies tend to focus on individual aspects and components of a system, thus producing results which do not provide a complete image of the \ac{NCS}.
+Furthermore, existing studies tend to focus on individual aspects and components of a system, thus producing results which do not provide a complete image of the \ac{NCS}.
 
 The most straightforward approach to experimental research in \ac{NCS} use setups in which the complete system uses real hardware.
-\cite{Drew2005NCSWLAN,Baumann2018LowPower} are examples of studies employing this approach.
 \textcite{Drew2005NCSWLAN} present \iac{NCS} model which considers both random packet delay and loss on both the sensor and actuator sides of the feedback loop; \textcite{Baumann2018LowPower}, on the other hand, develop an evaluation methodology for wireless \ac{NCS}.
 Both works validate their results on physical testbeds, consisting of inverted penduli plants controlled wirelessly over WiFi from a central computation point.
-\todo[inline]{More examples?}
+Similarly, \textcite{Li2014Wireless} implement a wireless microcontroller-based system for vibration control and validate it on a physical prototype consisting of a cantilever beam controlled over a IEEE 802.15.4 \ac{WPAN} system.
 
-Other 
+Conversely, some studies choose to instead use completely \emph{simulated} \ac{NCS} setups~\cite{Andersson2005Simulation,Eyisi2012NCSWT}.
+Such an approach is employed by \textcite{Du2009Smith}; the authors develop a novel \emph{Smith} predictor to compensate for varying latencies in wireless \acp{NCS} and validate it using the \emph{TrueTime}~\cite{Henriksson2002TrueTime} simulator.
+In \textcite{Chen2015synccontrol} the authors validate and evaluate a number of synchronous control strategies for three-motor setups using completely simulated \acp{NCS} environments.
+\citeauthor{Wu2012NPC} introduce the concept of \emph{network predictive control} in\ \cite{Wu2012NPC} and use it to balance a simulated inverted pendulum over a simulated wireless network.
+
+Finally, a number of experimental studies instead employ hardware- and network-in-the-loop approaches.
+Hardware-in-the-loop refers to \ac{NCS} setups in which a real control system interacts with an emulated network.
+Such setups have been used by studies 
+
 
 
 \textcite{Zoppi2020NCSBench} made a first attempt at tackling this issue through their \emph{NCSbench} platform.
 \todo[inline]{Describe NCSbench}
+
+
 
 
 % \todo[inline]{
