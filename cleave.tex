@@ -1,22 +1,11 @@
 \section{Approach}\label{sec:approach}
-\todo[inline]{Reestructure}
 
-% A system for the benchmarking of Networked Control Systems needs to be able to 
-% \todo[inline]{Explain what it needs}
-Existing platforms for \acp{NCS} benchmarking generally take one of two approaches.
-The first is a fully simulated approach, in which the plant, network and controller reside in a completely simulated environment.
-This allows for unparalleled flexibility, as parts of the system can be swapped out or modified without greater difficulty.
-However, this comes at the cost of realism, as these models are always approximations of reality; and time, as these simulations are often very computationally expensive.
+In this section, we present and detail our \ac{CLEAVE} framework for the performance evaluation of \acfp{NCS}.
+Our design follows an approach similar to the above-discussed \emph{hardware-in-the-loop} setups, in that we provide a \emph{framework} for the real-time \emph{emulation} of physical control systems which interact with \emph{real} networks.
+This allows for great flexibility when it comes to the components of the control system, as these can easily be switched out in the fully emulated approach, while maintaining the realism of arguably the most complex and limiting component of \acp{NCS}, namely the network itself.
 
-The alternative is an approach using a testbed comprised of a \emph{physical} plant that interacts with a \emph{real} network and controller.
-This of course allows for great realism, but provides very little flexibility in terms of the components of the system, limiting the approach to whatever plant, network, and controller are available.
-
-Our approach, CLEAVE, tries to mitigate the shortcomings of these approaches by walking the line between them.
-We employ a third strategy based on having a real-time emulated representation of a control system interacting with a real network.
-This allows for great flexibility when it comes to the components of the control system, as these are as easily switched out as in the fully simulated approach, while maintaining the realism of arguably the most complex and limiting component of an \ac{NCS}, namely the network itself.
-
-In the following we will explain the approach taken in CLEAVE by walking the reader through the steps necessary to deploy an arbitrary \ac{NCS} emulation on top of the framework.
-An overview of the structure of such an emulation on CLEAVE can be seen in \cref{fig:cleave:ncs:struct}.
+In the following we will explain the approach taken in \ac{CLEAVE} by walking the reader through the steps necessary to deploy an arbitrary \ac{NCS} emulation on top of the framework.
+An overview of the structure of such an emulation on \ac{CLEAVE} can be seen in \cref{fig:cleave:ncs:struct}.
 
 \begin{figure*}
     \centering
@@ -35,9 +24,9 @@ An overview of the structure of such an emulation on CLEAVE can be seen in \cref
 
 \subsection{Defining a Plant}
 
-The first step in developing an \ac{NCS} emulation on top of CLEAVE is the definition of a Plant which represents the physical system to be controlled.
+The first step in developing an \ac{NCS} emulation on top of \ac{CLEAVE} is the definition of a Plant which represents the physical system to be controlled.
 
-In abstract terms, Plants in CLEAVE can be understood to be composed of
+In abstract terms, Plants in \ac{CLEAVE} can be understood to be composed of
 \begin{enumerate*}[itemjoin={{; }}, itemjoin*={{; and }}]
     \item\label{item:plant:state} an emulation of a physical system which is updated in a discrete-time fashion
     \item\label{item:plant:actuators} procedures to modify or act upon the physical emulation at each time-step
@@ -104,7 +93,7 @@ actuators = [
 ]
     \end{minted}
     \caption{
-        Example configuration file for a CLEAVE Plant, defining the parameters for a single emulation.
+        Example configuration file for a \ac{CLEAVE} Plant, defining the parameters for a single emulation.
         ``Plant emulation parameters'' define key emulation parameters, such as the emulation discrete-time update rate (the \emph{tick rate}).
         The Sensors and Actuators are then provided in lists, each Sensor and Actuator attached to a specific property identified by a string.
         Additionally, Sensors have a sampling rate in Hz which needs to be provided as an integer.
