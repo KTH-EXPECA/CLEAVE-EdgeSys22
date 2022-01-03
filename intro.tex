@@ -1,7 +1,5 @@
 \section{Introduction}\label{sec:intro}
 
-\todo[inline]{references}
-
 The number and applications of \acp{CPS}~\cite{Rajkumar2010CPS} --- that is, systems in which a real, physical mechanism is controlled by a computer --- have exploded in later years.
 This rise in popularity is in great part driven by the advent of novel wireless communication technologies as well as networking paradigms, such as cellular 5G and Edge Computing.
 
@@ -12,10 +10,6 @@ This allows for --- for instance --- simultaneous centralized coordination, cont
 
 Most of the large literature concerning \acp{NCS}, however, follows a theoretical approach, and only a small fraction of it deals with experimental studies.
 The inherent inter-domain nature of \acp{NCS}, which intertwines knowledge from the fields of communications, computing, and control theory, coupled with the complexity of experimental platforms make these kinds of studies hard to perform.
-Moreover, we identify a gap in knowledge pertaining to the reproducibility and comparison of experimental studies on these systems.
-Existing experimental research includes a large variety of heterogeneous hardware and software platforms, as well as methodologies and \acp{KPI}.
-In turn, this leads to hardware, software, and methodology fragmentation, as different studies tend to prefer approaches more favored in their respective communities.
-Furthermore, existing studies tend to focus on individual aspects and components of a system, thus producing results which do not provide a complete image of the \ac{NCS}.
 
 The most straightforward approach to experimental research in \ac{NCS} use setups in which the complete system uses real hardware.
 \textcite{Drew2005NCSWLAN} present \iac{NCS} model which considers both random packet delay and loss on both the sensor and actuator sides of the feedback loop; \textcite{Baumann2018LowPower}, on the other hand, develop an evaluation methodology for wireless \ac{NCS}.
@@ -37,24 +31,21 @@ This kind of setup is particularly prevalent in the field of \emph{smart grid} c
 On the other hand, network-in-the-loop refers to experimental setups in which the \emph{network} is instead simulated or emulated.
 An example of this approach can be found in \textcite{Natale2004InvPendEthernet}, in which the authors interface an real inverted pendulum system with an emulated IEEE 802.3 Ethernet network to study the effects of the \ac{CSMA/CD} medium access control scheme on plant stability.
 
+As evidence by the discussion above, experimental research in \acp{NCS} includes a large variety of heterogeneous hardware and software platforms, as well as methodologies and \acp{KPI}.
+This, in turn, leads to hardware, software, and methodology fragmentation, as different studies tend to prefer approaches more favored in their respective communities.
+Furthermore, existing studies tend to focus on individual aspects and components of a system, thus producing results which do not provide a complete image of the \ac{NCS}.
+We identify thus a gap in knowledge pertaining to the reproducibility and comparison of experimental studies on these systems.
 
+\textcite{Zoppi2020NCSBench} made a first attempt at tackling this challenge with their \emph{NCSbench} platform.
+\emph{NCSbench} is an open-source \ac{NCS} benchmarking platform designed with reproducibility in mind, built using the \citetitle{LEGOMindstormsEV3}~\cite{LEGOMindstormsEV3} platform.
+It allows for easy and highly reproducible experimentation and benchmarking of \acp{NCS}, due to its low-cost, accessibility, and ease of reconfiguration.
 
-\textcite{Zoppi2020NCSBench} made a first attempt at tackling this issue through their \emph{NCSbench} platform.
-\todo[inline]{Describe NCSbench}
+Although the work of \textcite{Zoppi2020NCSBench} is a relevant and important step towards the reproducibility of \ac{NCS} benchmarks, we believe it still falls short on some aspects.
+In particular, we argue the reliance of \emph{NCSbench} on specific hardware --- accessible as it may be --- hampers the potential of the platform, as it fundamentally limits both the physical systems that can be benchmarked and the scalability of the performed benchmarks.
 
+In this paper, we present thus the first fully-software-based \ac{NCS} benchmarking framework with scalability and repeatability as its main focus.
+This framework is built on top of the \emph{Python 3.8}~\cite{Python3.8} language, making it highly extensible and able to harness the tremendous amount of already existing user-provided libraries and packages~\cite{pypi}.
+Additionally, it is fully compatible with \emph{containerization} technologies such as \emph{Docker}~\cite{merkel2014docker}, making it suitable for automated deployment and benchmarking on industry-standard deployment using container orchestration technologies.
+We name this framework \ac{CLEAVE}.
 
-
-
-% \todo[inline]{
-% With the advent of the Internet of Things and Industry 4.0, the number and applications of cyber physical systems is ever increasing [1].
-% Cyber-Physical Systems (CPS) are formed by an integration of computational and physical processes, namely, it comprises of actuators and sensors connected by virtue of a computational process [2]. A Networked Control System (NCS) is composed of a CPS wherein multiple networked actuators and sensors form a part of the same automatic control system [3].
-% Zhang et al. in [4] proposed a control communication co-design approach wherein the stabilization of an NCS in which telemetry between the sensors and actuators of the plant with a remote controller utilizing a shared communication medium is discussed.
-% Zoppi et al. in [5] proposed a platform called NCSBench, to be used for reproducible benchmarking in NCS.
-% Their methodology utilizes joint knowledge of control, computation, and communication.
-% In their work various architectural elements and the corresponding delays associated with the NCS are modelled.
-% Multiple experimental parameters and certain observable Key Performance Indicators (KPIs) are defined and utilized in the implementation.
-% This work however utilizes a physical LEGO [6] based plant for the implementation, preventing instantaneous changes in the plant characteristics and their nature, in terms of flexibility.
-% We overcome this issue by proposing a completely virtual plant allowing for unparalleled flexibility in changing the plant model and characteristic features of the experiments.
-% This work experiments over Ethernet and Wireless Local Area Network (WLAN) based networks.
-% We perform experiments with similar network configurations and additionally benchmark the number of plants which can be simultaneously sustained by the controller at the same time over varying physical sampling frequencies and tick rates.
-% }
+The rest of this paper is structured as follows.

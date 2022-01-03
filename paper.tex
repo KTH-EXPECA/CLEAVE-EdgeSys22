@@ -50,7 +50,7 @@
 
 
 
-\documentclass[conference]{IEEEtran}
+\documentclass[conference,10pt]{IEEEtran}
 % Some Computer Society conferences also require the compsoc mode option,
 % but others use the standard conference format.
 %
@@ -329,6 +329,7 @@
   \acro{KPI}{Key Performance Indicator}
   \acro{WPAN}{Wireless Personal Area Network}
   \acro{CSMA/CD}{Carrier-Sense Multiple Acess with Collision Detection}
+  \acro{CLEAVE}{ControL bEnmArking serVice on the Edge}
 \end{acronym}
 
 % references
@@ -345,8 +346,6 @@
   backend=biber
 ]{biblatex}
 \bibliography{bibliography.bib}
-
-
 
 \begin{document}
 
@@ -418,21 +417,14 @@
 %
 % For peerreview papers, this IEEEtran command inserts a page break and
 % creates the second title. It will be ignored for other modes.
-\IEEEpeerreviewmaketitle
+% \IEEEpeerreviewmaketitle
 
 % actual paper
 
 \input{intro.tex}
-
 \input{cleave.tex}
-
 \input{experiments.tex}
-
 \input{acks.tex}
-
-
-
-
 
 % trigger a \newpage just before the given reference
 % number - used to balance the columns on the last page
@@ -458,8 +450,7 @@
 % (used to reserve space for the reference number labels box)
 
 \nocite{*}
-\printbibliography
-
+\printbibliography{}
 % that's all folks
 \end{document}
 
