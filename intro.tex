@@ -19,17 +19,23 @@ Furthermore, existing studies tend to focus on individual aspects and components
 
 The most straightforward approach to experimental research in \ac{NCS} use setups in which the complete system uses real hardware.
 \textcite{Drew2005NCSWLAN} present \iac{NCS} model which considers both random packet delay and loss on both the sensor and actuator sides of the feedback loop; \textcite{Baumann2018LowPower}, on the other hand, develop an evaluation methodology for wireless \ac{NCS}.
-Both works validate their results on physical testbeds, consisting of inverted penduli plants controlled wirelessly over WiFi from a central computation point.
-Similarly, \textcite{Li2014Wireless} implement a wireless microcontroller-based system for vibration control and validate it on a physical prototype consisting of a cantilever beam controlled over a IEEE 802.15.4 \ac{WPAN} system.
+Both works validate their results on physical testbeds, consisting of inverted penduli plants controlled wirelessly over IEEE 802.11 WiFi from a central computation point.
+Similarly, \textcite{Li2014Wireless} implement a wireless microcontroller-based system for vibration control and validate it on a physical prototype consisting of a cantilever beam controlled over an IEEE 802.15.4 \ac{WPAN} system.
+\textcite{Cuenca2019UAV} design and implement periodic event-triggered sampling and dual-rate control techniques for wireless control, validating their contributions on a four-rotor autonomous drone platform controlled over WiFi.
 
 Conversely, some studies choose to instead use completely \emph{simulated} \ac{NCS} setups~\cite{Andersson2005Simulation,Eyisi2012NCSWT}.
 Such an approach is employed by \textcite{Du2009Smith}; the authors develop a novel \emph{Smith} predictor to compensate for varying latencies in wireless \acp{NCS} and validate it using the \emph{TrueTime}~\cite{Henriksson2002TrueTime} simulator.
 In \textcite{Chen2015synccontrol} the authors validate and evaluate a number of synchronous control strategies for three-motor setups using completely simulated \acp{NCS} environments.
 \citeauthor{Wu2012NPC} introduce the concept of \emph{network predictive control} in\ \cite{Wu2012NPC} and use it to balance a simulated inverted pendulum over a simulated wireless network.
+In \cite{Ma2019DynamicSched}, \citeauthor{Ma2019DynamicSched} propose an optimal dynamic scheduling strategy that optimizes performance of multi-loop control systems and validate it by simulating a four-loop control system over an IEEE 802.15.4 \ac{WPAN}.
 
-Finally, a number of experimental studies instead employ hardware- and network-in-the-loop approaches.
-Hardware-in-the-loop refers to \ac{NCS} setups in which a real control system interacts with an emulated network.
-Such setups have been used by studies 
+
+Finally, a number of experimental studies instead employ \emph{hardware-} and \emph{network-in-the-loop} approaches.
+Hardware-in-the-loop refers to \ac{NCS} setups in which a real network interacts with a simulated or emulated control system.
+This kind of setup is particularly prevalent in the field of \emph{smart grid} control, and has been used by studies such as \textcite{Wang2020VoltageControl}, in which the authors validate a novel three-level coordinated control method for photovoltaic inverters.
+
+On the other hand, network-in-the-loop refers to experimental setups in which the \emph{network} is instead simulated or emulated.
+An example of this approach can be found in \textcite{Natale2004InvPendEthernet}, in which the authors interface an real inverted pendulum system with an emulated IEEE 802.3 Ethernet network to study the effects of the \ac{CSMA/CD} medium access control scheme on plant stability.
 
 
 
