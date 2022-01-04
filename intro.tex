@@ -2,16 +2,14 @@
 
 \todo[inline, caption={}]{
     \begin{itemize}
-        \item You miss a bit the balance between general introduction (really only the first paragraph), discussion of related work (almost one page) and the contribution of the paper (again one paragraph). Try to find a better balance, and the best way to do that is to shorten perhaps the discussion of related work.
-        \item The aspect of edge computing is a bit missing in the intro. That is perhaps not a big problem, but you could introduce it more strongly towards the contribution part. One useful angle could be that we see more and more concepts of the ``edge'' --- near edge, far edge, telco edge etc. While edge computing is seen as important for closed loop applications in general, understanding the usefullness of such different edge concepts will become more important --- which is where Cleave can help obviously.
-        \item In the intro (first paragraph) you can be a bit more specific as 5G together with edge computing is introduced to become the backbone of CPS in the future. As of today, not many CPS really run on cellular networks. That does not come out from your intro, and might require you to change the narrative of the first paragraph
+        \item Still missing balance, and too long. Will fix towards the end.
     \end{itemize}
 }
 
 The number and applications of \acp{CPS}~\cite{Rajkumar2010CPS} --- that is, systems in which a real, physical mechanism is controlled by a computer --- have exploded in later years.
 However, this rapid increase in adoption of these systems has been mostly limited to industrial contexts.
 Although \acp{CPS} present huge opportunities for all facets of society, they have yet to reach our daily lives in any relevant scale due to their stringent operational requirements.
-This is about to change, however, as with the advent of novel wireless communication technologies as well as networking paradigms, such as cellular 5G and Edge (and Fog) Computing~\cite{Satya2009Case}, comsumer-grade \acp{CPS} will be made possible.
+This is about to change, however, as with the advent of novel wireless communication technologies as well as networking paradigms, such as cellular 5G and Edge (and Fog) Computing~\cite{Satya2009Case,Satya2017Emergence}, comsumer-grade \acp{CPS} will be made possible.
 These technologies meet two key requirements of \acp{CPS}: real-time capabilities (through extremely low end-to-end latencies), and context- and locality-awareness, and will most likely become the backbone of \ac{CPS} in the future.
 
 A subcategory of \acp{CPS} which stands to particularly benefit from the adoption of the above technologies is \acp{NCS}~\cite{Gupta2010NCSOverview}, a type of \ac{CPS} wherein multiple networked actuators and sensors form a part of the same automatic control system.
@@ -25,7 +23,7 @@ This allows for --- for instance --- simultaneous centralized coordination, cont
 Most of the large literature concerning \acp{NCS}, however, follows a theoretical approach, and only a small fraction of it deals with experimental studies.
 The inherent inter-domain nature of \acp{NCS}, which intertwines knowledge from the fields of communications, computing, and control theory, coupled with the complexity of experimental platforms make these kinds of studies hard to perform.
 
-The most straightforward approach to experimental research in \ac{NCS} uses setups in which the complete system is built on top of real hardware.
+The most straightforward approach to experimental research in \acp{NCS} uses setups in which the complete system is built on top of real hardware.
 \textcite{Drew2005NCSWLAN} present \iac{NCS} model which considers both random packet delay and loss on both the sensor and actuator sides of the feedback loop; \textcite{Baumann2018LowPower}, on the other hand, develop an evaluation methodology for wireless \ac{NCS}.
 Both works validate their results on physical testbeds, consisting of inverted penduli plants controlled wirelessly over IEEE 802.11 WiFi from a central computation point.
 Similarly, \textcite{Li2014Wireless} implement a wireless microcontroller-based system for vibration control and validate it on a physical prototype consisting of a cantilever beam controlled over an IEEE 802.15.4 \ac{WPAN} system.
@@ -43,9 +41,9 @@ Hardware-in-the-loop refers to \ac{NCS} setups in which a real network interacts
 This kind of setup is particularly prevalent in the field of \emph{smart grid} control, and has been used by studies such as \textcite{Wang2020VoltageControl}, in which the authors validate a novel three-level coordinated control method for photovoltaic inverters.
 
 On the other hand, network-in-the-loop refers to experimental setups in which the \emph{network} is instead simulated or emulated.
-An example of this approach can be found in \textcite{Natale2004InvPendEthernet}, in which the authors interface an real inverted pendulum system with an emulated IEEE 802.3 Ethernet network to study the effects of the \ac{CSMA/CD} medium access control scheme on plant stability.
+An example of this approach can be found in \textcite{Natale2004InvPendEthernet}, in which the authors interface a real inverted pendulum system with an emulated IEEE 802.3 Ethernet network to study the effects of the \ac{CSMA/CD} medium access control scheme on plant stability.
 
-As evidenced by the discussion above, experimental research in \acp{NCS} includes a large variety of heterogeneous hardware and software platforms, as well as methodologies and \acp{KPI}.
+As evidenced above, experimental research in \acp{NCS} includes a large variety of heterogeneous hardware and software platforms, as well as methodologies and \acp{KPI}.
 This, in turn, leads to hardware, software, and methodology fragmentation, as different studies tend to prefer approaches more favored in their respective communities.
 Furthermore, existing studies tend to focus on individual aspects and components of a system, thus producing results which do not provide a complete image of the \ac{NCS}.
 We identify thus a gap in knowledge pertaining to the reproducibility and comparison of experimental studies on these systems.
@@ -57,12 +55,12 @@ It allows for easy and highly reproducible experimentation and benchmarking of \
 Although the work of \textcite{Zoppi2020NCSBench} is a relevant and important step towards the reproducibility of \ac{NCS} benchmarks, we believe it still falls short on some aspects.
 In particular, we argue the reliance of \emph{NCSbench} on specific hardware --- accessible as it may be --- hampers the potential of the platform, as it fundamentally limits both the physical systems that can be benchmarked and the scalability of the performed benchmarks.
 
-In this paper, we present thus the first fully-software-based \ac{NCS} benchmarking framework with scalability and repeatability as its main focus, built with the Edge in mind.
+In this paper, we present the first fully-software-based \ac{NCS} benchmarking framework with scalability and repeatability as its main focus, built with the Edge in mind.
 In the years since the advent of the Edge computing paradigm, more and more variations of it have appeared in literature as the paradigm starts to be adopted by industry.
 ``Near'', ``far'', ``core'', and ``telco'' edge, among others, are all terms which describe variations of the original concept and which are becoming ubiquitous in new research.
 While the main idea of Edge computing is widely accepted as fundamental for pervasive \acp{NCS} in general, understanding the usefulness, strenghts, and weaknesses of such different edge concepts is becoming more and more important.
 
-Our framework, which we name \ac{CLEAVE}, thus aims to simplify the repeatable and scalable benchmarking of such systems. 
+Our framework, which we name \ac{CLEAVE}, aims to simplify the repeatable and scalable benchmarking of such systems. 
 It is built on top of the \emph{Python 3.8}~\cite{Python3.8} language, making it highly extensible and able to harness the hundreds-of-thousands of already existing user-provided libraries and packages~\cite{pypi}.
 Additionally, it is fully compatible with \emph{containerization} technologies such as \emph{Docker}~\cite{merkel2014docker}, making it suitable for automated deployment and benchmarking on industry-standard cloud and (more importantly) edge setups using container orchestration technologies.
 
