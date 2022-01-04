@@ -1,7 +1,16 @@
 \section{Introduction}\label{sec:intro}
 
+\todo[inline, caption={}]{
+    \begin{itemize}
+        \item You miss a bit the balance between general introduction (really only the first paragraph), discussion of related work (almost one page) and the contribution of the paper (again one paragraph). Try to find a better balance, and the best way to do that is to shorten perhaps the discussion of related work.
+        \item The aspect of edge computing is a bit missing in the intro. That is perhaps not a big problem, but you could introduce it more strongly towards the contribution part. One useful angle could be that we see more and more concepts of the ``edge'' --- near edge, far edge, telco edge etc. While edge computing is seen as important for closed loop applications in general, understanding the usefullness of such different edge concepts will become more important --- which is where Cleave can help obviously.
+        \item In the intro (first paragraph) you can be a bit more specific as 5G together with edge computing is introduced to become the backbone of CPS in the future. As of today, not many CPS really run on cellular networks. That does not come out from your intro, and might require you to change the narrative of the first paragraph
+    \end{itemize}
+}
+
 The number and applications of \acp{CPS}~\cite{Rajkumar2010CPS} --- that is, systems in which a real, physical mechanism is controlled by a computer --- have exploded in later years.
-This rise in popularity is in great part driven by the advent of novel wireless communication technologies as well as networking paradigms, such as cellular 5G and Edge Computing.
+This rise in popularity is in great part driven by the advent of novel wireless communication technologies as well as networking paradigms, such as cellular 5G and Edge (and Fog) Computing.
+
 
 In particular, \acp{NCS}~\cite{Gupta2010NCSOverview}, a type of \ac{CPS} wherein multiple networked actuators and sensors form a part of the same automatic control system, have been of great interest to the scientific community in the last decade.
 Due to their potential advantages for industrial settings~\cite{Lu2015WSAN}, a large body of work exists dedicated to the modelling and performance characterization of these systems~\cite{Hespanha2007Survey,Zhang2013Survey,Zhang2016Survey}.
@@ -11,7 +20,7 @@ This allows for --- for instance --- simultaneous centralized coordination, cont
 Most of the large literature concerning \acp{NCS}, however, follows a theoretical approach, and only a small fraction of it deals with experimental studies.
 The inherent inter-domain nature of \acp{NCS}, which intertwines knowledge from the fields of communications, computing, and control theory, coupled with the complexity of experimental platforms make these kinds of studies hard to perform.
 
-The most straightforward approach to experimental research in \ac{NCS} use setups in which the complete system uses real hardware.
+The most straightforward approach to experimental research in \ac{NCS} uses setups in which the complete system is built on top of real hardware.
 \textcite{Drew2005NCSWLAN} present \iac{NCS} model which considers both random packet delay and loss on both the sensor and actuator sides of the feedback loop; \textcite{Baumann2018LowPower}, on the other hand, develop an evaluation methodology for wireless \ac{NCS}.
 Both works validate their results on physical testbeds, consisting of inverted penduli plants controlled wirelessly over IEEE 802.11 WiFi from a central computation point.
 Similarly, \textcite{Li2014Wireless} implement a wireless microcontroller-based system for vibration control and validate it on a physical prototype consisting of a cantilever beam controlled over an IEEE 802.15.4 \ac{WPAN} system.
@@ -45,7 +54,7 @@ In particular, we argue the reliance of \emph{NCSbench} on specific hardware ---
 
 In this paper, we present thus the first fully-software-based \ac{NCS} benchmarking framework with scalability and repeatability as its main focus.
 This framework is built on top of the \emph{Python 3.8}~\cite{Python3.8} language, making it highly extensible and able to harness the tremendous amount of already existing user-provided libraries and packages~\cite{pypi}.
-Additionally, it is fully compatible with \emph{containerization} technologies such as \emph{Docker}~\cite{merkel2014docker}, making it suitable for automated deployment and benchmarking on industry-standard deployment using container orchestration technologies.
+Additionally, it is fully compatible with \emph{containerization} technologies such as \emph{Docker}~\cite{merkel2014docker}, making it suitable for automated deployment and benchmarking on industry-standard setups using container orchestration technologies.
 We name this framework \ac{CLEAVE}.
 
 The rest of this paper is structured as follows.
