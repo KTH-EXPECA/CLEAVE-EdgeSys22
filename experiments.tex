@@ -1,11 +1,9 @@
 \section{Experimental validation}\label{sec:experiments}
 
-\todo[inline]{WIP}
+\input{tables/hardware.tex}
 
-In this section, we aim to validate the utility of the CLEAVE framework through a series of experiments.
-In particular, we wish to show the utility of CLEAVE as a tool for repeatable and scalable benchmarking of \acp{NCS} in Edge environments.
-
-\todo[inline]{talk about goal of experiments}
+In this section, we demonstrate the practical utility of \ac{CLEAVE} through a series of experiments on an emulated \ac{NCS} running between a client device and a cloudlet.
+We aim to answer question relating to the ability of our framework to provide relevant, accurate, and repeatable measurements of the performance of \acp{NCS} deployed on edge computing infrastructure.
 
 This section is structured in two parts.
 \Cref{ssec:expsetup} details the experimental setup and describes the experiments performed.
@@ -27,14 +25,14 @@ For the controller, a proportional-differential strategy is employed, implemente
     }\label{fig:invpend}
 \end{figure}
 
-We depict our experimental setup in \cref{fig:cleave:expsetup}, consisting of a single control loop deployed across a pair of consumer-grade computing devices.
-We employ a Raspberry Pi 4B single-board computer together with a general-purpose \verb|x86_64|-based workstation; the \ac{OS} configured on both corresponds to Ubuntu Server 20.04 LTS~\cite{Ubuntu}.
+We depict our experimental edge setup in \cref{fig:cleave:expsetup}, consisting of a single control loop deployed across a pair of consumer-grade computing devices.
+We employ a Raspberry Pi 4B single-board computer as a client device, together with a general-purpose \verb|x86_64|-based workstation which acts as the cloudlet.
 These devices are connected to each other by an 802.11n WiFi link.
 For ease of orchestration and re-parametrization, as well as to mimic real-world deployments, we package our CLEAVE control loop as a pair of Docker~\cite{merkel2014docker} containers.
-For our main set of experiments, a two-node Docker \emph{Swarm}~\cite{Swarm2021} is set up with the \verb|x86_64| host configured as a Manager and the Raspberry Pi as a Worker node.
-The containers are deployed inside the Swarm, with one of them configured as a Controller, assigned to the \verb|x86_64| host, and the other one as the Inverted Pendulum Plant and assigned to the Raspberry Pi.
-These instances communicate over an overlay network which sits on top of and abstracts away the real network configuration.
-Additionally, to obtain baseline results without the stochastic effects of the network, we employ a secondary ``local-only'' setup, in which we simply execute both Plant and Controller containers co-located on the \verb|x86_64| host.
+For our main set of experiments, a two-node Docker \emph{Swarm}~\cite{Swarm2021} is set up with the cloudlet host configured as a Manager and the client device as a Worker node.
+The containers are deployed inside the Swarm, with one of them configured as a Controller, assigned to the cloudlet, and the other one as the Inverted Pendulum Plant and assigned to the client.
+These instances communicate using the \ac{UDP} over an overlay network which sits on top of and abstracts away the real network configuration.
+Additionally, to obtain baseline results without the stochastic effects of the network, we employ a secondary ``local-only'' setup, in which we simply execute both Plant and Controller containers co-located on the cloudlet.
 
 \begin{figure}
     \centering
@@ -52,3 +50,19 @@ We repeat each combination of these parameters at least \num{10} times, for both
 During each repetition, we collect detailed data on both the state of the controlled system as well as on the data sent over the network.
 
 \subsection{Results}\label{ssec:results}
+
+The results presented below provide valuable insights on both system limits and on the chosen \ac{NCS} itself, as well as on the capabilities of \ac{CLEAVE}.
+
+We begin with a simple analysis of the stability of the Plant.
+\Cref{fig:topple:fraction} shows a visualization of the fraction of plants that toppled in each scenario.
+It provides a very clear overview of the minimum requirements 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=.8\columnwidth]{topple_fraction.png}
+    \caption{Fraction of plants that toppled, per experimental setup.}%
+    \label{fig:topple:fraction}
+\end{figure}
+
+When it comes to network reliability, mean packet losses for all setups were below \SI{0.15}{\percent}. 
+\todo[inline]{Discuss which network results to add.}

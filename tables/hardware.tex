@@ -1,0 +1,31 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{graphicx}
+\begin{table}[]
+    \centering
+    \caption{Hardware used in the experiments.}
+    \label{tab:hardware}
+    \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{@{}llrrrl@{}}
+    \toprule
+    \multicolumn{1}{c}{\textbf{}} &
+      \multicolumn{1}{c}{\textbf{CPU}} &
+      \multicolumn{1}{c}{\textbf{\begin{tabular}[c]{@{}c@{}}Freq\\ {[}\si{\giga\hertz}{]}\end{tabular}}} &
+      \multicolumn{1}{c}{\textbf{\begin{tabular}[c]{@{}c@{}}Core\\ Count\end{tabular}}} &
+      \multicolumn{1}{c}{\textbf{\begin{tabular}[c]{@{}c@{}}RAM\\ {[}\si{\giga\byte}{]}\end{tabular}}} &
+      \multicolumn{1}{c}{\textbf{\begin{tabular}[c]{@{}c@{}}Operating\\ System\end{tabular}}} \\ \midrule
+    \textbf{Cloudlet} &
+      \begin{tabular}[c]{@{}l@{}}Intel\textregistered{} Core\texttrademark{}\\ i7-8700\end{tabular} &
+      \num{3.2} &
+      \num{6} &
+      \num{32} &
+      \begin{tabular}[c]{@{}l@{}}Ubuntu Server \\20.04 LTS \\Kernel v5.4.0\\\ \end{tabular} \\
+    \textbf{Client} &
+      \begin{tabular}[c]{@{}l@{}}Cortex-A72\\ (ARM v8)\end{tabular} &
+      \num{2.0} &
+      \num{4} &
+      \num{8} &
+      \begin{tabular}[c]{@{}l@{}}Ubuntu Server \\20.04 LTS \\Kernel v5.4.0\end{tabular} \\ \bottomrule
+    \end{tabular}%
+    }
+\end{table}
