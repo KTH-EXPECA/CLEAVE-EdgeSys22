@@ -49,13 +49,17 @@ Specifically, we modify:
 We repeat each combination of these parameters at least \num{10} times, for both the networked and ``local-only'' setups; experiments with interesting and relevant results are then repeated an additional \num{20} times for better statistical significance in the results.
 During each repetition, we collect detailed data on both the state of the controlled system as well as on the data sent over the network.
 
+\todo[inline]{Capacity experiment description.}
+
 \subsection{Results}\label{ssec:results}
 
 The results presented below provide valuable insights on both system limits and on the chosen \ac{NCS} itself, as well as on the capabilities of \ac{CLEAVE}.
 
+\subsubsection{Single Plant Scenario}
+
 We begin with a simple analysis of the stability of the Plant, as \ac{CLEAVE} allows for straightforward and repeatable analysis of relevant metrics.  
 For instance, \cref{fig:topple:fraction} shows a visualization of the fraction of plants that toppled in each scenario.
-These Plants were identified simply by analyzing the emulation data --- instances whose pendulum angles reached values above a certain value\footnote{This value will depend on the parametrization of the controller, and in this case corresponds to \SI{20}{\degree}, or \SI{0.35}{\radian}} were marked as ``toppled''.
+These Plants were identified simply by analyzing the emulation data --- instances whose pendulum angles reached values above a certain value\footnote{This value will depend on the parametrization of the controller, and in this case corresponds to \SI{20}{\degree}, or \SI{0.35}{\radian}.} were marked as ``toppled''.
 
 \begin{figure}
     \centering
@@ -66,13 +70,26 @@ These Plants were identified simply by analyzing the emulation data --- instance
 
 \Ac{CLEAVE} also allows for more fine-grained analysis of stability.
 \Cref{fig:topple:rms} shows the \ac{RMS} of the angles for each setup, averaged over all repetitions of each experiment.
+This figure shows an intuitive but important result --- less stable setups show higher amplitude in the oscillations of their penduli.
 
 \begin{figure}
     \centering
     \includegraphics[width=.8\columnwidth]{angle_rms.png}
-    \caption{RMS}%
+    \caption{\Ac{RMS} of the pendulum angles averaged over all runs for each scenario.
+    Error bars indicate \SI{95}{\percent} \acp{CI}.}%
     \label{fig:topple:rms}
 \end{figure}
 
-When it comes to network reliability, mean packet losses for all setups were below \SI{0.15}{\percent}. 
+Finally, we showcase \ac{CLEAVE}'s ability to obtain network performance data from the experiments.
+\Cref{fig:network} shows average \acp{RTT}s and packet losses per scenario.
+
+\begin{figure}
+    \centering
+    % \includegraphics[width=.8\columnwidth]{angle_rms.png}
+    \caption[caption]{Mean \acp{RTT} and packet losses for each scenario; \acp{RTT} were calculated by subtracting the synthetic delay from the absolute end-to-end latency\textsuperscript{a}. Error bars indicate \SI{95}{\percent} \acp{CI}.}%
+    \small\textsuperscript{a} The systematic offset of \SI{2}{\milli\second} on scenarios with synthetic delay is an artifact of our implementation, and will be fixed in the next release of the framework.
+    \label{fig:network}
+\end{figure}
+
+
 \todo[inline]{Discuss which network results to add.}
