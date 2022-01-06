@@ -53,15 +53,25 @@ During each repetition, we collect detailed data on both the state of the contro
 
 The results presented below provide valuable insights on both system limits and on the chosen \ac{NCS} itself, as well as on the capabilities of \ac{CLEAVE}.
 
-We begin with a simple analysis of the stability of the Plant.
-\Cref{fig:topple:fraction} shows a visualization of the fraction of plants that toppled in each scenario.
-It provides a very clear overview of the minimum requirements 
+We begin with a simple analysis of the stability of the Plant, as \ac{CLEAVE} allows for straightforward and repeatable analysis of relevant metrics.  
+For instance, \cref{fig:topple:fraction} shows a visualization of the fraction of plants that toppled in each scenario.
+These Plants were identified simply by analyzing the emulation data --- instances whose pendulum angles reached values above a certain value\footnote{This value will depend on the parametrization of the controller, and in this case corresponds to \SI{20}{\degree}, or \SI{0.35}{\radian}} were marked as ``toppled''.
 
 \begin{figure}
     \centering
     \includegraphics[width=.8\columnwidth]{topple_fraction.png}
     \caption{Fraction of plants that toppled, per experimental setup.}%
     \label{fig:topple:fraction}
+\end{figure}
+
+\Ac{CLEAVE} also allows for more fine-grained analysis of stability.
+\Cref{fig:topple:rms} shows the \ac{RMS} of the angles for each setup, averaged over all repetitions of each experiment.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=.8\columnwidth]{angle_rms.png}
+    \caption{RMS}%
+    \label{fig:topple:rms}
 \end{figure}
 
 When it comes to network reliability, mean packet losses for all setups were below \SI{0.15}{\percent}. 
