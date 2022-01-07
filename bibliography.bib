@@ -374,7 +374,7 @@
   doi     = {10.1109/MC.2017.9}
 }
 
- @misc{Swarm2021,
+@misc{Swarm2021,
   title={{Docker Swarm} mode overview},
   url={https://docs.docker.com/engine/swarm/},
   journal={Docker Documentation},
@@ -382,8 +382,55 @@
   month={Dec}
 }
 
- @misc{Ubuntu,
+@misc{Ubuntu,
   title   = {Ubuntu Linux},
   url     = {https://ubuntu.com/},
   journal = {Ubuntu}
-} 
+}
+ 
+@misc{iperf3,
+  title   = {{iperf} - the ultimate speed test tool for {TCP}, {UDP} and {SCTP}.},
+  url     = {https://iperf.fr/},
+  journal = {iPerf.fr},
+  author  = {GUEANT, Vivien}
+}
+
+@inproceedings{Wang2018Analytics,
+  author    = {Wang, Junjue and Feng, Ziqiang and Chen, Zhuo and George, Shilpa and Bala, Mihir and Pillai, Padmanabhan and Yang, Shao-Wen and Satyanarayanan, Mahadev},
+  booktitle = {2018 IEEE/ACM Symposium on Edge Computing (SEC)},
+  title     = {Bandwidth-Efficient Live Video Analytics for Drones Via Edge Computing},
+  year      = {2018},
+  volume    = {},
+  number    = {},
+  pages     = {159-173},
+  doi       = {10.1109/SEC.2018.00019}
+}
+
+@inproceedings{Yi2017Analytics,
+  author    = {Yi, Shanhe and Hao, Zijiang and Zhang, Qingyang and Zhang, Quan and Shi, Weisong and Li, Qun},
+  title     = {LAVEA: Latency-Aware Video Analytics on Edge Computing Platform},
+  year      = {2017},
+  isbn      = {9781450350877},
+  publisher = {Association for Computing Machinery},
+  address   = {New York, NY, USA},
+  url       = {https://doi.org/10.1145/3132211.3134459},
+  doi       = {10.1145/3132211.3134459},
+  abstract  = {Along the trend pushing computation from the network core to the edge where the most of data are generated, edge computing has shown its potential in reducing response time, lowering bandwidth usage, improving energy efficiency and so on. At the same time, low-latency video analytics is becoming more and more important for applications in public safety, counter-terrorism, self-driving cars, VR/AR, etc. As those tasks are either computation intensive or bandwidth hungry, edge computing fits in well here with its ability to flexibly utilize computation and bandwidth from and between each layer. In this paper, we present LAVEA, a system built on top of an edge computing platform, which offloads computation between clients and edge nodes, collaborates nearby edge nodes, to provide low-latency video analytics at places closer to the users. We have utilized an edge-first design and formulated an optimization problem for offloading task selection and prioritized offloading requests received at the edge node to minimize the response time. In case of a saturating workload on the front edge node, we have designed and compared various task placement schemes that are tailed for inter-edge collaboration. We have implemented and evaluated our system. Our results reveal that the client-edge configuration has a speedup ranging from 1.3x to 4x (1.2x to 1.7x) against running in local (client-cloud configuration). The proposed shortest scheduling latency first scheme outputs the best overall task placement performance for inter-edge collaboration.},
+  booktitle = {Proceedings of the Second ACM/IEEE Symposium on Edge Computing},
+  articleno = {15},
+  numpages  = {13},
+  keywords  = {edge computing, computation offloading},
+  location  = {San Jose, California},
+  series    = {SEC '17}
+}
+
+@article{Ananthanarayanan2017Analytics,
+  author  = {Ananthanarayanan, Ganesh and Bahl, Paramvir and Bodík, Peter and Chintalapudi, Krishna and Philipose, Matthai and Ravindranath, Lenin and Sinha, Sudipta},
+  journal = {Computer},
+  title   = {Real-Time Video Analytics: The Killer App for Edge Computing},
+  year    = {2017},
+  volume  = {50},
+  number  = {10},
+  pages   = {58-67},
+  doi     = {10.1109/MC.2017.3641638}
+}

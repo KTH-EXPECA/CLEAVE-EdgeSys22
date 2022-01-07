@@ -12,8 +12,9 @@ This section is structured in two parts.
 \subsection{Experimental Setup}\label{ssec:expsetup}
 
 The \acl{NCS} employed for these experiments corresponds to an inverted pendulum, chosen for to its relative simplicity as well as prevalence in the field of automatic control as one of the fundamental examples of linear control.
-The physical system, represented in \cref{fig:invpend}, is implemented as a real-time discrete-time physical emulation using CLEAVE's API and a 2D physics library~\autocite{chipmunk2d,pymunk}, executed at a constant \SI{120}{\hertz}.
+The physical system (``plant''), represented in \cref{fig:invpend}, is implemented as a real-time discrete-time physical emulation using CLEAVE's API and a 2D physics library~\autocite{chipmunk2d,pymunk}, executed at a constant \SI{120}{\hertz}.
 For the controller, a proportional-differential strategy is employed, implemented using the framework Controller API and the NumPy numeric computation library~\autocite{harris2020array}.
+The plant and controller are then packaged into Docker\cite{merkel2014docker}, for ease of orchestration, deployment, and re-parametrization, as well as to mimic real-world deployment.
 
 \begin{figure}
     \centering
@@ -25,31 +26,42 @@ For the controller, a proportional-differential strategy is employed, implemente
     }\label{fig:invpend}
 \end{figure}
 
-We depict our experimental edge setup in \cref{fig:cleave:expsetup}, consisting of a single control loop deployed across a pair of consumer-grade computing devices.
-We employ a Raspberry Pi 4B single-board computer as a client device, together with a general-purpose \verb|x86_64|-based workstation which acts as the cloudlet.
-These devices are connected to each other by an 802.11n WiFi link.
-For ease of orchestration and re-parametrization, as well as to mimic real-world deployments, we package our CLEAVE control loop as a pair of Docker~\cite{merkel2014docker} containers.
-For our main set of experiments, a two-node Docker \emph{Swarm}~\cite{Swarm2021} is set up with the cloudlet host configured as a Manager and the client device as a Worker node.
-The containers are deployed inside the Swarm, with one of them configured as a Controller, assigned to the cloudlet, and the other one as the Inverted Pendulum Plant and assigned to the client.
-These instances communicate using the \ac{UDP} over an overlay network which sits on top of and abstracts away the real network configuration.
-Additionally, to obtain baseline results without the stochastic effects of the network, we employ a secondary ``local-only'' setup, in which we simply execute both Plant and Controller containers co-located on the cloudlet.
+We depict our experimental edge setup in \cref{fig:cleave:expsetup}.
+It consists of \num{10} Raspberry Pi 4B  clients connected wirelessly to an IEEE 802.11n \ac{AP}; connected to the Ethernet backbone of this \ac{AP} is a general-purpose Cloudlet.
+On top of this physical architecture we configure a Docker \emph{Swarm}~\cite{merkel2014docker,Swarm2021} managed centrally from the Cloudlet.
+For each experimental scenario we deploy a number of control loops inside this Swarm, executing plant containers exclusively in the Raspberry Pi clients (up to a single plant per client) and controller containers in the Cloudlet.
+Plants and controllers communicate using the \ac{UDP} over an overlay network which sits on top of and abstracts away the real network configuration.
+Additionally, to obtain baseline results without the stochastic effects of the network, we employ a secondary ``local-only'' setup, in which plants and controllers are executed co-located on the Cloudlet.
 
 \begin{figure}
     \centering
     \includegraphics[width=.95\columnwidth]{images/CLEAVE_experiment_setup}
-    \caption{Experimental setup. Containerized versions of the core CLEAVE emulation components are deployed inside a Docker Swarm Overlay Network spanning a Raspberry Pi 4B Plant host connected to an x86 Controller host over a 802.11n WiFi link.}\label{fig:cleave:expsetup}
+    \caption{Experimental setup. Containerized versions of the core CLEAVE emulation components are deployed inside a Docker Swarm Overlay Network spanning \num{10} Raspberry Pi 4B clients connected to a single Cloudlet over an IEEE 802.11n \ac{AP}.}\label{fig:cleave:expsetup}
+    \todo[inline]{Change fig.}
 \end{figure}
 
-These setups are then used to run a series of experiments with varying parametrization of the controlled system.
-Specifically, we modify:
+\subsubsection{Single Loop Baseline Scenarios}
+
+We first run a series of single loop scenarios with varying parametrization of the controlled system.
+\todo[inline]{Purpose of these scenarios?}
+We modify:
 \begin{itemize}
-    \item the sampling rate of the Plant state, setting it to \SIlist[list-units=single,list-final-separator={, or }]{5;10;20;40;60}{\hertz};
-    \item the responsiveness of the Controller, by adding fixed delays of  \SIlist[list-units=single,list-final-separator={, or }]{0;25;50;100}{\milli\second} after the processing of each sample.
+    \item the sampling rate of the Plant state, setting it to \SIlist[list-final-separator={, or }]{5;10;20;40;60}{\hertz};
+    \item the responsiveness of the Controller, by adding fixed delays of  \SIlist[list-final-separator={, or }]{0;25;50;100}{\milli\second} after the processing of each sample.
 \end{itemize}
 We repeat each combination of these parameters at least \num{10} times, for both the networked and ``local-only'' setups; experiments with interesting and relevant results are then repeated an additional \num{20} times for better statistical significance in the results.
-During each repetition, we collect detailed data on both the state of the controlled system as well as on the data sent over the network.
+Each repetition lasts for \SI{5}{\minute}, during which we collect detailed data on both the state of the controlled system as well as on the data sent over the network.
 
-\todo[inline]{Capacity experiment description.}
+\subsubsection{Realistic Scenario with Resource Contention}
+
+Next, we run a more complex scenario to validate the utility of \ac{CLEAVE} in a more realistic setting where network resources are shared with video stream traffic.
+Video analytics is one of the main proposed use cases for edge computing~\cite{Ananthanarayanan2017Analytics,Yi2017Analytics,Wang2018Analytics}, and thus we foresee edge \ac{NCS} deployments being deployed in parallel with such applications in the future.
+
+In this scenario, we deploy \num{6} control loops on the experimental setup depicted in \cref{fig:cleave:expsetup}.
+On the remaining \num{4} clients we run the \emph{iperf3}~\cite{iperf3} traffic load generator, each generating \SI[per-mode=symbol]{6.5}{\mega\bit\per\second} of \ac{UDP} uplink traffic.
+This traffic emulates the load generated on the network by \SI{1080}{p} Full-HD video streaming, originating from the clients and terminating in the cloudlet.
+We execute this scenario with \ac{NCS} plant sampling rates of \SIlist{20;40;60}{\hertz}.
+Each sampling rate configuration is run for \SI{5}{\minute}, and then repeated \num{30} times to obtain statistical significance.
 
 \subsection{Results}\label{ssec:results}
 
@@ -93,3 +105,45 @@ Finally, we showcase \ac{CLEAVE}'s ability to obtain network performance data fr
 
 
 \todo[inline]{Discuss which network results to add.}
+
+\subsubsection{Realistic Scenario}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[h]{\columnwidth}
+        \centering
+        \includegraphics[width=.8\columnwidth]{video_topple_frac}
+        \caption{}\label{fig:video:toppled}
+    \end{subfigure}\\%
+    \begin{subfigure}[h]{\columnwidth}
+        \centering
+        \includegraphics[width=.8\columnwidth]{video_angle_rms}
+        \caption{}\label{fig:video:rms}
+    \end{subfigure}%
+    \caption{
+        Stability metrics for the realistic scenario.
+        \labelcref{fig:video:toppled} shows the fraction of repetitions of each scenario in which \emph{at least} one plant failed to maintain stability and toppled.
+        \labelcref{fig:video:rms} shows the \ac{RMS} for the pendulum angles for each scenario, only considering data from plants that did not topple.
+        Error bars indicate \SI{95}{\percent} \ac{CI} in both plots.
+    }\label{fig:video:stability}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[h]{\columnwidth}
+        \centering
+        \includegraphics[width=.8\columnwidth]{video_drop_frac}
+        \caption{}\label{fig:video:drop}
+    \end{subfigure}\\%
+    \begin{subfigure}[h]{\columnwidth}
+        \centering
+        \includegraphics[width=.8\columnwidth]{video_rtt}
+        \caption{}\label{fig:video:rtt}
+    \end{subfigure}%
+    \caption{
+        Network metrics for the realistic scenario.
+        \labelcref{fig:video:drop} shows the fraction of \ac{UDP} datagrams dropped, averaged over all plants and repetitions per scenario.
+        \labelcref{fig:video:rtt} shows the measured end-to-end plant-side \ac{RTT}, averaged over all plants and repetitions per scenario.
+        Error bars indicate \SI{95}{\percent} \ac{CI} in both plots.
+    }\label{fig:video:network}
+\end{figure}
