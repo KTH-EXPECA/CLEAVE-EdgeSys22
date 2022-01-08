@@ -1,5 +1,9 @@
 \section{Experimental validation}\label{sec:experiments}
 
+\todo[inline]{
+    In the numerical part, you can gain a lot of space by reformatting the plots into environments with two or three plots next to each other. In addition, you need to comment more on Fig 4 (the key result for the single-loop baseline). The discussion of Fig 4 should take more space than the discussion of Fig 5.
+}
+
 \input{tables/hardware.tex}
 
 In this section, we demonstrate the practical utility of \ac{CLEAVE} through a series of experiments on an emulated \ac{NCS} running between a client device and a cloudlet.
@@ -12,7 +16,7 @@ This section is structured in two parts.
 \subsection{Experimental Setup}\label{ssec:expsetup}
 
 The \acl{NCS} employed for these experiments corresponds to an inverted pendulum, chosen for to its relative simplicity as well as prevalence in the field of automatic control as one of the fundamental examples of linear control.
-The physical system (``plant''), represented in \cref{fig:invpend}, is implemented as a real-time discrete-time physical emulation using CLEAVE's API and a 2D physics library\footnote{Pymunk 2d physics library: \url{http://www.pymunk.org/en/latest/}}, executed at a constant \SI{120}{\hertz}.
+The physical system (``plant''), represented in \cref{fig:invpend}, is implemented as a real-time discrete-time physical emulation using CLEAVE's API and a 2D physics library\footnote{Pymunk: \url{http://www.pymunk.org/en/latest/}}, updated at a constant \SI{120}{\hertz}.
 For the controller, a proportional-differential strategy is employed, implemented using the framework Controller API and the \emph{NumPy} numeric computation library\footnote{NumPy: \url{https://numpy.org/}}.
 The plant and controller are then packaged into Docker\footnote{Docker Engine: \url{https://www.docker.com/}} containers, for ease of orchestration, deployment, and re-parametrization, as well as to mimic real-world deployment.
 
@@ -76,55 +80,60 @@ The results presented below provide valuable insights on both system limits and 
 
 We begin with a simple analysis of the stability of the Plant, as \ac{CLEAVE} allows for straightforward and repeatable analysis of relevant metrics.  
 \Cref{fig:topple:fraction} shows a visualization of the fraction of plants that toppled in each scenario.
-These Plants were identified simply by analyzing the emulation data --- instances whose pendulum angles reached values above a certain value\footnote{This value will depend on the parametrization of the controller, and in this case corresponds to \SI{20}{\degree}, or \SI{0.35}{\radian}.} were marked as ``toppled''.
-
+These Plants were identified simply by analyzing the emulation data --- instances whose pendulum angles reached values above a certain value\footnote{This value depends on the parametrization of the controller; in this case it corresponds to \SI{0.35}{\radian}.} were marked as ``toppled''.
 Next, we showcase \ac{CLEAVE}'s ability to obtain network performance data from the experiments.
-\Cref{fig:single:network} shows average latency due to network and processing (excluding synthetic delays) for both single-loop scenarios, and packet losses for the networked single-loop scenario\footnote{Packet losses in the local scenario were, of course, \num{0}.}.
+\Cref{fig:single:network} shows average latency due to network and processing (excluding synthetic delays) for both single-loop scenarios, and packet losses for the networked single-loop scenario\footnote{Packet losses in the local scenario were, of course, \SI{0}{\percent}.}.
 
 From these results we can already infer interesting consequences for \ac{NCS} deployments on the edge.
 For instance, it is clear from \cref{fig:topple:fraction} that network delays can, to a certain extent, be compensated for by increasing the sampling rate of the system.
 A corollary of this is that, conversely, at lower network latencies \acp{NCS} are able to stabilize at lower sampling rates.
 Adaptive sampling might thus be a straightforward method for optimizing \ac{NCS} resource utilization and energy consumption at the edge.
 
-\begin{figure}
+\begin{figure*}
     \centering
-    \includegraphics[width=.8\columnwidth]{single_loop_toppled}
-    \caption{Fraction of plants that toppled, per experimental setup.}%
-    \label{fig:topple:fraction}
-\end{figure}
+    \begin{subfigure}[t]{.5\textwidth}
+        \centering
+        \includegraphics[width=.9\textwidth]{single_loop_toppled}
+        \caption{}%
+        \label{fig:topple:fraction}
+    \end{subfigure}%
+    \begin{subfigure}[t]{.5\textwidth}
+        \centering
+        \includegraphics[width=.9\textwidth]{single_loop_rms}
+        \caption{}\label{fig:single:rms}
+    \end{subfigure}%
+    \caption[caption]{
+        Stability metrics for the single-loop scenarios.
+        \labelcref{fig:topple:fraction} shows the fraction of plants that toppled, per experimental setup.
+        \labelcref{fig:single:rms} shows the \ac{RMS} value of the angle for all penduli that did not topple in the single loop scenarios.
+        Error bars indicate \SI{95}{\percent} \acp{CI}.
+        }%
+    \label{fig:single:network}
+    \todo[inline]{More focus on this.}
+\end{figure*}
 
 \begin{figure}
     \centering
-    \begin{subfigure}[h]{\columnwidth}
-        \centering
-        \includegraphics[width=.8\columnwidth]{single_loop_rtts}
-        \caption{}\label{fig:single:rtt}
-    \end{subfigure}\\%
-    \begin{subfigure}[h]{\columnwidth}
-        \centering
-        \includegraphics[width=.8\columnwidth]{single_loop_drop_frac}
-        \caption{}\label{fig:single:drop}
-    \end{subfigure}%
-    \caption[caption]{Mean latency due to network and processing (\labelcref{fig:single:rtt}) for both single-loop scenarios, and packet losses (\labelcref{fig:single:drop}) for the single-loop scenario over the WiFi link.
-    Error bars indicate \SI{95}{\percent} \acp{CI}.}%
-    % \vspace{2pt}\raggedright{}\small\textsuperscript{a} The systematic offset of approx. \SI{2}{\milli\second} on scenarios with synthetic delay is due to an artifact of our implementation.
-    \label{fig:single:network}
+    \includegraphics[width=.9\columnwidth]{single_loop_rtts}
+    \caption{
+        Mean latency due to network and processing for both single-loop scenarios.
+        Error bars indicate \SI{95}{\percent} \acp{CI}.
+    }\label{fig:single:rtt}
+    \todo[inline]{less focus on this. mention packet drops are all below 0.2 percent}
 \end{figure}
 
 \subsubsection{Realistic Scenario}
 
 In the following, we present and briefly discuss the results for the realistic scenario with network resource contention.
 
-% As before, we start with a brief and simple analysis of plant stability.
-\Cref{fig:video:stability} shows plots representing the fraction of repetitions with toppled penduli as well as the \ac{RMS} value of the angle of those penduli that did not topple.
-\Cref{fig:video:network} shows network metrics for the scenario, with plots showing the amount of dropped \ac{UDP} datagrams and the average \acp{RTT}.
-
+\Cref{fig:video:results} shows a summary of the results obtained from the realistic scenario.
 These results are interesting in their counter-intuitiveness.
-Conventional wisdom would lead us to think that higher sampling rates are always better for the stability of control systems; however, \cref{fig:video:stability} clearly shows this not to be the case for \ac{NCS} in resource-constrained scenarios.
+Conventional wisdom would lead us to think that higher sampling rates are always better for the stability of control systems; however, \cref{fig:video:toppled,fig:video:rms} clearly shows this not to be the case for \ac{NCS} in resource-constrained scenarios.
+
 \SI{60}{\hertz} was the least stable configuration, with at least one pendulum toppling in around \SI{16}{\percent} of the repetitions, and average pendulum angle \ac{RMS} about \num{3} times that of the \SI{40}{\hertz} scenario.
 \SI{40}{\hertz} was in turn the second worst configuration --- although no penduli toppled in this scenario, average angle \ac{RMS} were double that of the \SI{20}{\hertz} setup.
 
-We can see an explanation for these behaviors in \cref{fig:video:network}.
+We can see an explanation for these behaviors in \cref{fig:video:drop,fig:video:rtt}.
 Whereas both the \SIlist{20;40}{\hertz} setups show datagram losses well below \SI{5}{\percent}, the \SI{60}{\hertz} scenario shows an average of around \SI{13}{\percent} datagrams lost.
 The differences in \acp{RTT} results are equally dramatic; \acp{RTT} for the \SI{60}{\hertz} scenario were on average approximately \num{3} times those for the \SIlist{20;40}{\hertz} setups (circa \SI{41}{\milli\second} versus \SIrange[range-phrase=--]{13}{15}{\milli\second}).
 
@@ -132,42 +141,52 @@ These results stem from the contention for shared network resources, and hints a
 The edge is envisioned as \emph{multi-tenant} and \emph{multi-instance}, and thus any edge \ac{NCS} deployment will have to be performed with shared resources in mind.
 \acp{NCS} will have to dynamically adapt to system limits in order to maintain quality-of-control.
 
-\begin{figure}
+\begin{figure*}[t]
     \centering
-    \begin{subfigure}[h]{\columnwidth}
+    \begin{subfigure}[h]{.25\textwidth}
         \centering
-        \includegraphics[width=.8\columnwidth]{video_topple_frac}
+        \includegraphics[width=.9\textwidth]{video_topple_frac}
         \caption{}\label{fig:video:toppled}
-    \end{subfigure}\\%
-    \begin{subfigure}[h]{\columnwidth}
+    \end{subfigure}%
+    \begin{subfigure}[h]{.25\textwidth}
         \centering
-        \includegraphics[width=.8\columnwidth]{video_angle_rms}
+        \includegraphics[width=.9\textwidth]{video_angle_rms}
         \caption{}\label{fig:video:rms}
     \end{subfigure}%
-    \caption{
-        Stability metrics for the realistic scenario.
-        \labelcref{fig:video:toppled} shows the fraction of repetitions of each scenario in which \emph{at least} one plant failed to maintain stability and toppled.
-        \labelcref{fig:video:rms} shows the \ac{RMS} for the pendulum angles for each scenario, only considering data from plants that did not topple.
-        Error bars indicate \SI{95}{\percent} \ac{CI} in both plots.
-    }\label{fig:video:stability}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \begin{subfigure}[h]{\columnwidth}
+    \begin{subfigure}[h]{.25\textwidth}
         \centering
-        \includegraphics[width=.8\columnwidth]{video_drop_frac}
+        \includegraphics[width=.9\textwidth]{video_drop_frac}
         \caption{}\label{fig:video:drop}
-    \end{subfigure}\\%
-    \begin{subfigure}[h]{\columnwidth}
+    \end{subfigure}%
+    \begin{subfigure}[h]{.25\textwidth}
         \centering
-        \includegraphics[width=.8\columnwidth]{video_rtt}
+        \includegraphics[width=.9\textwidth]{video_rtt}
         \caption{}\label{fig:video:rtt}
     \end{subfigure}%
     \caption{
-        Network metrics for the realistic scenario.
+        Results for the realistic scenario.
+        \labelcref{fig:video:toppled} shows the fraction of repetitions of each scenario in which \emph{at least} one plant failed to maintain stability and toppled.
+        \labelcref{fig:video:rms} shows the \ac{RMS} for the pendulum angles for each scenario, only considering data from plants that did not topple.
         \labelcref{fig:video:drop} shows the fraction of \ac{UDP} datagrams dropped, averaged over all plants and repetitions per scenario.
         \labelcref{fig:video:rtt} shows the measured end-to-end plant-side \ac{RTT}, averaged over all plants and repetitions per scenario.
-        Error bars indicate \SI{95}{\percent} \ac{CI} in both plots.
-    }\label{fig:video:network}
-\end{figure}
+        Error bars indicate \SI{95}{\percent} \ac{CI} in all plots.
+    }\label{fig:video:results}
+\end{figure*}
+
+% \begin{figure}
+%     \centering
+%     \begin{subfigure}[h]{\columnwidth}
+%         \centering
+%         \includegraphics[width=.8\columnwidth]{video_drop_frac}
+%         \caption{}\label{fig:video:drop}
+%     \end{subfigure}\\%
+%     \begin{subfigure}[h]{\columnwidth}
+%         \centering
+%         \includegraphics[width=.8\columnwidth]{video_rtt}
+%         \caption{}\label{fig:video:rtt}
+%     \end{subfigure}%
+%     \caption{
+%         Network metrics for the realistic scenario.
+%         Error bars indicate \SI{95}{\percent} \ac{CI} in both plots.
+%     }\label{fig:video:network}
+% \end{figure}

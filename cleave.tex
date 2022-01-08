@@ -1,17 +1,21 @@
 \section{Approach}\label{sec:approach}
 
-In this section, we present and detail our \ac{CLEAVE} framework for the performance evaluation of \acfp{NCS}.
+\todo[inline]{
+    For the approach part, mention please also that it is open-source and where it can be found. Also, you keep the discussion around the implemented plant and the controller pretty short (and it is only showing up in the numerical part). Maybe it is better to discuss the details of the implemented plant and the controller already in Section 2 and mention that the intention is to build a liberary of plants and controllers in the future.
+}
+
+In this section, we present and detail our \ac{CLEAVE} framework for the performance evaluation of \acfp{NCS}, with a particular focus on edge deployments.
 Our design follows an approach similar to the above-discussed \emph{hardware-in-the-loop} setups, in that we provide a \emph{framework} for the real-time \emph{emulation} of physical control systems which interact with \emph{real} networks.
-This allows for great flexibility when it comes to the components of the control system, as these can easily be switched out in the fully emulated approach, while maintaining the realism of arguably the most complex and limiting component of \acp{NCS}, namely the network itself.
+This allows for great flexibility when it comes to the components of the control system, as these can easily be switched out in the fully emulated approach, while maintaining the realism of arguably the most complex and limiting component of and edge \acp{NCS}, namely the network itself.
 
 In the following we will explain the approach taken in \ac{CLEAVE} by walking the reader through the steps necessary to deploy an arbitrary \ac{NCS} emulation on top of the framework.
 An overview of the structure of such an emulation on \ac{CLEAVE} can be seen in \cref{fig:cleave:ncs:struct}.
 
 \begin{figure*}
     \centering
-    \includegraphics[width=\textwidth]{images/CLEAVE_NCS_structure.png}
+    \includegraphics[width=.8\textwidth]{CLEAVE_NCS_structure}
     \caption{
-        Structure of an emulated \ac{NCS} on top of CLEAVE.
+        Structure of an emulated \ac{NCS} on top of CLEAVE.\@
         The State object implements the discrete-time evolution of the Plant.
         For this purpose, it holds two sets of special variables; Actuated Variables and Sensed Variables.
         Actuated Variables are updated from the values obtained from the Actuator objects at the beginning of each time step.
