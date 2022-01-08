@@ -12,13 +12,13 @@ This section is structured in two parts.
 \subsection{Experimental Setup}\label{ssec:expsetup}
 
 The \acl{NCS} employed for these experiments corresponds to an inverted pendulum, chosen for to its relative simplicity as well as prevalence in the field of automatic control as one of the fundamental examples of linear control.
-The physical system (``plant''), represented in \cref{fig:invpend}, is implemented as a real-time discrete-time physical emulation using CLEAVE's API and a 2D physics library~\autocite{chipmunk2d,pymunk}, executed at a constant \SI{120}{\hertz}.
-For the controller, a proportional-differential strategy is employed, implemented using the framework Controller API and the NumPy numeric computation library~\autocite{harris2020array}.
-The plant and controller are then packaged into Docker\cite{merkel2014docker}, for ease of orchestration, deployment, and re-parametrization, as well as to mimic real-world deployment.
+The physical system (``plant''), represented in \cref{fig:invpend}, is implemented as a real-time discrete-time physical emulation using CLEAVE's API and a 2D physics library\footnote{Pymunk 2d physics library: \url{http://www.pymunk.org/en/latest/}}, executed at a constant \SI{120}{\hertz}.
+For the controller, a proportional-differential strategy is employed, implemented using the framework Controller API and the \emph{NumPy} numeric computation library\footnote{NumPy: \url{https://numpy.org/}}.
+The plant and controller are then packaged into Docker\footnote{Docker Engine: \url{https://www.docker.com/}} containers, for ease of orchestration, deployment, and re-parametrization, as well as to mimic real-world deployment.
 
 \begin{figure}
     \centering
-    \includegraphics[width=.95\columnwidth]{images/inverted_pendulum.png}
+    \includegraphics[width=.7\columnwidth]{images/inverted_pendulum.png}
     \caption{
         The two-dimensional inverted pendulum system.
         The cart moves on the X-axis, and the pendulum on top of it swings freely.
@@ -28,7 +28,7 @@ The plant and controller are then packaged into Docker\cite{merkel2014docker}, f
 
 We depict our experimental edge setup in \cref{fig:cleave:expsetup}.
 It consists of \num{10} Raspberry Pi 4B  clients connected wirelessly to an IEEE 802.11n \ac{AP}; connected to the Ethernet backbone of this \ac{AP} is a general-purpose Cloudlet.
-On top of this physical architecture we configure a Docker \emph{Swarm}~\cite{merkel2014docker,Swarm2021} managed centrally from the Cloudlet.
+On top of this physical architecture we configure a Docker Swarm\footnote{Swarm mode overview: \url{https://docs.docker.com/engine/swarm/}} managed centrally from the Cloudlet.
 For each experimental scenario we deploy a number of control loops inside this Swarm, executing plant containers exclusively in the Raspberry Pi clients (up to a single plant per client) and controller containers in the Cloudlet.
 Plants and controllers communicate using the \ac{UDP} over an overlay network which sits on top of and abstracts away the real network configuration.
 Additionally, to obtain baseline results without the stochastic effects of the network, we employ a secondary ``local-only'' setup, in which plants and controllers are executed co-located on the Cloudlet.
@@ -37,31 +37,36 @@ Additionally, to obtain baseline results without the stochastic effects of the n
     \centering
     \includegraphics[width=.95\columnwidth]{images/CLEAVE_experiment_setup}
     \caption{Experimental setup. Containerized versions of the core CLEAVE emulation components are deployed inside a Docker Swarm Overlay Network spanning \num{10} Raspberry Pi 4B clients connected to a single Cloudlet over an IEEE 802.11n \ac{AP}.}\label{fig:cleave:expsetup}
-    \todo[inline]{Change fig.}
 \end{figure}
 
 \subsubsection{Single Loop Baseline Scenarios}
 
 We first run a series of single loop scenarios with varying parametrization of the controlled system.
-\todo[inline]{Purpose of these scenarios?}
-We modify:
+These scenarios are intended as initial baselines to evaluate the accuracy of the \ac{CLEAVE} framework and showcase its flexibility.
+
+For these scenarios, we vary:
 \begin{itemize}
     \item the sampling rate of the Plant state, setting it to \SIlist[list-final-separator={, or }]{5;10;20;40;60}{\hertz};
     \item the responsiveness of the Controller, by adding fixed delays of  \SIlist[list-final-separator={, or }]{0;25;50;100}{\milli\second} after the processing of each sample.
 \end{itemize}
+
 We repeat each combination of these parameters at least \num{10} times, for both the networked and ``local-only'' setups; experiments with interesting and relevant results are then repeated an additional \num{20} times for better statistical significance in the results.
 Each repetition lasts for \SI{5}{\minute}, during which we collect detailed data on both the state of the controlled system as well as on the data sent over the network.
 
-\subsubsection{Realistic Scenario with Resource Contention}
+Scenarios are executed automatically in batches using a simple Python script which interacts with Docker through the widely adopted \emph{docker-py}\footnote{Docker SDK for Python: \url{https://docker-py.readthedocs.io/en/stable/}} library.
+This is \ac{CLEAVE}'s first advantage over existing frameworks; it is designed with cloud and edge technology and paradigms in mind, making integration with existing systems straightforward.
 
-Next, we run a more complex scenario to validate the utility of \ac{CLEAVE} in a more realistic setting where network resources are shared with video stream traffic.
+\subsubsection{Realistic Scenario with Network Resource Contention}
+
+Next, we run a multi-loop scenario to validate the utility of \ac{CLEAVE} in a more realistic setting where network resources are shared with video stream traffic.
 Video analytics is one of the main proposed use cases for edge computing~\cite{Ananthanarayanan2017Analytics,Yi2017Analytics,Wang2018Analytics}, and thus we foresee edge \ac{NCS} deployments being deployed in parallel with such applications in the future.
 
 In this scenario, we deploy \num{6} control loops on the experimental setup depicted in \cref{fig:cleave:expsetup}.
-On the remaining \num{4} clients we run the \emph{iperf3}~\cite{iperf3} traffic load generator, each generating \SI[per-mode=symbol]{6.5}{\mega\bit\per\second} of \ac{UDP} uplink traffic.
-This traffic emulates the load generated on the network by \SI{1080}{p} Full-HD video streaming, originating from the clients and terminating in the cloudlet.
+On the remaining \num{4} clients we run the \emph{iperf3}\footnote{iperf3: \url{https://iperf.fr/}} traffic load generator, each generating \SI[per-mode=symbol]{6.5}{\mega\bit\per\second} of uplink \ac{UDP} traffic.
+This emulates the load generated on the network by \SI{1080}{p} Full-HD video streaming, originating from the clients and terminating in the cloudlet.
 We execute this scenario with \ac{NCS} plant sampling rates of \SIlist{20;40;60}{\hertz}.
 Each sampling rate configuration is run for \SI{5}{\minute}, and then repeated \num{30} times to obtain statistical significance.
+Once again, repetitions of this scenario are executed automatically in batches using a simple Python script and \emph{docker-py}.
 
 \subsection{Results}\label{ssec:results}
 
@@ -70,43 +75,62 @@ The results presented below provide valuable insights on both system limits and 
 \subsubsection{Single Plant Scenario}
 
 We begin with a simple analysis of the stability of the Plant, as \ac{CLEAVE} allows for straightforward and repeatable analysis of relevant metrics.  
-For instance, \cref{fig:topple:fraction} shows a visualization of the fraction of plants that toppled in each scenario.
+\Cref{fig:topple:fraction} shows a visualization of the fraction of plants that toppled in each scenario.
 These Plants were identified simply by analyzing the emulation data --- instances whose pendulum angles reached values above a certain value\footnote{This value will depend on the parametrization of the controller, and in this case corresponds to \SI{20}{\degree}, or \SI{0.35}{\radian}.} were marked as ``toppled''.
+
+Next, we showcase \ac{CLEAVE}'s ability to obtain network performance data from the experiments.
+\Cref{fig:single:network} shows average latency due to network and processing (excluding synthetic delays) for both single-loop scenarios, and packet losses for the networked single-loop scenario\footnote{Packet losses in the local scenario were, of course, \num{0}.}.
+
+From these results we can already infer interesting consequences for \ac{NCS} deployments on the edge.
+For instance, it is clear from \cref{fig:topple:fraction} that network delays can, to a certain extent, be compensated for by increasing the sampling rate of the system.
+A corollary of this is that, conversely, at lower network latencies \acp{NCS} are able to stabilize at lower sampling rates.
+Adaptive sampling might thus be a straightforward method for optimizing \ac{NCS} resource utilization and energy consumption at the edge.
 
 \begin{figure}
     \centering
-    \includegraphics[width=.8\columnwidth]{topple_fraction.png}
+    \includegraphics[width=.8\columnwidth]{single_loop_toppled}
     \caption{Fraction of plants that toppled, per experimental setup.}%
     \label{fig:topple:fraction}
 \end{figure}
 
-\Ac{CLEAVE} also allows for more fine-grained analysis of stability.
-\Cref{fig:topple:rms} shows the \ac{RMS} of the angles for each setup, averaged over all repetitions of each experiment.
-This figure shows an intuitive but important result --- less stable setups show higher amplitude in the oscillations of their penduli.
-
 \begin{figure}
     \centering
-    \includegraphics[width=.8\columnwidth]{angle_rms.png}
-    \caption{\Ac{RMS} of the pendulum angles averaged over all runs for each scenario.
+    \begin{subfigure}[h]{\columnwidth}
+        \centering
+        \includegraphics[width=.8\columnwidth]{single_loop_rtts}
+        \caption{}\label{fig:single:rtt}
+    \end{subfigure}\\%
+    \begin{subfigure}[h]{\columnwidth}
+        \centering
+        \includegraphics[width=.8\columnwidth]{single_loop_drop_frac}
+        \caption{}\label{fig:single:drop}
+    \end{subfigure}%
+    \caption[caption]{Mean latency due to network and processing (\labelcref{fig:single:rtt}) for both single-loop scenarios, and packet losses (\labelcref{fig:single:drop}) for the single-loop scenario over the WiFi link.
     Error bars indicate \SI{95}{\percent} \acp{CI}.}%
-    \label{fig:topple:rms}
+    % \vspace{2pt}\raggedright{}\small\textsuperscript{a} The systematic offset of approx. \SI{2}{\milli\second} on scenarios with synthetic delay is due to an artifact of our implementation.
+    \label{fig:single:network}
 \end{figure}
-
-Finally, we showcase \ac{CLEAVE}'s ability to obtain network performance data from the experiments.
-\Cref{fig:network} shows average \acp{RTT}s and packet losses per scenario.
-
-\begin{figure}
-    \centering
-    % \includegraphics[width=.8\columnwidth]{angle_rms.png}
-    \caption[caption]{Mean \acp{RTT} and packet losses for each scenario; \acp{RTT} were calculated by subtracting the synthetic delay from the absolute end-to-end latency\textsuperscript{a}. Error bars indicate \SI{95}{\percent} \acp{CI}.}%
-    \small\textsuperscript{a} The systematic offset of \SI{2}{\milli\second} on scenarios with synthetic delay is an artifact of our implementation, and will be fixed in the next release of the framework.
-    \label{fig:network}
-\end{figure}
-
-
-\todo[inline]{Discuss which network results to add.}
 
 \subsubsection{Realistic Scenario}
+
+In the following, we present and briefly discuss the results for the realistic scenario with network resource contention.
+
+% As before, we start with a brief and simple analysis of plant stability.
+\Cref{fig:video:stability} shows plots representing the fraction of repetitions with toppled penduli as well as the \ac{RMS} value of the angle of those penduli that did not topple.
+\Cref{fig:video:network} shows network metrics for the scenario, with plots showing the amount of dropped \ac{UDP} datagrams and the average \acp{RTT}.
+
+These results are interesting in their counter-intuitiveness.
+Conventional wisdom would lead us to think that higher sampling rates are always better for the stability of control systems; however, \cref{fig:video:stability} clearly shows this not to be the case for \ac{NCS} in resource-constrained scenarios.
+\SI{60}{\hertz} was the least stable configuration, with at least one pendulum toppling in around \SI{16}{\percent} of the repetitions, and average pendulum angle \ac{RMS} about \num{3} times that of the \SI{40}{\hertz} scenario.
+\SI{40}{\hertz} was in turn the second worst configuration --- although no penduli toppled in this scenario, average angle \ac{RMS} were double that of the \SI{20}{\hertz} setup.
+
+We can see an explanation for these behaviors in \cref{fig:video:network}.
+Whereas both the \SIlist{20;40}{\hertz} setups show datagram losses well below \SI{5}{\percent}, the \SI{60}{\hertz} scenario shows an average of around \SI{13}{\percent} datagrams lost.
+The differences in \acp{RTT} results are equally dramatic; \acp{RTT} for the \SI{60}{\hertz} scenario were on average approximately \num{3} times those for the \SIlist{20;40}{\hertz} setups (circa \SI{41}{\milli\second} versus \SIrange[range-phrase=--]{13}{15}{\milli\second}).
+
+These results stem from the contention for shared network resources, and hints at important trade-offs system designers will have to take into consideration when designing and developing \acl{NCS} for deployment on the edge.
+The edge is envisioned as \emph{multi-tenant} and \emph{multi-instance}, and thus any edge \ac{NCS} deployment will have to be performed with shared resources in mind.
+\acp{NCS} will have to dynamically adapt to system limits in order to maintain quality-of-control.
 
 \begin{figure}
     \centering
