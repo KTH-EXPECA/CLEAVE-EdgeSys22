@@ -5,7 +5,7 @@ The framework is distributed as \emph{free and open-source} software, and can be
 Our design follows an approach similar to the above-discussed \emph{hardware-in-the-loop} setups, in that we provide a \emph{framework} for the real-time \emph{emulation} of physical control systems which interact with \emph{real} networks.
 This allows for great flexibility when it comes to the components of the control system, as these can easily be switched out in the fully emulated approach, while maintaining the realism of arguably the most complex and limiting component of and edge \acp{NCS}, namely the network itself.
 
-In the following we will explain the approach taken in \ac{CLEAVE} by walking the reader through the steps necessary to deploy an arbitrary \ac{NCS} emulation on top of the framework.
+In the following, we will explain the approach taken in \ac{CLEAVE} by walking the reader through the steps necessary to deploy an arbitrary \ac{NCS} emulation on top of the framework.
 An overview of the structure of such an emulation on \ac{CLEAVE} can be seen in \cref{fig:cleave:ncs:struct}.
 
 \begin{figure*}
@@ -46,7 +46,7 @@ This class provides the base functionality and defines a simple API for the impl
 
 \Cref{item:plant:actuators,item:plant:sensors} are in the same way provided by the user through the extension of the \texttt{Actuator} and \texttt{Sensor} abstract base classes, respectively.
 \texttt{Actuator} objects process the outputs of the Controller and update the values of the \texttt{State} accordingly.
-Conversely \texttt{Sensor} objects sample relevant values from the \texttt{State} object, process them, and finally pass them on to the Controller through the network.
+Conversely, \texttt{Sensor} objects sample relevant values from the \texttt{State} object, process them, and finally pass them on to the Controller through the network.
 
 \subsection{Defining a Controller}
 

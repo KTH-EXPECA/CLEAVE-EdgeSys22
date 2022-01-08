@@ -3,7 +3,7 @@
 \input{tables/hardware.tex}
 
 In this section, we demonstrate the practical utility of \ac{CLEAVE} through a series of experiments on an emulated \ac{NCS} running between a client device and a cloudlet.
-We aim to answer question relating to the ability of our framework to provide relevant, accurate, and repeatable measurements of the performance of \acp{NCS} deployed on edge computing infrastructure.
+We aim to answer questions relating to the ability of our framework to provide relevant, accurate, and repeatable measurements of the performance of \acp{NCS} deployed on edge computing infrastructure.
 
 This section is structured in two parts.
 \Cref{ssec:expsetup} details the experimental setup and describes the experiments performed.
@@ -40,7 +40,7 @@ Additionally, to obtain baseline results without the stochastic effects of the n
     \caption[caption]{
         Stability metrics for the single-loop scenarios.
         \labelcref{fig:single:topple} shows the fraction of plants that toppled, per experimental setup.
-        \labelcref{fig:single:rms} shows the \ac{RMS} value of the angle for all penduli that did not topple in the single loop scenarios.
+        \labelcref{fig:single:rms} shows the \ac{RMS} value of the angle for all pendula that did not topple in the single loop scenarios.
         Error bars indicate \SI{95}{\percent} \acp{CI}.
         }%
     \label{fig:single:stability}
@@ -124,7 +124,7 @@ The results presented below provide valuable insights on both system limits and 
 
 We begin with a simple analysis of the stability of the Plant, as \ac{CLEAVE} allows for straightforward and repeatable collection and posterior processing of relevant metrics.  
 \Cref{fig:single:stability} shows the results relating to the stability of the plants in the single-loop scenarios:
-\cref{fig:single:topple} shows a visualization of the fraction of plants that toppled in each scenario, and \cref{fig:single:rms} shows the average \ac{RMS} amplitude for the penduli angles.
+\cref{fig:single:topple} shows a visualization of the fraction of plants that toppled in each scenario, and \cref{fig:single:rms} shows the average \ac{RMS} amplitude for the pendula angles.
 We identify toppled plants simply by analyzing the emulation data --- instances whose pendulum angles reached values above a certain value\footnote{This value depends on the parametrization of the controller; in this case it corresponds to \SI{0.35}{\radian}.} were marked as ``toppled''.
 
 As expected, higher sampling rates directly correlate to better quality of control (with the exception of the \SIlist{40;60}{\hertz}, \SI{50}{\milli\second} scenarios --- we attribute this to randomness and the relatively short duration of the experiments).
@@ -146,12 +146,12 @@ In the following, we present and briefly discuss the results for the realistic s
 These results are interesting in their counter-intuitiveness.
 Conventional wisdom would lead us to think that higher sampling rates are always better for the stability of control systems; however, \cref{fig:video:toppled,fig:video:rms} clearly shows this not to be the case for \ac{NCS} in resource-constrained scenarios.
 \SI{60}{\hertz} was the least stable configuration, with at least one pendulum toppling in around \SI{16}{\percent} of the repetitions, and average pendulum angle \ac{RMS} about \num{3} times that of the \SI{40}{\hertz} scenario.
-\SI{40}{\hertz} was in turn the second worst configuration --- although no penduli toppled in this scenario, average angle \ac{RMS} were double that of the \SI{20}{\hertz} setup.
+\SI{40}{\hertz} was in turn the second worst configuration --- although no pendula toppled in this scenario, average angle \ac{RMS} were double that of the \SI{20}{\hertz} setup.
 
 We can see an explanation for these behaviors in \cref{fig:video:drop,fig:video:rtt}.
-Whereas both the \SIlist{20;40}{\hertz} setups show datagram losses well below \SI{5}{\percent}, the \SI{60}{\hertz} scenario shows an average of around \SI{13}{\percent} datagrams lost.
+Whereas both the \SIlist{20;40}{\hertz} setups show datagram losses well below \SI{5}{\percent}, the \SI{60}{\hertz} scenario shows an average of around \SI{13}{\percent} of datagrams lost.
 The differences in \acp{RTT} results are equally dramatic; \acp{RTT} for the \SI{60}{\hertz} scenario were on average approximately \num{3} times those for the \SIlist{20;40}{\hertz} setups (circa \SI{41}{\milli\second} versus \SIrange[range-phrase=--]{13}{15}{\milli\second}).
 
 These results stem from the contention for shared network resources, and hints at important trade-offs system designers will have to take into consideration when designing and developing \acl{NCS} for deployment on the edge.
 The edge is envisioned as \emph{multi-tenant} and \emph{multi-instance}, and thus any edge \ac{NCS} deployment will have to be performed with shared resources in mind.
-\acp{NCS} will have to dynamically adapt to system limits in order to maintain quality-of-control.
+\acp{NCS} will have to dynamically adapt to system limits in order to maintain quality of control.
