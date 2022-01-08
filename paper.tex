@@ -355,10 +355,21 @@
   backend=biber
 ]{biblatex}
 \bibliography{bibliography.bib}
+\usepackage{orcidlink}
+
 \usepackage{hyperref}
 \usepackage[capitalize]{cleveref}
 
+% links
+\hypersetup{
+    colorlinks,
+    linkcolor={red!80!black},
+    citecolor={blue!80!black},
+    urlcolor={blue!80!black}
+}
+
 \AtBeginBibliography{\small}
+\newcommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}
 \begin{document}
 
 \title{CLEAVE Paper for CNERT'22}
@@ -368,19 +379,21 @@
 % use a multiple column layout for up to three different
 % affiliations
 \author{
-  \IEEEauthorblockN{Manuel {Olguín Muñoz}}
+  \IEEEauthorblockN{Manuel {Olguín Muñoz}~\orcidlink{0000-0002-3383-2335}\IEEEauthorrefmark{1}, James Gross~\orcidlink{0000-0001-6682-6559}\IEEEauthorrefmark{2}}
   \IEEEauthorblockA{
     School of Electrical Engineering\\and Computer Science\\
     KTH Royal Institute of Technology\\
-    Stockholm, Sweden
+    Stockholm, Sweden\\
+    \IEEEauthorrefmark{1}\email{molguin@kth.se}, \IEEEauthorrefmark{2}\email{jamesgr@kth.se}
   }
-  \and
-  \IEEEauthorblockN{James Gross}
-  \IEEEauthorblockA{
-    School of Electrical Engineering\\and Computer Science\\
-    KTH Royal Institute of Technology\\
-    Stockholm, Sweden
-  }
+  % \and
+  % \IEEEauthorblockN{James Gross~\orcidlink{0000-0001-6682-6559}}
+  % \IEEEauthorblockA{
+  %   School of Electrical Engineering\\and Computer Science\\
+  %   KTH Royal Institute of Technology\\
+  %   Stockholm, Sweden\\
+  %   \email{jamesgr@kth.se}
+  % }
 }
 
 % conference papers do not typically use \thanks and this command
