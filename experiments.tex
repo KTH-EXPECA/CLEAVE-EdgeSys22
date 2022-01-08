@@ -1,9 +1,5 @@
 \section{Experimental validation}\label{sec:experiments}
 
-\todo[inline]{
-    In the numerical part, you can gain a lot of space by reformatting the plots into environments with two or three plots next to each other. In addition, you need to comment more on Fig 4 (the key result for the single-loop baseline). The discussion of Fig 4 should take more space than the discussion of Fig 5.
-}
-
 \input{tables/hardware.tex}
 
 In this section, we demonstrate the practical utility of \ac{CLEAVE} through a series of experiments on an emulated \ac{NCS} running between a client device and a cloudlet.
@@ -14,21 +10,6 @@ This section is structured in two parts.
 \Cref{ssec:results} then presents and discusses the numerical results.
 
 \subsection{Experimental Setup}\label{ssec:expsetup}
-
-The \acl{NCS} employed for these experiments corresponds to an inverted pendulum, chosen for to its relative simplicity as well as prevalence in the field of automatic control as one of the fundamental examples of linear control.
-The physical system (``plant''), represented in \cref{fig:invpend}, is implemented as a real-time discrete-time physical emulation using CLEAVE's API and a 2D physics library\footnote{Pymunk: \url{http://www.pymunk.org/en/latest/}}, updated at a constant \SI{120}{\hertz}.
-For the controller, a proportional-differential strategy is employed, implemented using the framework Controller API and the \emph{NumPy} numeric computation library\footnote{NumPy: \url{https://numpy.org/}}.
-The plant and controller are then packaged into Docker\footnote{Docker Engine: \url{https://www.docker.com/}} containers, for ease of orchestration, deployment, and re-parametrization, as well as to mimic real-world deployment.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=.7\columnwidth]{images/inverted_pendulum.png}
-    \caption{
-        The two-dimensional inverted pendulum system.
-        The cart moves on the X-axis, and the pendulum on top of it swings freely.
-        The objective of the system is to balance the pendulum vertically through the application of horizontal forces on the cart.
-    }\label{fig:invpend}
-\end{figure}
 
 We depict our experimental edge setup in \cref{fig:cleave:expsetup}.
 It consists of \num{10} Raspberry Pi 4B  clients connected wirelessly to an IEEE 802.11n \ac{AP}; connected to the Ethernet backbone of this \ac{AP} is a general-purpose Cloudlet.
@@ -63,7 +44,6 @@ Additionally, to obtain baseline results without the stochastic effects of the n
         Error bars indicate \SI{95}{\percent} \acp{CI}.
         }%
     \label{fig:single:stability}
-    \todo[inline]{More focus on this.}
 \end{figure*}
 
 \begin{figure}
@@ -73,7 +53,6 @@ Additionally, to obtain baseline results without the stochastic effects of the n
         Mean latency due to network and processing for both single-loop scenarios.
         Error bars indicate \SI{95}{\percent} \acp{CI}.
     }\label{fig:single:rtt}
-    \todo[inline]{less focus on this. mention packet drops are all below 0.2 percent}
 \end{figure}
 
 \begin{figure*}[t]
@@ -143,20 +122,21 @@ The results presented below provide valuable insights on both system limits and 
 
 \subsubsection{Single Plant Scenario}
 
-We begin with a simple analysis of the stability of the Plant, as \ac{CLEAVE} allows for straightforward and repeatable analysis of relevant metrics.  
+We begin with a simple analysis of the stability of the Plant, as \ac{CLEAVE} allows for straightforward and repeatable collection and posterior processing of relevant metrics.  
 \Cref{fig:single:stability} shows the results relating to the stability of the plants in the single-loop scenarios:
 \cref{fig:single:topple} shows a visualization of the fraction of plants that toppled in each scenario, and \cref{fig:single:rms} shows the average \ac{RMS} amplitude for the penduli angles.
-
 We identify toppled plants simply by analyzing the emulation data --- instances whose pendulum angles reached values above a certain value\footnote{This value depends on the parametrization of the controller; in this case it corresponds to \SI{0.35}{\radian}.} were marked as ``toppled''.
 
-Next, we showcase \ac{CLEAVE}'s ability to obtain network performance data from the experiments.
-\Cref{fig:single:rtt} shows average latency due to network and processing (excluding synthetic delays) for both single-loop scenarios.
-Packet losses were below \SI{0.2}{\percent} for all parametrizations of the single-loop scenario over the network, and \SI{0}{\percent} for all parametrizations of the local-only setup.
-
-From these results we can already infer interesting consequences for \ac{NCS} deployments on the edge.
+As expected, higher sampling rates directly correlate to better quality of control (with the exception of the \SIlist{40;60}{\hertz}, \SI{50}{\milli\second} scenarios --- we attribute this to randomness and the relatively short duration of the experiments).
+As sampling rates increased, the system was able to reach stability at higher \ac{RTT} latencies.
+These initial results already hint at interesting consequences for \ac{NCS} deployments on the edge.
 For instance, it is clear from \cref{fig:single:stability} that network delays can, to a certain extent, be compensated for by increasing the sampling rate of the system.
 A corollary of this is that, conversely, at lower network latencies \acp{NCS} are able to stabilize at lower sampling rates.
 Adaptive sampling might thus be a straightforward method for optimizing \ac{NCS} resource utilization and energy consumption at the edge.
+
+For completeness, we also showcase \ac{CLEAVE}'s ability to obtain network performance data from the experiments.
+\Cref{fig:single:rtt} shows average latency due to network and processing (excluding synthetic delays) for both single-loop scenarios.
+Packet losses were below \SI{0.2}{\percent} for all parametrizations of the single-loop scenario over the network, and \SI{0}{\percent} for all parametrizations of the local-only setup.
 
 \subsubsection{Realistic Scenario}
 
@@ -165,7 +145,6 @@ In the following, we present and briefly discuss the results for the realistic s
 \Cref{fig:video:results} shows a summary of the results obtained from the realistic scenario.
 These results are interesting in their counter-intuitiveness.
 Conventional wisdom would lead us to think that higher sampling rates are always better for the stability of control systems; however, \cref{fig:video:toppled,fig:video:rms} clearly shows this not to be the case for \ac{NCS} in resource-constrained scenarios.
-
 \SI{60}{\hertz} was the least stable configuration, with at least one pendulum toppling in around \SI{16}{\percent} of the repetitions, and average pendulum angle \ac{RMS} about \num{3} times that of the \SI{40}{\hertz} scenario.
 \SI{40}{\hertz} was in turn the second worst configuration --- although no penduli toppled in this scenario, average angle \ac{RMS} were double that of the \SI{20}{\hertz} setup.
 
