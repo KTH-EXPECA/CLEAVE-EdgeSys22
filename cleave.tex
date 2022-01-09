@@ -5,8 +5,8 @@ The framework is distributed as \emph{free and open-source} software, and can be
 Our design follows an approach similar to the above-discussed \emph{hardware-in-the-loop} setups, in that we provide a \emph{framework} for the real-time \emph{emulation} of physical control systems which interact with \emph{real} networks.
 This allows for great flexibility when it comes to the components of the control system, as these can easily be switched out in the fully emulated approach, while maintaining the realism of arguably the most complex and limiting component of and edge \acp{NCS}, namely the network itself.
 
-In the following, we will explain the approach taken in \ac{CLEAVE} by walking the reader through the steps necessary to deploy an arbitrary \ac{NCS} emulation on top of the framework.
-An overview of the structure of such an emulation on \ac{CLEAVE} can be seen in \cref{fig:cleave:ncs:struct}.
+Below, we will explain the approach taken in \ac{CLEAVE} by walking the reader through the steps necessary to deploy an arbitrary \ac{NCS} emulation.
+An overview of the structure of such a deployment can be seen in \cref{fig:cleave:ncs:struct}.
 
 \begin{figure*}
     \centering
@@ -14,12 +14,10 @@ An overview of the structure of such an emulation on \ac{CLEAVE} can be seen in 
     \caption{
         Structure of an emulated \ac{NCS} on top of CLEAVE.\@
         The State object implements the discrete-time evolution of the Plant.
-        For this purpose, it holds two sets of special variables; Actuated Variables and Sensed Variables.
-        Actuated Variables are updated from the values obtained from the Actuator objects at the beginning of each time step.
-        These are used to perform a time step update in the State, and update the values of the Sensed Variables.
-        The values of the Sensed Variables are then, at the end of each time step, sampled and passed on to the Sensor objects, which in turn process them (for instance, to add noise) and send the processed values to the Controller.
-        The Controller uses these values to calculate the new actuation commands and sends these to the Actuators.
-        Finally, the Actuators process the actuation commands and hold the new values for the Actuated Variables until they are read at the next time step.
+        Actuated Variables are updated from the values obtained from the Actuator objects at the beginning of each time step and are used to update the State before each time-step.
+        Sensed Variables are sampled at the end of each time-step and passed on to the Sensor objects, which process them (e.g. to add noise) and send the processed values to the Controller.
+        Controller calculates actuation values and sends these to the Actuators.
+        Finally, the Actuators process the actuation values and hold the results until they are read at the next time-step.
     }\label{fig:cleave:ncs:struct}
 \end{figure*}
 
@@ -54,7 +52,7 @@ After the Plant has been defined, users need to implement a Controller for it.
 This is once again done by extending an abstract base class, \texttt{Controller}, provided by CLEAVE.\@
 This class defines a single abstract method, \texttt{Controller.process()} which is called by the framework whenever samples are provided by the Plant.
 When invoked, it is passed a mapping of property names to sampled values.
-The framework also expects implementations of this method to return yet another mapping, this time of actuated property names to target values.
+Implementations of this method should return yet another mapping of actuated property names to target values.
 Users are otherwise free to implement any kind of logic or process within extending classes.
 
 \subsection{Configuring and running the emulation}
@@ -72,18 +70,17 @@ The use of Python scripts for configuration allows for a high degree of flexibil
     \includegraphics[width=.7\columnwidth]{images/inverted_pendulum.png}
     \caption{
         The two-dimensional inverted pendulum system.
-        The cart moves on the X-axis, and the pendulum on top of it swings freely.
-        The objective of the system is to balance the pendulum vertically through the application of horizontal forces on the cart.
+        The objective of the system is to balance the vertically free-swinging pendulum by moving the cart.
     }\label{fig:invpend}
 \end{figure}
 
 For the purpose of this work, we have used \ac{CLEAVE} to implement an emulated \emph{inverted pendulum} control loop; see \cref{fig:invpend}.
 We have chosen this system as an initial benchmark for its relative simplicity as well as prevalence in the field of automatic control as one of the fundamental examples of linear control.
-However, we eventually plan to build an open library of emulated control loops to be able to provide more thorough and varied benchmarks.  
+However, we eventually plan to build an open library of emulated control loops.  
 
 The inverted pendulum Plant is implemented as a real-time discrete-time physical emulation using CLEAVE's API and a 2D physics library\footnote{Pymunk: \url{http://www.pymunk.org/en/latest/}}, updated at a constant \SI{120}{\hertz}.
 For the Controller, a proportional-differential strategy is employed, implemented using the framework Controller API and the \emph{NumPy} numeric computation library\footnote{NumPy: \url{https://numpy.org/}}.
-The plant and controller are then packaged into Docker\footnote{Docker Engine: \url{https://www.docker.com/}} containers, for ease of orchestration, deployment, and re-parametrization, as well as to mimic real-world deployment.
+The plant and controller are then packaged into Docker containers, for ease of orchestration, deployment, and re-parametrization, as well as to mimic real-world deployment.
 
 \begin{listing}
     \begin{minted}[linenos=true,
@@ -115,9 +112,9 @@ actuators = [
     \end{minted}
     \caption{
         Example configuration file for a \ac{CLEAVE} Plant, defining the parameters for a single emulation.
-        ``Plant emulation parameters'' define key emulation parameters, such as the emulation discrete-time update rate (the \emph{tick rate}).
-        The Sensors and Actuators are then provided in lists, each Sensor and Actuator attached to a specific property identified by a string.
-        Additionally, Sensors have a sampling rate in Hz which needs to be provided as an integer.
+        % ``Plant emulation parameters'' define key emulation parameters, such as the emulation discrete-time update rate (the \emph{tick rate}).
+        % The Sensors and Actuators are then provided in lists, each Sensor and Actuator attached to a specific property identified by a string.
+        % Additionally, Sensors have a sampling rate in Hz which needs to be provided as an integer.
     }
     \label{lst:config:plant}
 \end{listing}

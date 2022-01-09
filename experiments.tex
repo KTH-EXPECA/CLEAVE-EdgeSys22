@@ -2,8 +2,8 @@
 
 \input{tables/hardware.tex}
 
-In this section, we demonstrate the practical utility of \ac{CLEAVE} through a series of experiments on an emulated \ac{NCS} running between a client device and a cloudlet.
-We aim to answer questions relating to the ability of our framework to provide relevant, accurate, and repeatable measurements of the performance of \acp{NCS} deployed on edge computing infrastructure.
+In this section, we demonstrate the utility of \ac{CLEAVE} through a series of experiments on an emulated \ac{NCS} running on a number of client devices and a cloudlet.
+We aim to answer questions relating to the ability of our framework to provide accurate and repeatable measurements of the performance of \acp{NCS} deployed on edge computing infrastructure.
 
 This section is structured in two parts.
 \Cref{ssec:expsetup} details the experimental setup and describes the experiments performed.
@@ -21,7 +21,10 @@ Additionally, to obtain baseline results without the stochastic effects of the n
 \begin{figure}
     \centering
     \includegraphics[width=.95\columnwidth]{images/CLEAVE_experiment_setup}
-    \caption{Experimental setup. Containerized versions of the core CLEAVE emulation components are deployed inside a Docker Swarm Overlay Network spanning \num{10} Raspberry Pi 4B clients connected to a single Cloudlet over an IEEE 802.11n \ac{AP}.}\label{fig:cleave:expsetup}
+    \caption{
+        The setup used for our experimentation. 
+        % Containerized versions of the core CLEAVE emulation components are deployed inside a Docker Swarm Overlay Network spanning \num{10} Raspberry Pi 4B clients connected to a single Cloudlet over an IEEE 802.11n \ac{AP}.
+    }\label{fig:cleave:expsetup}
 \end{figure}
 
 \begin{figure*}[h]
@@ -89,13 +92,12 @@ Additionally, to obtain baseline results without the stochastic effects of the n
 
 \subsubsection{Single Loop Baseline Scenarios}
 
-We first run a series of single loop scenarios with varying parametrization of the controlled system.
-These scenarios are intended as initial baselines to evaluate the accuracy of the \ac{CLEAVE} framework and showcase its flexibility.
+We first run a series of single loop scenarios with varying parametrization of the \ac{NCS}, intended as initial baselines to evaluate the accuracy of the \ac{CLEAVE} framework and showcase its flexibility.
 
 For these scenarios, we vary:
 \begin{itemize}
     \item the sampling rate of the Plant state, setting it to \SIlist[list-final-separator={, or }]{10;20;40;60}{\hertz};
-    \item the responsiveness of the Controller, by adding fixed delays of  \SIlist[list-final-separator={, or }]{0;25;50}{\milli\second} after the processing of each sample.
+    \item the responsiveness of the Controller, adding fixed delays of \SIlist[list-final-separator={, or }]{0;25;50}{\milli\second} after the processing of each sample.
 \end{itemize}
 
 We repeat each combination of these parameters at least \num{10} times, for both the networked and ``local-only'' setups; experiments with interesting and relevant results are then repeated an additional \num{20} times for better statistical significance in the results.
@@ -125,8 +127,8 @@ The results presented below provide valuable insights on both system limits and 
 
 We begin with a simple analysis of the stability of the Plant, as \ac{CLEAVE} allows for straightforward and repeatable collection and posterior processing of relevant metrics.  
 \cref{fig:single:stability} shows the results relating to the stability of the plants in the single-loop scenarios:
-\cref{fig:single:topple} shows a visualization of the fraction of plants that toppled in each scenario, and \cref{fig:single:rms} shows the average \ac{RMS} amplitude for the pendula angles.
-We identify toppled plants simply by analyzing the emulation data --- instances whose pendulum angles reached values above a certain value\footnote{This value depends on the parametrization of the controller; in this case it corresponds to \SI{0.35}{\radian}.} were marked as ``toppled''.
+\cref{fig:single:topple} shows the fraction of plants that toppled in each scenario, and \cref{fig:single:rms} shows the average \ac{RMS} for the pendula angles.
+Toppled plants were identified simply by analysis of the emulation data; instances whose pendulum angles reached values above a threshold\footnote{This value depends on the parametrization of the controller; in this case it corresponds to \SI{0.35}{\radian}.} were marked as ``toppled''.
 
 As expected, higher sampling rates directly correlate to better quality of control (with the exception of the \SIlist{40;60}{\hertz}, \SI{50}{\milli\second} scenarios --- we attribute this to randomness and the relatively short duration of the experiments).
 As sampling rates increased, the system was able to reach stability at higher \ac{RTT} latencies.
@@ -153,6 +155,6 @@ We can see an explanation for these behaviors in \cref{fig:video:drop,fig:video:
 Whereas both the \SIlist{20;40}{\hertz} setups show datagram losses well below \SI{5}{\percent}, the \SI{60}{\hertz} scenario shows an average of around \SI{13}{\percent} of datagrams lost.
 The differences in \acp{RTT} results are equally dramatic; \acp{RTT} for the \SI{60}{\hertz} scenario were on average approximately \num{3} times those for the \SIlist{20;40}{\hertz} setups (circa \SI{41}{\milli\second} versus \SIrange[range-phrase=--]{13}{15}{\milli\second}).
 
-These results stem from the contention for shared network resources, and hints at important trade-offs system designers will have to take into consideration when designing and developing \acl{NCS} for deployment on the edge.
-The edge is envisioned as \emph{multi-tenant} and \emph{multi-instance}, and thus any edge \ac{NCS} deployment will have to be performed with shared resources in mind.
+These results stem from the contention for network resources, and hints at important trade-offs system designers will have to take into consideration when designing and developing \acl{NCS} for deployment on the edge.
+The edge will be \emph{multi-tenant} and \emph{multi-instance}, and thus any edge \ac{NCS} deployment will have to be designed with shared resources in mind.
 \acp{NCS} will have to dynamically adapt to system limits in order to maintain quality of control.
