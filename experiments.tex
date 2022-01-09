@@ -99,6 +99,7 @@ For these scenarios, we vary:
 \end{itemize}
 
 We repeat each combination of these parameters at least \num{10} times, for both the networked and ``local-only'' setups; experiments with interesting and relevant results are then repeated an additional \num{20} times for better statistical significance in the results.
+\todo[inline]{Explain criteria for repeated experiments? Or just drop this sentence?}
 Each repetition lasts for \SI{5}{\minute}, during which we collect detailed data on both the state of the controlled system as well as on the data sent over the network.
 
 Scenarios are executed automatically in batches using a simple Python script which interacts with Docker through the widely adopted \emph{docker-py}\footnote{Docker SDK for Python: \url{https://docker-py.readthedocs.io/en/stable/}} library.
@@ -123,7 +124,7 @@ The results presented below provide valuable insights on both system limits and 
 \subsubsection{Single Plant Scenario}
 
 We begin with a simple analysis of the stability of the Plant, as \ac{CLEAVE} allows for straightforward and repeatable collection and posterior processing of relevant metrics.  
-\Cref{fig:single:stability} shows the results relating to the stability of the plants in the single-loop scenarios:
+\cref{fig:single:stability} shows the results relating to the stability of the plants in the single-loop scenarios:
 \cref{fig:single:topple} shows a visualization of the fraction of plants that toppled in each scenario, and \cref{fig:single:rms} shows the average \ac{RMS} amplitude for the pendula angles.
 We identify toppled plants simply by analyzing the emulation data --- instances whose pendulum angles reached values above a certain value\footnote{This value depends on the parametrization of the controller; in this case it corresponds to \SI{0.35}{\radian}.} were marked as ``toppled''.
 
@@ -135,14 +136,14 @@ A corollary of this is that, conversely, at lower network latencies \acp{NCS} ar
 Adaptive sampling might thus be a straightforward method for optimizing \ac{NCS} resource utilization and energy consumption at the edge.
 
 For completeness, we also showcase \ac{CLEAVE}'s ability to obtain network performance data from the experiments.
-\Cref{fig:single:rtt} shows average latency due to network and processing (excluding synthetic delays) for both single-loop scenarios.
+\cref{fig:single:rtt} shows average latency due to network and processing (excluding synthetic delays) for both single-loop scenarios.
 Packet losses were below \SI{0.2}{\percent} for all parametrizations of the single-loop scenario over the network, and \SI{0}{\percent} for all parametrizations of the local-only setup.
 
 \subsubsection{Realistic Scenario}
 
 In the following, we present and briefly discuss the results for the realistic scenario with network resource contention.
 
-\Cref{fig:video:results} shows a summary of the results obtained from the realistic scenario.
+\cref{fig:video:results} shows a summary of the results obtained from the realistic scenario.
 These results are interesting in their counter-intuitiveness.
 Conventional wisdom would lead us to think that higher sampling rates are always better for the stability of control systems; however, \cref{fig:video:toppled,fig:video:rms} clearly shows this not to be the case for \ac{NCS} in resource-constrained scenarios.
 \SI{60}{\hertz} was the least stable configuration, with at least one pendulum toppling in around \SI{16}{\percent} of the repetitions, and average pendulum angle \ac{RMS} about \num{3} times that of the \SI{40}{\hertz} scenario.

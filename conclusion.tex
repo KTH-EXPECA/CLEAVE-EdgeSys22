@@ -1,23 +1,20 @@
 \section{Conclusion}\label{sec:conclusion}
 
 The issue of repeatable and scalable benchmarks has been largely glossed over in \ac{NCS} literature; existing research is mostly focused on \emph{theory}, and the small fraction of experimental research studies available tend to implement \emph{ad-hoc} solutions.
-To the best of our knowledge, \textcite{Zoppi2020NCSBench}'s work is the only available framework for \ac{NCS} benchmarking with repeatability and reproducibility in mind.
+To the best of our knowledge, the work by \textcite{Zoppi2020NCSBench} is the only available framework for \ac{NCS} benchmarking focused on repeatability and reproducibility.
 
 In this work, we aim to tackle this issue by presenting a fully software-based framework for repeatable, reproducible, and easily scalable \ac{NCS} benchmarking with a particular focus on edge deployment.
 Our framework, \ac{CLEAVE}, is fully parametrizable and built with industry-standard edge technologies and paradigms in mind.
 We validate the utility of this tool through a series of scenarios, from which we are able to extract relevant metrics relating to the stability of the control system, as well as on the perfomance of the underlying network link.
-We believe \ac{CLEAVE} represents an impor-
-tant step towards enabling inexpensive and low-complexity
-scalable research for real-world deployment of edge-bound \acp{NCS}.
+\todo[inline]{Talk a bit more about results?}
+We believe \ac{CLEAVE} represents an important step towards enabling inexpensive and low-complexity scalable research for real-world deployment of edge-bound \acp{NCS}.
 
-There is still however work to be done.
+There is still, however, work to be done.
 To start with, the current implementation of \ac{CLEAVE} only includes a single plant-controller pair.
 We envision creating an open library of plants and controllers to share with the community.
-
 \ac{CLEAVE}'s integration with industry-standard tools and frameworks such as Docker will be refined.
 At the moment, these interactions are still quite superficial.
 Our goal is to achieve a much tighter integration, for instance by providing the complete toolkit as pre-packaged container images.
-
 Finally, the validity of the results obtained by the framework will have to be verified through more thorough and realistic scenarios than what we have been able to show in this work.
 In particular, we intend to eventually perform large-scale experimentation targetting 5G cellular deployments, as this technology is set to become the backbone of edge networks in the near future.
 
