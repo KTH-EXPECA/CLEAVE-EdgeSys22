@@ -2,8 +2,10 @@
 
 In this section, we present and detail our \ac{CLEAVE} framework for the performance evaluation of \acfp{NCS}, with a particular focus on edge deployments.
 The framework is distributed as \emph{free and open-source} software, and can be found online in the \emph{GitHub} organization of the \emph{KTH ExPECA} research group\footnote{\url{https://github.com/KTH-EXPECA/CLEAVE}}.
-Our design follows an approach similar to the above-discussed \emph{hardware-in-the-loop} setups, in that we provide a \emph{framework} for the real-time \emph{emulation} of physical control systems which interact with \emph{real} networks.
+Our design follows a virtualized emulation approach; we provide a \emph{framework} for the real-time \emph{emulation} of physical control systems which interact with \emph{real} networks.
 This allows for great flexibility when it comes to the components of the control system, as these can easily be switched out in the fully emulated approach, while maintaining the realism of arguably the most complex and limiting component of and edge \acp{NCS}, namely the network itself.
+In other words, \ac{CLEAVE} is a platform with an easy-to-use \ac{API} on which a multitude of \ac{NCS} types can be emulated.
+Our vision is to furthermore provide an open library of \ac{NCS} implementations in the future, this way making the tool even more accessible to the community.
 
 Below, we will explain the approach taken in \ac{CLEAVE} by walking the reader through the steps necessary to deploy an arbitrary \ac{NCS} emulation.
 An overview of the structure of such a deployment can be seen in \cref{fig:cleave:ncs:struct}.
@@ -76,7 +78,7 @@ The use of Python scripts for configuration allows for a high degree of flexibil
 
 For the purpose of this work, we have used \ac{CLEAVE} to implement an emulated \emph{inverted pendulum} control loop; see \cref{fig:invpend}.
 We have chosen this system as an initial benchmark for its relative simplicity as well as prevalence in the field of automatic control as one of the fundamental examples of linear control.
-However, we eventually plan to build an open library of emulated control loops.  
+However, as mentioned above, we eventually plan to build an open library of emulated control loops.  
 
 The inverted pendulum Plant is implemented as a real-time discrete-time physical emulation using CLEAVE's API and a 2D physics library\footnote{Pymunk: \url{http://www.pymunk.org/en/latest/}}, updated at a constant \SI{120}{\hertz}.
 For the Controller, a proportional-differential strategy is employed, implemented using the framework Controller API and the \emph{NumPy} numeric computation library\footnote{NumPy: \url{https://numpy.org/}}.

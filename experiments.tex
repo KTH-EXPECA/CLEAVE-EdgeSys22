@@ -100,8 +100,7 @@ For these scenarios, we vary:
     \item the responsiveness of the Controller, adding fixed delays of \SIlist[list-final-separator={, or }]{0;25;50}{\milli\second} after the processing of each sample.
 \end{itemize}
 
-We repeat each combination of these parameters at least \num{10} times, for both the networked and ``local-only'' setups; experiments with interesting and relevant results are then repeated an additional \num{20} times for better statistical significance in the results.
-\todo[inline]{Explain criteria for repeated experiments? Or just drop this sentence?}
+We repeat each combination of these parameters at least \num{10} times, for both the networked and ``local-only'' setups; experiments with sampling rates \( \geq \) \SI{20}{\hertz} and artificial delays \( \geq \) \SI{25}{\milli\second} where repeated an additional \num{20} times for better statistical significance.
 Each repetition lasts for \SI{5}{\minute}, during which we collect detailed data on both the state of the controlled system as well as on the data sent over the network.
 
 Scenarios are executed automatically in batches using a simple Python script which interacts with Docker through the widely adopted \emph{docker-py}\footnote{Docker SDK for Python: \url{https://docker-py.readthedocs.io/en/stable/}} library.
