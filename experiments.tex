@@ -1,7 +1,5 @@
 \section{Experimental validation}\label{sec:experiments}
 
-\input{tables/hardware.tex}
-
 In this section, we demonstrate the utility of \ac{CLEAVE} through a series of experiments on an emulated \ac{NCS} running on a number of client devices and a cloudlet.
 We aim to answer questions relating to the ability of our framework to provide accurate and repeatable measurements of the performance of \acp{NCS} deployed on edge computing infrastructure.
 
@@ -11,12 +9,14 @@ This section is structured in two parts.
 
 \subsection{Experimental Setup}\label{ssec:expsetup}
 
-We depict our experimental edge setup in \cref{fig:cleave:expsetup}.
+We detail our experimental edge setup in \cref{fig:cleave:expsetup,tab:hardware}.
 It consists of \num{10} Raspberry Pi 4B  clients connected wirelessly to an IEEE 802.11n \ac{AP}; connected to the Ethernet backbone of this \ac{AP} is a general-purpose Cloudlet.
 On top of this physical architecture we configure a Docker Swarm\footnote{Swarm mode overview: \url{https://docs.docker.com/engine/swarm/}} managed centrally from the Cloudlet.
 For each experimental scenario we deploy a number of control loops inside this Swarm, executing plant containers exclusively in the Raspberry Pi clients (up to a single plant per client) and controller containers in the Cloudlet.
 Plants and controllers communicate using the \ac{UDP} over an overlay network which sits on top of and abstracts away the real network configuration.
 Additionally, to obtain baseline results without the stochastic effects of the network, we employ a secondary ``local-only'' setup, in which plants and controllers are executed co-located on the Cloudlet.
+
+\input{tables/hardware.tex}
 
 \begin{figure}
     \centering
@@ -130,7 +130,7 @@ We begin with a simple analysis of the stability of the Plant, as \ac{CLEAVE} al
 Toppled plants were identified simply by analysis of the emulation data; instances whose pendulum angles reached values above a threshold\footnote{This value depends on the parametrization of the controller; in this case it corresponds to \SI{0.35}{\radian}.} were marked as ``toppled''.
 
 As expected, higher sampling rates directly correlate to better quality of control (with the exception of the \SIlist{40;60}{\hertz}, \SI{50}{\milli\second} scenarios --- we attribute this to randomness and the relatively short duration of the experiments).
-As sampling rates increased, the system was able to reach stability at higher \ac{RTT} latencies.
+As sampling rates increased, the system was able to reach stability at higher \acp{RTT}.
 These initial results already hint at interesting consequences for \ac{NCS} deployments on the edge.
 For instance, it is clear from \cref{fig:single:stability} that network delays can, to a certain extent, be compensated for by increasing the sampling rate of the system.
 A corollary of this is that, conversely, at lower network latencies \acp{NCS} are able to stabilize at lower sampling rates.
@@ -154,6 +154,6 @@ We can see an explanation for these behaviors in \cref{fig:video:drop,fig:video:
 Whereas both the \SIlist{20;40}{\hertz} setups show datagram losses well below \SI{5}{\percent}, the \SI{60}{\hertz} scenario shows an average of around \SI{13}{\percent} of datagrams lost.
 The differences in \acp{RTT} results are equally dramatic; \acp{RTT} for the \SI{60}{\hertz} scenario were on average approximately \num{3} times those for the \SIlist{20;40}{\hertz} setups (circa \SI{41}{\milli\second} versus \SIrange[range-phrase=--]{13}{15}{\milli\second}).
 
-These results stem from the contention for network resources, and hints at important trade-offs system designers will have to take into consideration when designing and developing \acl{NCS} for deployment on the edge.
-The edge will be \emph{multi-tenant} and \emph{multi-instance}, and thus any edge \ac{NCS} deployment will have to be designed with shared resources in mind.
-\acp{NCS} will have to dynamically adapt to system limits in order to maintain quality of control.
+These results stem from the contention for network resources, and hints at important trade-offs system designers will have to take into consideration when designing and developing \acp{NCS} for deployment on the edge.
+The edge will be \emph{multi-tenant} and \emph{multi-instance}. 
+\acp{NCS} deployments will have to be designed with shared resources in mind, and given the complexity of these systems, experimental tools like \ac{CLEAVE} will be key for their succesful adoption and massification.

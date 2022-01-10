@@ -34,23 +34,23 @@ This has caused a gap in knowledge pertaining to the reproducibility and compari
 
 \textcite{Zoppi2020NCSBench} made the first (and to the best of our knowledge, the only) attempt at tackling this challenge with their \emph{NCSbench} platform.
 \emph{NCSbench} is an open-source \ac{NCS} benchmarking platform, built on top of the LEGO\textregistered{}\ Mindstorms EV3 Core Set\texttrademark{}\ platform, with stated goals of reproducibility and ease of use.
-It achives this thanks to its low-cost, accessibility, and ease of reconfiguration.
+It achieves this thanks to its low-cost, accessibility, and ease of reconfiguration.
 
 Although \emph{NCSbench}~\cite{Zoppi2020NCSBench} is a relevant and important step towards the reproducibility of \ac{NCS} benchmarks, we believe it still falls short on some aspects.
 In particular, we argue the reliance of the tool on specific hardware for the Plant hampers the potential of the platform.
 The LEGO Mindstorms platform, although accessible and flexible, still fundamentally limits the physical systems that can be benchmarked to the kind of systems that can be physically implemented on it.
 Furthermore, it is \emph{not} scalable, and thus unsuitable for studies of larger, distributed \acp{NCS}.
 
-In this paper, we present the first fully-software-based \ac{NCS} benchmarking framework with scalability and repeatability as its main focus, built with the Edge in mind.
-In the years since the advent of the Edge computing paradigm, more and more variations of it have appeared in literature as the paradigm starts to be adopted by industry.
+In this paper, we present the first fully-software-based framework for scalable and repeatable benchmarking of edge-native \ac{NCS}.
+As the Edge computing paradigm starts to be adopted by industry, more and more variations of it have started to appear in literature.
 ``Near'', ``far'', ``core'', and ``telco'' edge, among others, are all terms which describe variations of the original concept and which are becoming ubiquitous in new research.
-While the core idea of Edge computing is widely accepted as fundamental for pervasive \acp{NCS} in general, understanding the strenghts, and weaknesses of such different edge concepts is of paramount importance.
+While the core idea of Edge computing is widely accepted as fundamental for pervasive \acp{NCS} in general, understanding the strenghts and weaknesses of such different edge concepts is of paramount importance.
 
 Our framework, which we name \ac{CLEAVE}, aims to simplify the repeatable and scalable benchmarking of such systems. 
 It is built on top of the \emph{Python 3.8} language, making it highly extensible and able to harness the hundreds-of-thousands of already existing user-provided libraries and packages.
-Additionally, it is fully compatible with \emph{containerization} technologies such as \emph{Docker}\footnote{Docker Engine: \url{https://www.docker.com/}}, making it suitable for automated deployment and benchmarking on industry-standard cloud and (more importantly) edge setups using container orchestration technologies.
+Additionally, it is compatible with \emph{containerization} technologies such as \emph{Docker}\footnote{Docker Engine: \url{https://www.docker.com/}}, making it suitable for automated deployment and benchmarking on industry-standard cloud and (more importantly) edge setups using container orchestration technologies.
 
 The rest of this paper is structured as follows.
-\Cref{sec:approach} presents the design principles of the framework.
+\cref{sec:approach} presents the design principles of the framework.
 In \cref{sec:experiments}, we present a series of experiments which validate the utility, flexibility, and repeatability of \ac{CLEAVE}.
-Finally,in \cref{sec:conclusion} we conclude this paper and briefly discuss future work.
+Finally, in \cref{sec:conclusion} we conclude this paper and briefly discuss future work.
