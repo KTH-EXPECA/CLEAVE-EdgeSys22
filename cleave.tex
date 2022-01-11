@@ -1,4 +1,4 @@
-\section{Approach}\label{sec:approach}
+\section{The \ac{CLEAVE} framework}\label{sec:approach}
 
 In this section, we present and detail our \ac{CLEAVE} framework for the performance evaluation of \acfp{NCS}, with a particular focus on edge deployments.
 The framework is distributed as \emph{free and open-source} software, and can be found online in the \emph{GitHub} organization of the \emph{KTH ExPECA} research group\footnote{\url{https://github.com/KTH-EXPECA/CLEAVE}}.
@@ -7,68 +7,70 @@ This allows for great flexibility when it comes to the components of the control
 In other words, \ac{CLEAVE} is a platform with an easy-to-use \ac{API} on which a multitude of \ac{NCS} types can be emulated.
 Our vision is furthermore to provide an open library of \ac{NCS} implementations in the future, this way making the tool even more accessible to the community.
 
-Below, we will explain the approach taken in \ac{CLEAVE} by walking the reader through the steps necessary to deploy an arbitrary \ac{NCS} emulation.
-An overview of the structure of such a deployment can be seen in \cref{fig:cleave:ncs:struct}.
+% Below, we will explain the approach taken in \ac{CLEAVE} by walking the reader through the steps necessary to deploy an arbitrary \ac{NCS} emulation.
+% An overview of the structure of such a deployment can be seen in \cref{fig:cleave:ncs:struct}.
 
-\begin{figure*}
-    \centering
-    \includegraphics[width=.8\textwidth]{CLEAVE_NCS_structure}
-    \caption{
-        Structure of an emulated \ac{NCS} in \ac{CLEAVE}.\@
-        The State object implements the discrete-time evolution of the Plant.
-        Actuated Variables are updated from the values obtained from the Actuator objects at the beginning of each time step and are used to update the State before each time-step.
-        Sensed Variables are sampled at the end of each time-step and passed on to the Sensor objects, which process them (e.g. to add noise) and send the processed values to the Controller.
-        Controller calculates actuation values and sends these to the Actuators.
-        Finally, the Actuators process the actuation values and hold the results until they are read at the next time-step.
-    }\label{fig:cleave:ncs:struct}
-\end{figure*}
+\subsection{Design and Implementation}
 
-\subsection{Defining a Plant}
+\cref{fig:cleave:ncs:struct} shows an overview of the conceptual structure and operation of \ac{CLEAVE}.
+The \emph{State} implements the discrete-time evolution of the Plant.
+At the beginning of each time-step, actuated variables in the \emph{State} are updated with values obtained from the \emph{Actuator} objects.
+Conversely, at the end of each time-step, sensed variables are sampled and used to update values associated with \emph{Sensor} objects.
+These values are processed at the \emph{Sensors} (e.g.\ to add noise) before being sent over the network to the \emph{Controller}.
+The \emph{Controller} calculates actuation values and updates the \emph{Actuators} over the network.
+Finally, the \emph{Actuators} process the actuation values and hold the results until they are read at the next time-step.
 
-The first step in developing an \ac{NCS} emulation on top of \ac{CLEAVE} is the definition of a Plant which represents the physical system to be controlled.
-In abstract terms, Plants in \ac{CLEAVE} can be understood to be composed of
+Implementation-wise, \ac{CLEAVE} is built on top of the well-established and stable \emph{Twisted}\footnote{\url{https://twistedmatrix.com}} asynchronous programming and networking framework.
+The aforementioned core components (\emph{State}, \emph{Controller}, \emph{Sensors}, and \emph{Actuators}) are provided as abstract base classes with core functionality that users need to extend for their specific use case and \ac{NCS}.
+On the other hand, the framework handles network communication and metric collection autonomously; users only need to select the desired transport protocol (we do however provide an \ac{API} for extending the available transports).
+
+Below we present a brief overview of the design and implementation of the core components.
+
+\subsubsection{State}
+
+The \emph{State} class implements the discrete-time emulation of the plant side of the \ac{NCS}.
+It is provided as an abstract base class with an abstract method
+\mintinline{python}{advance()} which users must implement.
+This method is called by the framework periodically according to the configured emulation update rate, and should perform a single time-step of the discrete-time emulation.
+Two additional, optionally extensible methods, \mintinline{python}{initialize()} and \mintinline{python}{shutdown()}, are provided in the \emph{State} base class.
+These are provided for users to implement single-fire set-up and tear-down procedures.
+
+The \emph{State} class also provides functionality for the automatic tracking of sensed values and updating of actuated values.
+This is handled through special classes for variables, \emph{SensorVariable} and \emph{ActuatorVariable}, which when instantiated and assigned to an attribute of the \emph{State} allow the framework to track and modify them.
+
+\subsubsection{Controller}
+
+The \emph{Controller} class defines a single abstract method \mintinline{python}{process()}, which takes a mapping of names to values corresponding to the sensed variables of the \emph{State}, and must return a similar mapping corresponding to the actuated variables.
+This method is called by \ac{CLEAVE} in an event-based manner whenever samples are received from the plant side; however, we intend to extend this implementation to time-interval-based approaches eventually as well.
+
+\subsubsection{Sensors}
+
+\emph{Sensors} implement the processing of monitored stated variables before sending them over the network to the \emph{Controller}.
+This base class must be initialized with a property name (corresponding to the name of the monitored \emph{State} attribute) and a sampling rate in \si{\hertz}, and provides an abstract method \mintinline{python}{process_sample()} which must be extended with an implementation of the processing performed on each sample.
+
+\subsubsection{Actuators}
+
+Finally, \emph{Actuators} perform the processing of actuation values obtained over the network from the \emph{Controller}.
+The base class is initialized with a property name corresponding to the name of the actuated \emph{State} attribute, and provides two abstract methods which must be implemented by extending classes:
 \begin{enumerate*}[itemjoin={{; }}, itemjoin*={{; and }}]
-    \item\label{item:plant:state} an emulation of a physical system which is updated in a discrete-time fashion
-    \item\label{item:plant:actuators} procedures to modify or act upon the physical emulation at each time-step
-    \item\label{item:plant:sensors} procedures to sample relevant values from the physical emulation at each time-step
-    \item\label{item:plant:network} procedures to interact with the network and send and receive data from the Controller.
+    \item \mintinline{python}{set_value()}, which is called by the framework whenever a new value for the corresponding actuated attribute is received
+    \item \mintinline{python}{get_actuation()}, which is called on every time-step and must return a value to apply to the actuated attribute.
 \end{enumerate*}
 
-While \cref{item:plant:network} is handled transparently by CLEAVE, by hiding it through layers of abstraction, the rest of the items need to be provided in more explicit ways by the user.
-For \cref{item:plant:state}, the user needs to extend an abstract base class \texttt{State} provided by the framework.
-This class provides the base functionality and defines a simple API for the implementation of discrete-time emulations by
-\begin{enumerate*}[itemjoin={{; }}, itemjoin*={{; and }}]
-    \item automatically tracking variables that can be modified and/or sampled by the framework
-    \item defining a single abstract method \texttt{State.advance()} which is invoked by the framework on each time step of the emulation.
-\end{enumerate*}
-\cref{item:plant:actuators,item:plant:sensors} are in the same way provided by the user through the extension of the \texttt{Actuator} and \texttt{Sensor} abstract base classes, respectively.
-\texttt{Actuator} objects process the outputs of the Controller and update the values of the \texttt{State} accordingly.
-Conversely, \texttt{Sensor} objects sample relevant values from the \texttt{State} object, process them, and finally pass them on to the Controller through the network.
-
-\subsection{Defining a Controller}
-
-After the Plant has been defined, a Controller needs to be implemented for it.
-This is once again done by extending an abstract base class, \texttt{Controller}, provided by CLEAVE.\@
-This class defines a single abstract method, \texttt{Controller.process()} which is called by the framework whenever samples are provided by the Plant.
-When invoked, it is passed a mapping of property names to sampled values.
-Implementations of this method should return yet another mapping of actuated property names to target values.
-Users are otherwise free to implement any kind of logic or process within extending classes.
-
-\subsection{Configuring and running the emulation}
+\subsection{Configuring and Executing \iac{NCS}}
 
 Once the core components for the emulation have been defined and implemented, the emulation needs to be configured to register them with the framework.
-This is done through fully-featured Python scripts which simply define a number of required (and some optional) top-level variables.
-An example of such a configuration file can be seen in \cref{lst:config:plant}.
-These Python configuration files are then passed as arguments to the \texttt{cleave} command line provided by the framework, which sets up and executes the emulation.
-The use of Python scripts for configuration allows for a high degree of flexibility and complexity in the definition of emulation setups.
+This is done through Python scripts which simply define a number of required (and some optional) top-level variables, corresponding to emulation parameters such as the \emph{State}, \emph{Controller}, \emph{Sensor}, and \emph{Actuator} subclasses to use; the emulation update rate; the controller side host and address; data output directories; and so on.
+These Python configuration files are then provided as arguments to the \texttt{cleave} command line provided by the framework.
+\ac{CLEAVE} imports and parses them, and then sets up and executes the emulation.
 
-\subsection{Implemented Control Loops}
+\subsection{Current Implementations}
 
 \begin{figure}
     \centering
     \includegraphics[width=.7\columnwidth]{images/inverted_pendulum.png}
     \caption{
-        The 2d inverted pendulum system, the objective of which is to balance the vertically free-swinging pendulum on the cart.
+        The 2d inverted pendulum system, the goal of which is to balance the vertically free-swinging pendulum by applying horizontal forces on the cart.
     }\label{fig:invpend}
 \end{figure}
 
@@ -76,43 +78,7 @@ For the purpose of this work, we have used \ac{CLEAVE} to implement an emulated 
 We have chosen this system as an initial benchmark for its relative simplicity as well as prevalence in the field of automatic control as one of the fundamental examples of linear control.
 However, as mentioned above, we eventually plan to build an open library of emulated control loops.  
 
-The inverted pendulum Plant is implemented as a real-time discrete-time physical emulation using CLEAVE's API and a 2D physics library\footnote{Pymunk: \url{http://www.pymunk.org/en/latest/}}, updated at a constant \SI{120}{\hertz}.
-For the Controller, a proportional-differential strategy is employed, implemented using the framework Controller API and the \emph{NumPy} numeric computation library\footnote{NumPy: \url{https://numpy.org/}}.
+The inverted pendulum plant \emph{State} is implemented as a real-time discrete-time physical emulation using CLEAVE's API and a 2D physics library\footnote{Pymunk: \url{http://www.pymunk.org/en/latest/}}, updated at a constant \SI{120}{\hertz}.
+\emph{Sensors} for the angle, position, angular velocity, and velocity of the \emph{State}, and an \emph{Actuator} for the horizontal force applied to the cart are implemented as ``perfect'', i.e.\ values are returned as-is, without any added noise.
+For the controller side, a proportional-differential strategy is employed, implemented using the framework \emph{Controller} API and the \emph{NumPy} numeric computation library\footnote{NumPy: \url{https://numpy.org/}}.
 The plant and controller are then packaged into Docker containers, for ease of orchestration, deployment, and re-parametrization, as well as to mimic real-world deployment.
-
-\begin{listing}
-    \begin{minted}[linenos=false,
-        breaklines, 
-        breakafter=d,
-        fontsize=\footnotesize]{Python}
-from cleave.api.plant import SimpleConstantActuator, SimpleSensor
-from cleave.impl.inverted_pendulum import InvPendulumState
-
-# Plant emulation parameters
-tick_rate = 100
-emu_duration = '30m'
-state = InvPendulumState(fail_angle_rad=0.34)
-output_dir = './plant_metrics'
-
-# Sensors to attach to the Plant
-sensors = [
-    SimpleSensor('position', 100),
-    SimpleSensor('speed', 100),
-    SimpleSensor('angle', 100),
-    SimpleSensor('ang_vel', 100),
-]
-
-actuators = [
-    SimpleConstantActuator(
-        initial_value=0,
-        prop_name='force')
-]
-    \end{minted}
-    \caption{
-        Example configuration file for a \ac{CLEAVE} Plant, defining the parameters for a single emulation.
-        % ``Plant emulation parameters'' define key emulation parameters, such as the emulation discrete-time update rate (the \emph{tick rate}).
-        % The Sensors and Actuators are then provided in lists, each Sensor and Actuator attached to a specific property identified by a string.
-        % Additionally, Sensors have a sampling rate in Hz which needs to be provided as an integer.
-    }
-    \label{lst:config:plant}
-\end{listing}
