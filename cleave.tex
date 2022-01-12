@@ -1,11 +1,11 @@
 \section{The \ac{CLEAVE} framework}\label{sec:approach}
 
-In this section, we present and detail our \ac{CLEAVE} framework for the performance evaluation of \acfp{NCS}, with a particular focus on edge deployments.
+In this section, we present and detail our \ac{CLEAVE} framework for the performance evaluation of \aclp{NCS}, with a particular focus on edge deployments.
 The framework is distributed as \emph{free and open-source} software, and can be found online in the \emph{GitHub} organization of the \emph{KTH ExPECA} research group\footnote{\url{https://github.com/KTH-EXPECA/CLEAVE}}.
 Our design follows a virtualized emulation approach; we provide a framework for the real-time \emph{emulation} of physical control systems which interact with \emph{real} networks.
 This allows for great flexibility when it comes to the components of the control system, as these can easily be switched out in the fully emulated approach, while maintaining the realism of the network, arguably the most complex and limiting component of and edge \acp{NCS}.
 In other words, \ac{CLEAVE} is a platform with an easy-to-use \ac{API} on which a multitude of \ac{NCS} types can be emulated.
-Our vision is furthermore to provide an open library of \ac{NCS} implementations in the future, this way making the tool even more accessible to the community.
+Our vision is, furthermore, to provide an open library of \ac{NCS} implementations in the future, this way making the tool even more accessible to the community.
 
 % Below, we will explain the approach taken in \ac{CLEAVE} by walking the reader through the steps necessary to deploy an arbitrary \ac{NCS} emulation.
 % An overview of the structure of such a deployment can be seen in \cref{fig:cleave:ncs:struct}.
@@ -13,7 +13,7 @@ Our vision is furthermore to provide an open library of \ac{NCS} implementations
 \subsection{Design and Implementation}
 
 \cref{fig:cleave:ncs:struct} shows an overview of the conceptual structure and operation of \ac{CLEAVE}.
-The \emph{State} implements the discrete-time evolution of the Plant.
+The \emph{State} implements the discrete-time behavior of the Plant.
 At the beginning of each time-step, actuated variables in the \emph{State} are updated with values obtained from the \emph{Actuator} objects.
 Conversely, at the end of each time-step, sensed variables are sampled and used to update values associated with \emph{Sensor} objects.
 These values are processed at the \emph{Sensors} (e.g.\ to add noise) before being sent over the network to the \emph{Controller}.

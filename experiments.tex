@@ -100,7 +100,7 @@ For these scenarios, we vary:
     \item the responsiveness of the Controller, adding fixed delays of \SIlist[list-final-separator={, or }]{0;25;50}{\milli\second} after the processing of each sample.
 \end{itemize}
 
-We repeat each combination of these parameters at least \num{10} times, for both the networked and ``local-only'' setups; experiments with sampling rates \( \geq \) \SI{20}{\hertz} and artificial delays \( \geq \) \SI{25}{\milli\second} where repeated an additional \num{20} times for better statistical significance.
+We repeat each combination of these parameters at least \num{10} times, for both the networked and ``local-only'' setups; experiments with sampling rates \( \geq \) \SI{20}{\hertz} and artificial delays \( \geq \) \SI{25}{\milli\second} were repeated an additional \num{20} times for better statistical significance.
 Each repetition lasts for \SI{5}{\minute}, during which we collect detailed data on both the state of the controlled system as well as on the data sent over the network.
 
 Scenarios are executed automatically in batches using a simple Python script which interacts with Docker through the widely adopted \emph{docker-py}\footnote{Docker SDK for Python: \url{https://docker-py.readthedocs.io/en/stable/}} library.
@@ -146,7 +146,7 @@ In the following, we present and briefly discuss the results for the realistic s
 
 \cref{fig:video:results} shows a summary of the results obtained from the realistic scenario.
 These results are interesting in their counter-intuitiveness.
-Conventional wisdom would lead us to think that higher sampling rates are always better for the stability of control systems; however, \cref{fig:video:toppled,fig:video:rms} clearly shows this not to be the case for \ac{NCS} in resource-constrained scenarios.
+Conventional wisdom would lead us to think that higher sampling rates are always better for the stability of control systems; however, \cref{fig:video:toppled,fig:video:rms} clearly show this not to be the case for \ac{NCS} in resource-constrained scenarios.
 \SI{60}{\hertz} was the least stable configuration, with at least one pendulum toppling in around \SI{16}{\percent} of the repetitions, and average pendulum angle \ac{RMS} about \num{3} times that of the \SI{40}{\hertz} scenario.
 \SI{40}{\hertz} was in turn the second worst configuration --- although no pendula toppled in this scenario, average angle \ac{RMS} were double that of the \SI{20}{\hertz} setup.
 
@@ -156,4 +156,4 @@ The differences in \acp{RTT} results are equally dramatic; \acp{RTT} for the \SI
 
 These results stem from the contention for network resources, and hints at important trade-offs system designers will have to take into consideration when designing and developing \acp{NCS} for deployment on the edge.
 The edge will be \emph{multi-tenant} and \emph{multi-instance}. 
-\acp{NCS} deployments will have to be designed with shared resources in mind, and given the complexity of these systems, experimental tools like \ac{CLEAVE} will be key for their succesful adoption and massification.
+\ac{NCS} deployments will have to be designed with shared resources in mind, and given the complexity of these systems, experimental tools like \ac{CLEAVE} will be key for their succesful adoption and massification.
