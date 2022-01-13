@@ -403,6 +403,15 @@
 }
 
 \AtBeginBibliography{\small}
+% clear unnecessary bib fields
+\AtEveryBibitem{\clearfield{day}}
+\AtEveryBibitem{\clearfield{isbn}}
+\AtEveryBibitem{\clearfield{url}}
+\AtEveryBibitem{\clearfield{series}}
+\AtEveryBibitem{\clearlist{location}}
+% \AtEveryBibitem{\clearfield{doi}}
+
+
 \newcommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}
 
 \begin{document}

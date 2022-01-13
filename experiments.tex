@@ -32,12 +32,14 @@ Additionally, to obtain baseline results without the stochastic effects of the n
     \begin{subfigure}[t]{.5\textwidth}
         \centering
         \includegraphics[width=.9\textwidth]{single_loop_toppled}
+        % \todo[inline]{Check consistency??}
         \caption{}%
         \label{fig:single:topple}
     \end{subfigure}%
     \begin{subfigure}[t]{.5\textwidth}
         \centering
         \includegraphics[width=.9\textwidth]{single_loop_rms}
+        % \todo[inline]{Mark fully toppled experiments with an X.}
         \caption{}\label{fig:single:rms}
     \end{subfigure}%
     \caption[caption]{
@@ -95,10 +97,10 @@ Additionally, to obtain baseline results without the stochastic effects of the n
 We first run a series of single loop scenarios with varying parametrization of the \ac{NCS}, intended as initial baselines to evaluate the accuracy of the \ac{CLEAVE} framework and showcase its flexibility.
 
 For these scenarios, we vary:
-\begin{itemize}
-    \item the sampling rate of the Plant state, setting it to \SIlist[list-final-separator={, or }]{10;20;40;60}{\hertz};
+\begin{enumerate*}[itemjoin={{; }}, itemjoin*={{; and }}]
+    \item the sampling rate of the Plant state, setting it to \SIlist[list-final-separator={, or }]{10;20;40;60}{\hertz}
     \item the responsiveness of the Controller, adding fixed delays of \SIlist[list-final-separator={, or }]{0;25;50}{\milli\second} after the processing of each sample.
-\end{itemize}
+\end{enumerate*}
 
 We repeat each combination of these parameters at least \num{10} times, for both the networked and ``local-only'' setups; experiments with sampling rates \( \geq \) \SI{20}{\hertz} and artificial delays \( \geq \) \SI{25}{\milli\second} were repeated an additional \num{20} times for better statistical significance.
 Each repetition lasts for \SI{5}{\minute}, during which we collect detailed data on both the state of the controlled system as well as on the data sent over the network.
@@ -133,8 +135,8 @@ As expected, higher sampling rates directly correlate to better quality of contr
 As sampling rates increased, the system was able to reach stability at higher \acp{RTT}.
 These initial results already hint at interesting consequences for \ac{NCS} deployments on the edge.
 For instance, it is clear from \cref{fig:single:stability} that network delays can, to a certain extent, be compensated for by increasing the sampling rate of the system.
-A corollary of this is that, conversely, at lower network latencies \acp{NCS} are able to stabilize at lower sampling rates.
-Adaptive sampling might thus be a straightforward method for optimizing \ac{NCS} resource utilization and energy consumption at the edge.
+A corollary of this is, conversely, that at lower network latencies \acp{NCS} are able to stabilize at lower sampling rates.
+Adaptive sampling might thus be a viable method for optimizing \ac{NCS} resource utilization at the edge.
 
 For completeness, we also showcase \ac{CLEAVE}'s ability to obtain network performance data from the experiments.
 \cref{fig:single:rtt} shows average latency due to network and processing (excluding synthetic delays) for both single-loop scenarios.
@@ -142,18 +144,18 @@ Packet losses were below \SI{0.2}{\percent} for all parametrizations of the sing
 
 \subsubsection{Realistic Scenario}
 
-In the following, we present and briefly discuss the results for the realistic scenario with network resource contention.
-
 \cref{fig:video:results} shows a summary of the results obtained from the realistic scenario.
 These results are interesting in their counter-intuitiveness.
 Conventional wisdom would lead us to think that higher sampling rates are always better for the stability of control systems; however, \cref{fig:video:toppled,fig:video:rms} clearly show this not to be the case for \ac{NCS} in resource-constrained scenarios.
-\SI{60}{\hertz} was the least stable configuration, with at least one pendulum toppling in around \SI{16}{\percent} of the repetitions, and average pendulum angle \ac{RMS} about \num{3} times that of the \SI{40}{\hertz} scenario.
-\SI{40}{\hertz} was in turn the second worst configuration --- although no pendula toppled in this scenario, average angle \ac{RMS} were double that of the \SI{20}{\hertz} setup.
+\SI{60}{\hertz} was the least stable configuration, with at least one pendulum toppling in around \SI{16}{\percent} of the repetitions, and mean pendulum angle \ac{RMS} circa \num{3} times that of the \SI{40}{\hertz} scenario.
+\SI{40}{\hertz} was in turn the second worst configuration --- although it presented no toppled pendula, average angle \ac{RMS} doubled that of the \SI{20}{\hertz} setup.
 
 We can see an explanation for these behaviors in \cref{fig:video:drop,fig:video:rtt}.
-Whereas both the \SIlist{20;40}{\hertz} setups show datagram losses well below \SI{5}{\percent}, the \SI{60}{\hertz} scenario shows an average of around \SI{13}{\percent} of datagrams lost.
-The differences in \acp{RTT} results are equally dramatic; \acp{RTT} for the \SI{60}{\hertz} scenario were on average approximately \num{3} times those for the \SIlist{20;40}{\hertz} setups (circa \SI{41}{\milli\second} versus \SIrange[range-phrase=--]{13}{15}{\milli\second}).
+Whereas both the \SIlist{20;40}{\hertz} setups show losses well below \SI{5}{\percent}, the \SI{60}{\hertz} scenario shows an average of around \SI{13}{\percent} of datagrams lost.
+The differences in \acp{RTT} results are equally telling; \acp{RTT} for the \SI{60}{\hertz} scenario were on average approx.\ \num{3} times those for the \SIlist{20;40}{\hertz} setups.
 
-These results stem from the contention for network resources, and hints at important trade-offs system designers will have to take into consideration when designing and developing \acp{NCS} for deployment on the edge.
+%(circa \SI{41}{\milli\second} versus \SIrange[range-phrase=--]{13}{15}{\milli\second}).
+
+These results stem from the contention for network resources, and hint at important trade-offs system designers will have to take into consideration when designing and developing \acp{NCS} for deployment on the edge.
 The edge will be \emph{multi-tenant} and \emph{multi-instance}. 
 \ac{NCS} deployments will have to be designed with shared resources in mind, and given the complexity of these systems, experimental tools like \ac{CLEAVE} will be key for their succesful adoption and massification.

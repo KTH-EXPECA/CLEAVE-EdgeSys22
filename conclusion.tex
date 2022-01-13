@@ -1,65 +1,17 @@
 \section{Conclusion}\label{sec:conclusion}
 
-The issue of repeatable and scalable benchmarks has been largely glossed over in \ac{NCS} literature; existing research is mostly focused on \emph{theory}, and the small fraction of experimental research studies available tend to implement \emph{ad-hoc} solutions.
+The issue of repeatable and scalable benchmarks has been largely glossed over in \ac{NCS} literature, as existing experimental research studies tend to implement \emph{ad-hoc} solutions.
 To the best of our knowledge, the work by \textcite{Zoppi2020NCSBench} is the only available framework for \ac{NCS} benchmarking focused on repeatability and reproducibility.
 
 In this work, we aim to tackle this issue by presenting a fully software-based framework for repeatable, reproducible, and easily scalable \ac{NCS} benchmarking with a particular focus on edge deployment.
-Our framework, \ac{CLEAVE}, is fully parametrizable, extendable, and built with industry-standard edge technologies and paradigms in mind.
+Our framework, \ac{CLEAVE}, allows for the easy implementation of emulated \acp{NCS} on real networks.
+It is fully parametrizable, extendable, and built with industry-standard edge technologies and paradigms in mind.
 We validate the utility of this tool through a series of scenarios; our results showcase the ability of the framework to extract relevant metrics relating to the stability of the control system, as well as on the perfomance of the underlying network link.
 We believe \ac{CLEAVE} represents an important step towards enabling inexpensive and low-complexity scalable research for real-world deployment of edge-bound \acp{NCS}.
 
 There is still, however, work to be done.
-To start with, the current implementation of \ac{CLEAVE} only includes a single plant-controller pair.
-We envision creating an open library of plants and controllers to share with the community.
-\ac{CLEAVE}'s integration with industry-standard tools and frameworks such as Docker will be refined.
-At the moment, these interactions are still quite superficial.
-Our goal is to achieve a much tighter integration, for instance by providing the complete toolkit as pre-packaged container images.
-Finally, the validity of the results obtained by the framework will have to be verified through more thorough and realistic scenarios than what we have been able to show in this work.
-In particular, we intend to eventually perform large-scale experimentation targetting 5G cellular deployments, as this technology is set to become the backbone of edge networks in the near future.
-
-% Benchmarking human-in-the-loop applications is hard, given
-% their tight interaction with human users who complicate the scaling
-% and repeatability of experiments. In this paper, we have presented
-% a benchmarking suite for this type of applications, called Edge-
-% Droid 1.0, capable of cutting out the need for users in performance
-% evaluations. We achieve this by employing pre-recorded sensory
-% input traces which we play over the network to the real applica-
-% tion backend, employing a parameterized user model to react to
-% feedback. We demonstrate its utility through a series of use case
-% scenarios, from which we are able to extract metrics regarding la-
-% tency both in regards to the application itself and the hardware
-% stack. We believe the EdgeDroid 1.0 suite thus represents an impor-
-% tant rst step towards enabling inexpensive and low-complexity
-% large-scale research on the scaling limits of this type of applications,
-% a requirement for wide adoption of the technology.
-
-
-
-
-% Nonetheless, there is still future work to be done.
-% The user model presented in this paper is only preliminary, and
-% we are currently conducting research in characterizing user behav-
-% ior when interacting with WCA applications in order to present
-% a more complete model in the future. As mentioned in Section 4,
-% in EdgeDroid 1.0, our model is that of a user who does not suer
-% any of the shortcomings of real human users such as annoyance, fa-
-% tigue, frustration, nausea. Rather, EdgeDroid 1.0 models a perfectly
-% stoic user who is like an automaton and responds in a precisely
-% reproducible and deterministic manner to the same system stimu-
-% lus every time. Of course, no real human user is an automaton. In
-% the future, we envision creating many versions of EdgeDroid (i.e.,
-% EdgeDroid 2.0, EdgeDroid 3.0, etc.) that embody more human-like
-% user models that more accurately emulate attributes such as those
-% mentioned above. Experimental validation of these human-like user
-% models via user studies will be an important part of our future work.
-% We are also working on expanding the benchmarking suite to
-% also work rst with other types of Wearable Cognitive Assistance,
-% and later with other categories of human-in-the-loop applications.
-% Other types of WCA we will consider in future iterations of the tool
-% include real-time task-assistance WCA applications (such as the
-% Ping-Pong application described in [7]), which don’t have a linear
-% task model like task-guidance WCA and have tighter latency bounds
-% and context- and information-providing WCA applications, for
-% instance, applications which recognize faces and provide relevant
-% social-media information related to that person. The latter also do
-% not have a linear task model, but present more lax latency bounds.
+The current implementation only includes a single plant-controller pair; we envision creating an open library of \acp{NCS} to share with the community.
+At the moment, the interactions of \ac{CLEAVE} and tools such as Docker are still quite superficial.
+Our goal is to achieve a much tighter integration, e.g.\ by providing the toolkit as pre-packaged container images.
+Finally, the validity of the results obtained by the framework will have to be verified through more thorough, realistic scenarios than what we have been able to show in this work.
+In particular, we intend to perform large-scale experimentation targetting 5G cellular deployments, as this technology is set to become the backbone of edge networks in the near future.

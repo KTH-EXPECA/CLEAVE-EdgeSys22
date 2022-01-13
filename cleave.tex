@@ -1,14 +1,12 @@
 \section{The \ac{CLEAVE} framework}\label{sec:approach}
 
 In this section, we present and detail our \ac{CLEAVE} framework for the performance evaluation of \aclp{NCS}, with a particular focus on edge deployments.
-The framework is distributed as \emph{free and open-source} software, and can be found online in the \emph{GitHub} organization of the \emph{KTH ExPECA} research group\footnote{\url{https://github.com/KTH-EXPECA/CLEAVE}}.
-Our design follows a virtualized emulation approach; we provide a framework for the real-time \emph{emulation} of physical control systems which interact with \emph{real} networks.
-This allows for great flexibility when it comes to the components of the control system, as these can easily be switched out in the fully emulated approach, while maintaining the realism of the network, arguably the most complex and limiting component of and edge \acp{NCS}.
+Our design follows a virtualized emulation approach; we provide a framework for the real-time \emph{emulation} of physical control systems and the easy implementation of softwarized controllers which interact with \emph{real} networks.
 In other words, \ac{CLEAVE} is a platform with an easy-to-use \ac{API} on which a multitude of \ac{NCS} types can be emulated.
-Our vision is, furthermore, to provide an open library of \ac{NCS} implementations in the future, this way making the tool even more accessible to the community.
+This allows for great flexibility, as the core components of the \ac{NCS} can easily be switched out while maintaining the realism of the network, arguably the most complex and limiting component of edge \acp{NCS}.
 
-% Below, we will explain the approach taken in \ac{CLEAVE} by walking the reader through the steps necessary to deploy an arbitrary \ac{NCS} emulation.
-% An overview of the structure of such a deployment can be seen in \cref{fig:cleave:ncs:struct}.
+The framework is distributed as \emph{free and open-source} softwarethrough the \emph{GitHub} organization of the \emph{KTH ExPECA} research group\footnote{\url{https://github.com/KTH-EXPECA/CLEAVE}}.
+Furthermore, we plan to eventually provide an open library of \ac{NCS} implementations, thus making the tool even more accessible to the community.
 
 \subsection{Design and Implementation}
 
@@ -35,8 +33,8 @@ This method is called by the framework periodically according to the configured 
 Two additional, optionally extensible methods, \mintinline{python}{initialize()} and \mintinline{python}{shutdown()}, are provided in the \emph{State} base class.
 These are provided for users to implement single-fire set-up and tear-down procedures.
 
-The \emph{State} class also provides functionality for the automatic tracking of sensed values and updating of actuated values.
-This is handled through special classes for variables, \emph{SensorVariable} and \emph{ActuatorVariable}, which when instantiated and assigned to an attribute of the \emph{State} allow the framework to track and modify them.
+The \emph{State} class also provides functionality for the automatic tracking and updating of sensed and actuated values.
+This is handled through special classes, \emph{SensorVariable} and \emph{ActuatorVariable}, which when instantiated and assigned to an attribute of the \emph{State} allow the framework to track and modify them.
 
 \subsubsection{Controller}
 
@@ -46,7 +44,7 @@ This method is called by \ac{CLEAVE} in an event-based manner whenever samples a
 \subsubsection{Sensors}
 
 \emph{Sensors} implement the processing of monitored stated variables before sending them over the network to the \emph{Controller}.
-This base class must be initialized with a property name (corresponding to the name of the monitored \emph{State} attribute) and a sampling rate in \si{\hertz}, and provides an abstract method \mintinline{python}{process_sample()} which must be extended with an implementation of the processing performed on each sample.
+This base class must be initialized with a property name (corresponding to the monitored \emph{State} attribute) and a sampling rate in \si{\hertz}, and provides an abstract method \mintinline{python}{process_sample()} which must be extended with an implementation of the processing performed on each sample.
 
 \subsubsection{Actuators}
 
@@ -59,7 +57,7 @@ The base class is initialized with a property name corresponding to the name of 
 
 \subsection{Configuring and Executing \iac{NCS}}
 
-Once the core components for the emulation have been defined and implemented, the emulation needs to be configured to register them with the framework.
+Once the core components for the emulation have been defined and implemented, they need to be registered with the framework.
 This is done through Python scripts which simply define a number of required (and some optional) top-level variables, corresponding to emulation parameters such as the \emph{State}, \emph{Controller}, \emph{Sensor}, and \emph{Actuator} subclasses to use; the emulation update rate; the controller side host and address; data output directories; and so on.
 These Python configuration files are then provided as arguments to the \texttt{cleave} command line provided by the framework.
 \ac{CLEAVE} imports and parses them, and then sets up and executes the emulation.
@@ -78,7 +76,7 @@ For the purpose of this work, we have used \ac{CLEAVE} to implement an emulated 
 We have chosen this system as an initial benchmark for its relative simplicity as well as prevalence in the field of automatic control as one of the fundamental examples of linear control.
 However, as mentioned above, we eventually plan to build an open library of emulated control loops.  
 
-The inverted pendulum plant \emph{State} is implemented as a real-time discrete-time physical emulation using CLEAVE's API and a 2D physics library\footnote{Pymunk: \url{http://www.pymunk.org/en/latest/}}, updated at a constant \SI{120}{\hertz}.
+The inverted pendulum plant \emph{State} is implemented as a real-time discrete-time physical emulation using CLEAVE's API and a 2D physics library\footnote{Pymunk: \url{http://www.pymunk.org/en/latest/}}, updated at a constant \SI{120}{\hertz} (this value is configurable; in this case it corresponds to the maximum achievable stable rate on the clients).
 \emph{Sensors} for the angle, position, angular velocity, and velocity of the \emph{State}, and an \emph{Actuator} for the horizontal force applied to the cart are implemented as ``perfect'', i.e.\ values are returned as-is, without any added noise.
-For the controller side, a proportional-differential strategy is employed, implemented using the framework \emph{Controller} API and the \emph{NumPy} numeric computation library\footnote{NumPy: \url{https://numpy.org/}}.
-The plant and controller are then packaged into Docker containers, for ease of orchestration, deployment, and re-parametrization, as well as to mimic real-world deployment.
+For the controller side, a proportional-differential strategy is implemented using the framework \emph{Controller} API and the \emph{NumPy} numeric computation library\footnote{NumPy: \url{https://numpy.org/}}.
+Plant and controller are then packaged into containers, for ease of orchestration and reparametrization, and to mimic real-world deployment.
