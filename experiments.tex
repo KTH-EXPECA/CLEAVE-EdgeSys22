@@ -45,8 +45,8 @@ Additionally, to obtain baseline results without the stochastic effects of the n
     \caption[caption]{
         Stability metrics for the single-loop scenarios.
         \labelcref{fig:single:topple} shows the fraction of plants that toppled, per experimental setup.
-        \labelcref{fig:single:rms} shows the \ac{RMS} value of the angle for all pendula that did not topple in the single loop scenarios.
-        Error bars indicate \SI{95}{\percent} \acp{CI}.
+        \labelcref{fig:single:rms} shows the mean \ac{RMS} value of the angle with respect to the vertical axis in logarithmic scale; the red line indicates \( y = 180 \).
+        Error bars indicate \SI{95}{\percent} \acp{CI} in both plots.
         }%
     \label{fig:single:stability}
 \end{figure*}
@@ -128,7 +128,7 @@ The results presented below provide valuable insights on both system limits and 
 
 We begin with a simple analysis of the stability of the Plant, as \ac{CLEAVE} allows for straightforward and repeatable collection and posterior processing of relevant metrics.  
 \cref{fig:single:stability} shows the results relating to the stability of the plants in the single-loop scenarios:
-\cref{fig:single:topple} shows the fraction of plants that toppled in each scenario, and \cref{fig:single:rms} shows the average \ac{RMS} for the pendula angles.
+\cref{fig:single:topple} shows the fraction of plants that toppled in each scenario, and \cref{fig:single:rms} shows the average \ac{RMS} for the absolute pendula angles.
 Toppled plants were identified simply by analysis of the emulation data; instances whose pendulum angles reached values above a threshold\footnote{This value depends on the parametrization of the controller; in this case it corresponds to \SI{0.35}{\radian}.} were marked as ``toppled''.
 
 As expected, higher sampling rates directly correlate to better quality of control (with the exception of the \SIlist{40;60}{\hertz}, \SI{50}{\milli\second} scenarios --- we attribute this to randomness and the relatively short duration of the experiments).
