@@ -131,9 +131,7 @@ We begin with a simple analysis of the stability of the Plant, as \ac{CLEAVE} al
 \cref{fig:single:topple} shows the fraction of plants that toppled in each scenario, and \cref{fig:single:rms} shows the average \ac{RMS} for the absolute pendula angles.
 Toppled plants were identified simply by analysis of the emulation data; instances whose pendulum angles reached values above a threshold\footnote{This value depends on the parametrization of the controller; in this case it corresponds to \SI{0.35}{\radian}.} were marked as ``toppled''.
 
-As expected, higher sampling rates tend to correlate with better quality of control.
-% (the \SI{40}{\hertz}, \SI{50}{\milli\second} scenario has a slightly inconsistent behavior that we attribute to randomness and the relatively short duration of the experiments).
-At higher sampling rates the system was able to reach stability at higher \acp{RTT}.
+As expected, higher sampling rates tend to correlate with better quality of control; at higher sampling rates the system was able to reach stability at higher \acp{RTT}.
 These initial results already hint at interesting consequences for \ac{NCS} deployments on the edge.
 For instance, it is clear from \cref{fig:single:stability} that network delays can, to a certain extent, be compensated for by increasing the sampling rate of the system.
 A corollary of this is, conversely, that at lower network latencies \acp{NCS} are able to stabilize at lower sampling rates.

@@ -19,7 +19,7 @@ The \emph{Controller} calculates actuation values and updates the \emph{Actuator
 Finally, the \emph{Actuators} process the actuation values and hold the results until they are read at the next time-step.
 
 Implementation-wise, \ac{CLEAVE} is built on top of the well-established and stable \emph{Twisted}\footnote{\url{https://twistedmatrix.com}} asynchronous programming and networking framework.
-The aforementioned core components (\emph{State}, \emph{Controller}, \emph{Sensors}, and \emph{Actuators}) are provided as abstract base classes with core functionality that users need to extend for their specific use case and \ac{NCS}.
+The aforementioned core components (\emph{State}, \emph{Controller}, \emph{Sensors}, and \emph{Actuators}) are provided as abstract base classes with core functionality that users must extend for their specific use cases and \acp{NCS}.
 On the other hand, the framework handles network communication and metric collection autonomously; users only need to select the desired transport protocol (we do however provide an \ac{API} for extending the available transports).
 
 Below we present a brief overview of the design and implementation of the core components.
@@ -58,7 +58,7 @@ The base class is initialized with a property name corresponding to the name of 
 \subsection{Configuring and Executing \iac{NCS}}
 
 Once the core components for the emulation have been defined and implemented, they need to be registered with the framework.
-This is done through Python scripts which simply define a number of required (and some optional) top-level variables, corresponding to emulation parameters such as the \emph{State}, \emph{Controller}, \emph{Sensor}, and \emph{Actuator} subclasses to use; the emulation update rate; the controller side host and address; data output directories; and so on.
+This is done through Python scripts which simply define a number of required (and some optional) top-level variables, corresponding to emulation parameters such as the \emph{State}, \emph{Controller}, \emph{Sensor}, and \emph{Actuator} subclasses to use; the emulation update rate; the controller-side host and address; data output directories; \emph{et cetera}.
 These Python configuration files are then provided as arguments to the \texttt{cleave} command line provided by the framework.
 \ac{CLEAVE} imports and parses them, and then sets up and executes the emulation.
 
