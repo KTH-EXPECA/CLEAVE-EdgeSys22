@@ -1,5 +1,5 @@
 \PassOptionsToPackage{pdftex}{graphicx}
-\documentclass[sigconf,10pt,natbib=false]{acmart}
+\documentclass[sigconf,10pt,natbib=false,nonacm=true]{acmart}
 
 % begin packages
 % ==============
@@ -44,6 +44,7 @@
   \acro{API}{Application Programming Interface}
   \acro{SSF}{Swedish Foundation for Strategic Research}
   \acro{TECoSA}{Trustworthy Edge Computing Systems and Applications}
+  \acro{ABC}{Abstract Base Class}  % TODO: couldn't figure out how to change plural form to "classes"
 \end{acronym}
 
 % references
@@ -83,7 +84,7 @@
 \AtEveryBibitem{\clearfield{series}}
 \AtEveryBibitem{\clearlist{location}}
 
-\title{Scalable and Edge-Native Benchmarking of\\{Networked Control Systems}}
+\title[CLEAVE]{CLEAVE:\@ Scalable and Edge-Native Benchmarking of\\{Networked Control Systems}}
 
 %authorlist
 \author{Manuel {Olguín Muñoz}}
@@ -92,7 +93,7 @@
 \affiliation{%
 \institution{KTH Royal Institute of Technology}%
 % \department[0]{Division of Information Science and Engineering}%
-\department[1]{School of Electrical Engineering and Computer Science}%
+% \department[1]{School of EECS}%
 \city{Stockholm}%
 \country{Sweden}%
 }
@@ -103,7 +104,7 @@
 \affiliation{%
 \institution{KTH Royal Institute of Technology}%
 % \department[0]{Division of Information Science and Engineering}%
-\department[1]{School of Electrical Engineering and Computer Science}%
+% \department[1]{School of EECS}%
 \city{Stockholm}%
 \country{Sweden}%
 }
@@ -114,14 +115,14 @@
 \affiliation{%
 \institution{KTH Royal Institute of Technology}%
 % \department[0]{Division of Information Science and Engineering}%
-\department[1]{School of Electrical Engineering and Computer Science}%
+% \department[1]{School of EECS}%
 \city{Stockholm}%
 \country{Sweden}%
 }
 
 % top matter
-\acmConference[EdgeSys'22]{}{}{}  % TODO
-\settopmatter{printacmref=false, printccs=true, printfolios=true}
+% \acmConference[EdgeSys'22]{}{}{}  % TODO
+\settopmatter{printacmref=false, printccs=false, printfolios=true}
 \setcopyright{none}
 
 \input{abstract.tex}

@@ -9,14 +9,14 @@ This section is structured in two parts.
 
 \subsection{Experimental Setup}\label{ssec:expsetup}
 
-We detail our experimental edge setup in \cref{fig:cleave:expsetup,tab:hardware}.
-It consists of \num{10} Raspberry Pi 4B  clients connected wirelessly to an IEEE 802.11n \ac{AP}; connected to the Ethernet backbone of this \ac{AP} is a general-purpose Cloudlet.
+We detail our experimental edge setup in \cref{fig:cleave:expsetup}.
+It consists of \num{10} Raspberry Pi 4B  clients connected wirelessly to an IEEE 802.11n \ac{AP}; connected to the Ethernet backbone of this \ac{AP} is a general-purpose \verb|x86_64| desktop computer acting as a Cloudlet/Edge server.
 On top of this physical architecture we configure a Docker Swarm\footnote{Swarm mode overview: \url{https://docs.docker.com/engine/swarm/}} managed centrally from the Cloudlet.
 For each experimental scenario we deploy a number of control loops inside this Swarm, executing plant containers exclusively in the Raspberry Pi clients (up to a single plant per client) and controller containers in the Cloudlet.
 Plants and controllers communicate using the \ac{UDP} over an overlay network which sits on top of and abstracts away the real network configuration.
 Additionally, to obtain baseline results without the stochastic effects of the network, we employ a secondary ``local-only'' setup, in which plants and controllers are executed co-located on the Cloudlet.
 
-\input{tables/hardware.tex}
+% \input{tables/hardware.tex}
 
 \begin{figure}
     \centering
@@ -26,71 +26,6 @@ Additionally, to obtain baseline results without the stochastic effects of the n
         % Containerized versions of the core CLEAVE emulation components are deployed inside a Docker Swarm Overlay Network spanning \num{10} Raspberry Pi 4B clients connected to a single Cloudlet over an IEEE 802.11n \ac{AP}.
     }\label{fig:cleave:expsetup}
 \end{figure}
-
-\begin{figure*}[h]
-    \centering
-    \begin{subfigure}[t]{.5\textwidth}
-        \centering
-        \includegraphics[width=.9\textwidth]{single_loop_toppled}
-        % \todo[inline]{Check consistency??}
-        \caption{}%
-        \label{fig:single:topple}
-    \end{subfigure}%
-    \begin{subfigure}[t]{.5\textwidth}
-        \centering
-        \includegraphics[width=.9\textwidth]{single_loop_rms}
-        % \todo[inline]{Mark fully toppled experiments with an X.}
-        \caption{}\label{fig:single:rms}
-    \end{subfigure}%
-    \caption[caption]{
-        Stability metrics for the single-loop scenarios.
-        \labelcref{fig:single:topple} shows the fraction of plants that toppled, per experimental setup.
-        \labelcref{fig:single:rms} shows the mean \ac{RMS} value of the angle with respect to the vertical axis in logarithmic scale; the red line indicates \( y = 180 \).
-        Error bars indicate \SI{95}{\percent} \acp{CI} in both plots.
-        }%
-    \label{fig:single:stability}
-\end{figure*}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=.9\columnwidth]{single_loop_rtts}
-    \caption{
-        Mean latency due to network and processing for both single-loop scenarios.
-        Error bars indicate \SI{95}{\percent} \acp{CI}.
-    }\label{fig:single:rtt}
-\end{figure}
-
-\begin{figure*}[t]
-    \centering
-    \begin{subfigure}[h]{.25\textwidth}
-        \centering
-        \includegraphics[width=.9\textwidth]{video_topple_frac}
-        \caption{}\label{fig:video:toppled}
-    \end{subfigure}%
-    \begin{subfigure}[h]{.25\textwidth}
-        \centering
-        \includegraphics[width=.9\textwidth]{video_angle_rms}
-        \caption{}\label{fig:video:rms}
-    \end{subfigure}%
-    \begin{subfigure}[h]{.25\textwidth}
-        \centering
-        \includegraphics[width=.9\textwidth]{video_drop_frac}
-        \caption{}\label{fig:video:drop}
-    \end{subfigure}%
-    \begin{subfigure}[h]{.25\textwidth}
-        \centering
-        \includegraphics[width=.9\textwidth]{video_rtt}
-        \caption{}\label{fig:video:rtt}
-    \end{subfigure}%
-    \caption{
-        Results for the realistic scenario.
-        \labelcref{fig:video:toppled} shows the fraction of repetitions of each scenario in which \emph{at least} one plant failed to maintain stability and toppled.
-        \labelcref{fig:video:rms} shows the \ac{RMS} for the pendulum angles for each scenario, only considering data from plants that did not topple.
-        \labelcref{fig:video:drop} shows the fraction of \ac{UDP} datagrams dropped, averaged over all plants and repetitions per scenario.
-        \labelcref{fig:video:rtt} shows the measured end-to-end plant-side \ac{RTT}, averaged over all plants and repetitions per scenario.
-        Error bars indicate \SI{95}{\percent} \ac{CI} in all plots.
-    }\label{fig:video:results}
-\end{figure*}
 
 \subsubsection{Single Loop Baseline Scenarios}
 
@@ -126,14 +61,42 @@ The results presented below provide valuable insights on both system limits and 
 
 \subsubsection{Single Plant Scenario}
 
+\begin{figure}[t]
+    \centering
+    \begin{subfigure}[t]{.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{single_loop_toppled}
+        \caption{Fraction of toppled plants.}\label{fig:single:topple}
+    \end{subfigure}\\
+    \begin{subfigure}[t]{.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{single_loop_rms}
+        \caption{Mean angle \acs*{RMS}; red line indicates \( y = 180 \).}\label{fig:single:rms}
+    \end{subfigure}\\
+    \begin{subfigure}[t]{.45\textwidth}
+        \centering
+        \includegraphics[width=.9\columnwidth]{single_loop_rtts}
+        \caption{
+            Mean \acsp*{RTT}.
+        }\label{fig:single:rtt}
+    \end{subfigure}%
+    \caption[caption]{
+        Metrics for the single-loop scenarios.
+        % \labelcref{fig:single:topple} shows the fraction of plants that toppled, per experimental setup.
+        % \labelcref{fig:single:rms} shows the mean \ac{RMS} value of the angle with respect to the vertical axis in logarithmic scale; the red line indicates \( y = 180 \).
+        Error bars indicate \SI{95}{\percent} \acp{CI}.
+        }%
+    \label{fig:single}
+\end{figure}
+
 We begin with a simple analysis of the stability of the Plant, as \ac{CLEAVE} allows for straightforward and repeatable collection and posterior processing of relevant metrics.  
-\cref{fig:single:stability} shows the results relating to the stability of the plants in the single-loop scenarios:
+\cref{fig:single} shows a summary of the results relating to the single-loop scenarios:
 \cref{fig:single:topple} shows the fraction of plants that toppled in each scenario, and \cref{fig:single:rms} shows the average \ac{RMS} for the absolute pendula angles.
-Toppled plants were identified simply by analysis of the emulation data; instances whose pendulum angles reached values above a threshold\footnote{This value depends on the parametrization of the controller; in this case it corresponds to \SI{0.35}{\radian}.} were marked as ``toppled''.
+Toppled plants were identified simply by analysis of the emulation data, indentifying instances whose pendulum angles reached values above a threshold value\footnote{This value depends on the parametrization of the controller; in this case it corresponds to \SI{0.35}{\radian}.}.
 
 As expected, higher sampling rates tend to correlate with better quality of control; at higher sampling rates the system was able to reach stability at higher \acp{RTT}.
 These initial results already hint at interesting consequences for \ac{NCS} deployments on the edge.
-For instance, it is clear from \cref{fig:single:stability} that network delays can, to a certain extent, be compensated for by increasing the sampling rate of the system.
+For instance, it is clear from \cref{fig:single:topple,fig:single:rms} that network delays can, to a certain extent, be compensated for by increasing the sampling rate of the system.
 A corollary of this is, conversely, that at lower network latencies \acp{NCS} are able to stabilize at lower sampling rates.
 Adaptive sampling might thus be a viable method for optimizing \ac{NCS} resource utilization at the edge.
 
@@ -143,7 +106,46 @@ Packet losses were below \SI{0.2}{\percent} for all parametrizations of the sing
 
 \subsubsection{Realistic Scenario}
 
+\begin{figure}[t]
+    \centering
+    \begin{subfigure}[h]{.22\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{video_topple_frac}
+        \caption{Toppled plants.}\label{fig:video:toppled}
+    \end{subfigure}%
+    \hfill%
+    \begin{subfigure}[h]{.22\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{video_angle_rms}
+        \caption{Angle \ac{RMS}.}\label{fig:video:rms}
+    \end{subfigure}\\
+    \begin{subfigure}[h]{.22\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{video_drop_frac}
+        \caption{Packet losses.}\label{fig:video:drop}
+    \end{subfigure}%
+    \hfill%
+    \begin{subfigure}[h]{.22\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{video_rtt}
+        \caption{\acsp{RTT}.}\label{fig:video:rtt}
+    \end{subfigure}%
+    \caption{
+        Results for the realistic scenario.
+        % \labelcref{fig:video:toppled} shows the fraction of repetitions of each scenario in which \emph{at least} one plant failed to maintain stability and toppled.
+        % \labelcref{fig:video:rms} shows the \ac{RMS} for the pendulum angles for each scenario, only considering data from plants that did not topple.
+        % \labelcref{fig:video:drop} shows the fraction of \ac{UDP} datagrams dropped, averaged over all plants and repetitions per scenario.
+        % \labelcref{fig:video:rtt} shows the measured end-to-end plant-side \ac{RTT}, averaged over all plants and repetitions per scenario.
+        Error bars indicate \SI{95}{\percent} \acp{CI} in all plots.
+    }\label{fig:video:results}
+\end{figure}
+
 \cref{fig:video:results} shows a summary of the results obtained from the realistic scenario.
+\cref{fig:video:toppled} shows the fraction of repetitions of each scenario in which \emph{at least} one plant failed to maintain stability and toppled.
+\cref{fig:video:rms} shows the \ac{RMS} for the pendulum angles for each scenario, only considering data from plants that did not topple.
+\cref{fig:video:drop} shows the fraction of \ac{UDP} datagrams dropped, averaged over all plants and repetitions per scenario.
+\cref{fig:video:rtt} shows the measured end-to-end plant-side \ac{RTT}, averaged over all plants and repetitions per scenario.
+
 These results are interesting in their counter-intuitiveness.
 Conventional wisdom would lead us to think that higher sampling rates are always better for the stability of control systems; however, \cref{fig:video:toppled,fig:video:rms} clearly show this not to be the case for \ac{NCS} in resource-constrained scenarios.
 \SI{60}{\hertz} was the least stable configuration, with at least one pendulum toppling in around \SI{16}{\percent} of the repetitions, and mean pendulum angle \ac{RMS} circa \num{3} times that of the \SI{40}{\hertz} scenario.
