@@ -20,7 +20,9 @@ Finally, the \emph{Actuators} process the actuation values and hold the results 
 
 Implementation-wise, \ac{CLEAVE} is built on top of the well-established and stable \emph{Twisted}\footnote{\url{https://twistedmatrix.com}} asynchronous programming and networking framework.
 The aforementioned core components (\emph{State}, \emph{Controller}, \emph{Sensors}, and \emph{Actuators}) are provided as abstract base classes with core functionality that users must extend for their specific use cases and \acp{NCS}.
-On the other hand, the framework handles network communication and metric collection autonomously; users only need to select the desired transport protocol (we do however provide an \ac{API} for extending the available transports).
+The framework makes no assumptions about the inner workings of the user implementations of these classes other than the interfaces they expose.
+Users are therefore free to implement arbitrarily complex functionality in these components.
+On the other hand, \ac{CLEAVE} handles network communication and metric collection autonomously; users only need to select the desired transport protocol (we do however provide an \ac{API} for extending the available transports).
 
 Below we present a brief overview of the design and implementation of the core components.
 
@@ -61,6 +63,10 @@ Once the core components for the emulation have been defined and implemented, th
 This is done through Python scripts which simply define a number of required (and some optional) top-level variables, corresponding to emulation parameters such as the \emph{State}, \emph{Controller}, \emph{Sensor}, and \emph{Actuator} subclasses to use; the emulation update rate; the controller-side host and address; data output directories; \emph{et cetera}.
 These Python configuration files are then provided as arguments to the \texttt{cleave} command line provided by the framework.
 \ac{CLEAVE} imports and parses them, and then sets up and executes the emulation.
+
+Although the core design of \ac{CLEAVE} follows a single-loop approach, multi-loop scenarios can be easily implemented through the combination of multiple \ac{CLEAVE} instances.
+Furthermore, the framework makes no assumptions about the individual components other than the signatures of methods on the base classes that must be extended and implemented.
+Combined with the plain-Python emulation configuration scripts, this makes development of more complex scenarios merely a matter of implementing the desired functionality within the framework itself.
 
 \subsection{Current Implementations}
 
