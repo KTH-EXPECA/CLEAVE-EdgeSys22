@@ -1,11 +1,10 @@
 \begin{abstract}
-    \acfp*{NCS} have long been a subject of both theoretical and experimental research. 
-    However, the inter-domain nature of such systems has led to a number of task-specific approaches to experimental research, with little work devoted to generalizable, repeatable, and scalable experimentation.
-    The advent of edge computing and the subsequent proliferation of \acsp*{NCS} has quickly led this to become a key issue that needs to be addressed.
+    In this work, we present \acs*{CLEAVE}, a novel, completely software-based framework for repeatable and scalable experimentation in \acfp*{NCS}.
+    While these systems have long been a subject of both theoretical and experimental research, their inter-domain nature  has led to a wide number of task-specific approaches to research, and little work has been devoted to generalizable, repeatable, and scalable experimentation.
+    We aim to tackle this gap in knowledge through an approach based on the emulation of physical plants which communicate over a real network with controllers implemented in software.
+    \acs*{CLEAVE} is furthermore designed and built for the edge, using Python3 and with full compatibility with industry-standard containerization solutions.
+    Although designed for single-loop emulations, the flexibility afforded by the aformentioned characteristics allow our framework to be adaptated to and employed in a multitude of more complex scenarios.
 
-    In this work, we present a novel, completely software-based approach to this challenge.
-    Our core idea rests on a framework for the emulation of physical plants which communicate with controllers implemented in software over a real network.
-    This approach is furthermore designed and built for the edge, using a general-purpose programming language and with full compatibility with industry-standard containerization solutions.
-    We validate this framework using an initial implementation of an inverted pendulum \acs*{NCS}.
+    We validate \acs*{CLEAVE} using an initial implementation of an inverted pendulum \acs*{NCS}.
     Our results showcase the utility of the tool as a repeatable, extensible, and scalable solution to \acs*{NCS} performance evaluation.
 \end{abstract}
