@@ -1,0 +1,5 @@
+# Submission Guidelines
+
+Authors are encouraged to submit papers describing original and unpublished research, not currently under review in other venues. In particular, innovative, early-stage ideas and preliminary results are welcome. Papers must be submitted electronically as PDF files, formatted for 8.5x11-inch paper. The length of the paper must be no more than 6 pages in the ACM double-column format (10-pt font), including references and everything. Authors are suggested to use the ACM Master article template. The reviews will be single blind. The first page must contain an abstract, the name(s) and affiliation(s) of the author(s), as well as the corresponding contact information. Each submission will receive independent, blind peer reviews from the program committee. Accepted papers will be published in the ACM Digital Library. At least one of the authors of every accepted paper must register and present the paper at the workshop. The program committee will elect one paper for the Best Paper Award.
+
+**Submission: EdgeSys@HotCRP*
