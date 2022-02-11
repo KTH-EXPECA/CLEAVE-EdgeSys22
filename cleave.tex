@@ -26,37 +26,34 @@ On the other hand, \ac{CLEAVE} handles network communication and metric collecti
 
 Below we present a brief overview of the design and implementation of the core components.
 
-\begin{description}[style=nextline]
-    \item[State Base Class]
-    
-    \ac{ABC} with an abstract method
-    \mintinline{python}{advance()} which users must extend with the implementation of discrete-time emulation of the plant side of the \ac{NCS}.
-    The \mintinline{python}{advance()} method is called by the framework periodically according to the configured emulation update rate, and should perform a single time-step of the discrete-time emulation.
-    Two additional, optionally extensible methods, \mintinline{python}{initialize()} and \mintinline{python}{shutdown()}, are provided for users to implement single-fire set-up and tear-down procedures.
+%\begin{description}[style=nextline]
+%\begin{itemize}
+\textbf{State Base Class}\\
+\ac{ABC} with an abstract method
+\mintinline{python}{advance()} which users must extend with the implementation of discrete-time emulation of the plant.
+The \mintinline{python}{advance()} method is called by the framework periodically according to the configured emulation update rate, and should perform a single time-step of the discrete-time emulation.
+Two optionally extensible methods, \mintinline{python}{initialize()} and \mintinline{python}{shutdown()} are provided for users to implement single-fire set-up and tear-down procedures.
 
     % This class also provides functionality for the automatic tracking and updating of sensed and actuated values.
     % This is handled through special auxiliary classes, \emph{SensorVariable} and \emph{ActuatorVariable}, which when instantiated and assigned to an attribute of the \emph{State} allow the framework to track and modify them.
 
-    \item[Controller Base Class]
-    
-    Defines a single abstract method \mintinline{python}{process()}, which takes a mapping of names to values corresponding to the sensed variables of the \emph{State}, and must return a similar mapping corresponding to the actuated variables.
-    This method is called by \ac{CLEAVE} in an event-based manner whenever samples are received from the plant side; however, we intend to extend this implementation to time-interval-based approaches eventually as well.
+\textbf{Controller Base Class}\\
+Defines a single abstract method \mintinline{python}{process()}, which takes a mapping of names to values corresponding to the sensed variables of the \emph{State}, and must return a similar mapping corresponding to the actuated variables.
+This method is called by \ac{CLEAVE} in an event-based manner whenever samples are received from the plant side; however, we intend to extend this implementation to time-interval-based approaches.
 
-    \item[Sensor Base Class]
-    
-    \emph{Sensors} implement the processing of monitored stated variables before sending them over the network to the \emph{Controller}.
-    This base class must be initialized with a property name (corresponding to the monitored \emph{State} attribute) and a sampling rate in \si{\hertz}, and provides an abstract method \mintinline{python}{process_sample()} which must be extended with an implementation of the processing performed on each sample.
+\textbf{Sensor Base Class}\\
+\emph{Sensors} implement the processing of monitored stated variables before sending them over the network to the \emph{Controller}.
+This base class must be initialized with a property name (corresponding to the monitored \emph{State} attribute) and a sampling rate in \si{\hertz}, and provides an abstract method \mintinline{python}{process_sample()} which must be extended with an implementation of the processing performed on each sample.
 
-    \item[Actuator Base Class] 
-    
-    Finally, \emph{Actuators} perform the processing of actuation values obtained over the network from the \emph{Controller}.
-    The base class is initialized with a property name corresponding to the name of the actuated \emph{State} attribute, and provides two abstract methods which must be implemented by extending classes:
-    \begin{enumerate*}[itemjoin={{; }}, itemjoin*={{; and }}]
-        \item \mintinline{python}{set_value()}, which is called by the framework whenever a new value for the corresponding actuated attribute is received
-        \item \mintinline{python}{get_actuation()}, which is called on every time-step and must return a value to apply to the actuated attribute.
-    \end{enumerate*}
-
-\end{description}
+\textbf{Actuator Base Class}\\
+Finally, \emph{Actuators} perform the processing of actuation values obtained over the network from the \emph{Controller}.
+The base class is initialized with a property name corresponding to the name of the actuated \emph{State} attribute, and provides two abstract methods which must be implemented by extending classes:
+\begin{enumerate*}[itemjoin={{; }}, itemjoin*={{; and }}]
+\item \mintinline{python}{set_value()}, which is called by the framework whenever a new value for the corresponding actuated attribute is received
+\item \mintinline{python}{get_actuation()}, which is called on every time-step and must return a value to apply to the actuated attribute.
+\end{enumerate*}
+%\end{itemize}
+%\end{description}
 
 
 \subsection{Configuring and Executing \iac{NCS}}
@@ -76,7 +73,7 @@ Combined with the plain-Python emulation configuration scripts, this makes devel
     \centering
     \includegraphics[width=.7\columnwidth]{images/inverted_pendulum.png}
     \caption{
-        The 2d inverted pendulum system.
+        The 2D inverted pendulum system.
     }\label{fig:invpend}
 \end{figure}
 
