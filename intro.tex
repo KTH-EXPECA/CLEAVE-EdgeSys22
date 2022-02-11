@@ -40,12 +40,12 @@ Furthermore, existing studies tend to focus on individual aspects and components
 This has caused a gap in knowledge pertaining to the reproducibility and comparison of experimental studies on these systems.
 
 \textcite{Zoppi2020NCSBench} made the first (and to the best of our knowledge, the only) attempt at tackling this challenge in their work.
-In their work, they proposed a platform called NCSBench, to be used for reproducible benchmarking in NCS. 
+In their work, they proposed a platform called NCSBench, to be used for reproducible benchmarking in NCS.\ 
 Their methodology utilizes joint knowledge of control, computation, and communication. 
 In their work various architectural elements and the corresponding delays associated with the NCS are modelled. 
 Multiple experimental parameters and certain observable key performance indicators are defined and utilized in the implementation. 
-This work however utilizes a physical LEGO\textregistered{}\ Mindstorms EV3 Core Set\texttrademark{}\  based plant for the implementation, preventing instantaneous changes in the plant characteristics and their nature, in terms of flexibility. 
-Furthermore, relying on physical objects like an inverted pendulum limits scalability of the experimentation in practise. 
+This work however utilizes a physical LEGO\textregistered{}\ Mindstorms EV3 Core Set\texttrademark{}\  based plant for the implementation, preventing instantaneous changes in plant characteristics and component parametrizations.
+Furthermore, relying on physical objects like an inverted pendulum limits scalability of the experimentation in practice. 
 
 We overcome this issue by proposing a completely virtual plant allowing for unparalleled flexibility in changing the plant model and characteristic features of the experiments.
 In this paper, we present the first fully-software-based framework for scalable and repeatable benchmarking of edge-native \ac{NCS}.
