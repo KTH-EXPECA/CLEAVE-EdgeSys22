@@ -40,9 +40,11 @@ Furthermore, existing studies tend to focus on individual aspects and components
 This has caused a gap in knowledge pertaining to the reproducibility and comparison of experimental studies on these systems.
 
 \textcite{Zoppi2020NCSBench} made the first (and to the best of our knowledge, the only) attempt at tackling this challenge in their work.
-Their proposed platform \emph{NCSbench} is an open-source \ac{NCS} benchmarking platform, built utilizing LEGO\textregistered{}\ Mindstorms EV3 Core Set\texttrademark{}\ platform. It is  because of its low-cost and accessibility. Although important for the reproducibility of \ac{NCS} benchmarks, we believe it is still inadequate given the reliance on specific hardware for the Plant which although flexible, limits the benchmarking to only those systems which can be physically implemented.
+Their proposed platform \emph{NCSbench} is an open-source \ac{NCS} benchmarking platform, built utilizing LEGO\textregistered{}\ Mindstorms EV3 Core Set\texttrademark{}\ platform. 
+NCSbench facilitates to some extent reproducible and It is  because of its low-cost and accessibility. 
+Although important for the reproducibility of \ac{NCS} benchmarks, we believe it is still inadequate given the reliance on specific hardware for the Plant which although flexible, limits the benchmarking to only those systems which can be physically implemented.
 It is \emph{not} scalable, and thus unsuitable for distributed \acp{NCS}.
-
+(((( Zoppi \textit{et al.} in \cite{9045199} proposed a platform called NCSBench, to be used for reproducible benchmarking in NCS. Their methodology utilizes joint knowledge of control, computation, and communication. In their work various architectural elements and the corresponding delays associated with the NCS are modelled. Multiple experimental parameters and certain observable Key Performance Indicators (KPIs) are defined and utilized in the implementation. This work however utilizes a physical LEGO \cite{lego} based plant for the implementation, preventing instantaneous changes in the plant characteristics and their nature, in terms of flexibility. We overcome this issue by proposing a completely virtual plant allowing for unparalleled flexibility in changing the plant model and characteristic features of the experiments.)))
 In this paper, we present the first fully-software-based framework for scalable and repeatable benchmarking of edge-native \ac{NCS}.
 As edge computing begins being adopted by industry, more and more variations have begun to appear in literature.
 ``Near'', ``far'', ``core'', and ``telco'' edge describe variations of the original concept and are becoming ubiquitous in new research.
