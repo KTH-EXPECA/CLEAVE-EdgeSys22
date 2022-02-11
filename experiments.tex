@@ -1,22 +1,20 @@
 \section{Use case validation}\label{sec:experiments}
 
-In this section, we demonstrate the utility of \ac{CLEAVE} by walking readers through an example use-case for the tool.
-With this, we aim to answer questions relating to the ability of our framework to provide accurate and repeatable measurements of the performance of \acp{NCS} deployed on edge computing infrastructure.
+In this section, we demonstrate the utility of \ac{CLEAVE} by walking readers through an example use case.
+With this, we aim to showcase the ability of our framework to provide accurate and repeatable measurements of the performance of \acp{NCS} deployed on edge computing infrastructure.
 
 We present the following use case scenario.
 A simple \ac{NCS} consisting of an \emph{inverted pendulum} plant controlled by a \emph{proportional-differential} controller is to be deployed on an Edge server.
 The connection between plant and server is over a WiFi (IEEE 802.11n) link.
-Moreover, there are a number of video-streaming applications running concurrently on this Edge setup.
+Moreover, there are a number of video-streaming applications running concurrently on the Edge setup.
 Video analytics is one of the main proposed use cases for edge computing~\cite{Ananthanarayanan2017Analytics,Yi2017Analytics,Wang2018Analytics}, and thus we foresee edge \ac{NCS} deployments being deployed in parallel with such applications in the future.
 However, before deployment can become a reality, key questions such as: 
 ``what are the baseline requirements of the \ac{NCS}?''; ``what are the achievable best-case end-to-end latencies in the system?''; and
 ``how does the concurrent video-streaming traffic affect \ac{NCS} stability?'' need to be answered.
 
 We attempt to study these questions using the experimental setup in \cref{fig:cleave:expsetup}.
-\ac{CLEAVE} is deployed on a testbed consisting of \num{10} Raspberry Pi 4B  clients connected wirelessly to an IEEE 802.11n \ac{AP}; connected to the Ethernet backbone of this \ac{AP} is a general-purpose \verb|x86_64| desktop computer acting as a Cloudlet/Edge server.
-On top of this physical architecture we configure a Docker Swarm\footnote{Swarm mode overview: \url{https://docs.docker.com/engine/swarm/}} managed centrally from the Cloudlet.
-We deploy varying numbers of control loops inside this Swarm, executing plant containers exclusively in the Raspberry Pi clients and controller containers in the Cloudlet.
-Plants and controllers communicate using the \ac{UDP} over an overlay network which sits on top of and abstracts away the real network configuration.
+\ac{CLEAVE} is deployed on a testbed consisting of \num{10} Raspberry Pi 4B  clients connected wirelessly to an IEEE 802.11n \ac{AP}.
+Connected to the Ethernet backbone of this \ac{AP} is a general-purpose \verb|x86_64| desktop computer acting as a Cloudlet/Edge server.
 
 % \input{tables/hardware.tex}
 
@@ -29,9 +27,9 @@ Plants and controllers communicate using the \ac{UDP} over an overlay network wh
     }\label{fig:cleave:expsetup}
 \end{figure}
 
-The first step in aswering the questions posed above is to evaluate the baseline performance of the control system, both locally and over the network.
-We first configure \ac{CLEAVE} to run a single loop with both plant and controller co-located on the Edge server; next we configure an identical loop to be executed with the plant located on a Raspberry Pi client and the controller on the Edge server.
-For each setup, we execute a series of scenarios varying:
+The first step in our case study is to evaluate the baseline performance of the control system, both locally and over the network.
+We configure \ac{CLEAVE} to run a single loop with both plant and controller co-located on the Edge server, and we also configure a separate setup with an identical loop executed over the wireless link.
+For both of these setups, we execute a series of scenarios varying:
 \begin{enumerate*}[itemjoin={{; }}, itemjoin*={{; and }}]
     \item the sampling rate of the Plant state, setting it to \SIlist[list-final-separator={, or }]{5;10;20;40;60}{\hertz}
     \item the responsiveness of the Controller, adding fixed delays of \SIlist[list-final-separator={, or }]{0;25;50}{\milli\second} after the processing of each sample.
@@ -39,11 +37,11 @@ For each setup, we execute a series of scenarios varying:
 
 We run repeated executions of each combination of these parameters at least \num{10} times, for both the networked and ``local-only'' setups.
 Each execution lasts for \SI{5}{\minute}, during which we collect detailed data on both the state of the controlled system as well as on the data sent over the network.
-After the initial \num{10} runs, we identify that setups with sampling rates of \SIlist{5;10}{\hertz} were consistently too unstable to consider, and discard them from further analyses.
-For all other setups, we further note that setups with no additional delay are always stable and thus decided to also discard them from further analyses.
-Remaining setups, i.e.\ sampling rates \( \geq \) \SI{20}{\hertz} and artificial delays \( \geq \) \SI{25}{\milli\second}, are then repeated an additional \num{20} times for better statistical significance.
+After the initial \num{10} runs, we identify that setups with sampling rates of \SIlist{5;10}{\hertz} were consistently too unstable to consider, and disregard them in further analyses.
+We further note that setups with \SI{0}{\milli\second} additional delay are always stable and thus also disregard them.
+Remaining setups, i.e.\ sampling rates \( \geq \) \SI{20}{\hertz} and artificial delays \( \geq \) \SI{25}{\milli\second}, are repeated an additional \num{20} times for better statistical significance.
 
-This repeated experimentation and data collection while ``zooming in'' on particular setups is facilitated by \ac{CLEAVE}s design.
+This repeated experimentation and data collection while ``zooming in'' on particular setups is facilitated by \ac{CLEAVE}'s design.
 Scenarios are executed automatically in batches using a simple Python script which interacts with Docker through the widely adopted \emph{docker-py}\footnote{Docker SDK for Python: \url{https://docker-py.readthedocs.io/en/stable/}} library.
 This is \ac{CLEAVE}'s first advantage over existing frameworks; it is designed with cloud and edge technology and paradigms in mind, making integration with existing systems convenient.
 
@@ -86,11 +84,11 @@ For instance, it is clear from \cref{fig:single:topple,fig:single:rms} that netw
 A corollary of this is, conversely, that at lower network latencies \acp{NCS} are able to stabilize at lower sampling rates.
 Adaptive sampling might thus be a viable method for optimizing resource utilization.
 
-Now that we have established baselines for single loops in the use case scenario, we can proceed to studying the interaction between the \acp{NCS} and the video-streaming applications.
+Once baselines for single loops in the use case scenario have been established, we can proceed to studying the interaction between the \acp{NCS} and the video-streaming applications.
 We deploy \num{6} control loops on the experimental setup depicted in \cref{fig:cleave:expsetup}.
 On the remaining \num{4} clients we run the \emph{iperf3}\footnote{iperf3: \url{https://iperf.fr/}} traffic load generator, each generating \SI[per-mode=symbol]{6.5}{\mega\bit\per\second} of uplink \ac{UDP} traffic.
 This emulates the load generated on the network by \SI{1080}{p} Full-HD video streaming, originating from the clients and terminating in the cloudlet.
-Based on the baseline results obtained beforehand, we execute setups with \ac{NCS} plant sampling rates of \SIlist{20;40;60}{\hertz}.
+Based on the baseline results, we execute setups with \ac{NCS} plant sampling rates of \SIlist{20;40;60}{\hertz}.
 Each sampling rate configuration is run for \SI{5}{\minute}, and then repeated \num{30} times to obtain statistical significance.
 Once again, repetitions of this scenario are executed automatically in batches using a simple Python script and \emph{docker-py}.
 
@@ -128,11 +126,11 @@ Once again, repetitions of this scenario are executed automatically in batches u
     }\label{fig:video:results}
 \end{figure}
 
-\cref{fig:video:results} shows a summary of the results obtained from the realistic scenario.
-\cref{fig:video:toppled} shows the fraction of repetitions of each scenario in which \emph{at least} one plant failed to maintain stability and toppled.
-\cref{fig:video:rms} shows the \ac{RMS} for the pendulum angles for each scenario, only considering data from plants that did not topple.
-\cref{fig:video:drop} shows the fraction of \ac{UDP} datagrams dropped, averaged over all plants and repetitions per scenario.
-\cref{fig:video:rtt} shows the measured end-to-end plant-side \ac{RTT}, averaged over all plants and repetitions per scenario.
+\cref{fig:video:results} shows a summary of the results obtained.
+\cref{fig:video:toppled} shows the fraction of repetitions of each setup in which \emph{at least} one plant failed to maintain stability and toppled.
+\cref{fig:video:rms} shows the \ac{RMS} for the pendulum angles for each setup, only considering data from plants that did not topple.
+\cref{fig:video:drop} shows the fraction of \ac{UDP} datagrams dropped, averaged over all plants and repetitions per setup.
+\cref{fig:video:rtt} shows the measured end-to-end plant-side \ac{RTT}, averaged over all plants and repetitions per setup.
 
 These results are interesting in their counter-intuitiveness.
 Conventional wisdom would lead us to think that higher sampling rates are always better for the stability of control systems; however, \cref{fig:video:toppled,fig:video:rms} clearly show this not to be the case for \ac{NCS} in resource-constrained scenarios.
@@ -141,7 +139,7 @@ Conventional wisdom would lead us to think that higher sampling rates are always
 
 We can see an explanation for these behaviors in \cref{fig:video:drop,fig:video:rtt}.
 Whereas both the \SIlist{20;40}{\hertz} setups show losses well below \SI{5}{\percent}, the \SI{60}{\hertz} scenario shows an average of around \SI{13}{\percent} of datagrams lost.
-The differences in \acp{RTT} results are equally telling; \acp{RTT} for the \SI{60}{\hertz} scenario were on average approx.\ \num{3} times those for the \SIlist{20;40}{\hertz} setups.
+The differences in \acp{RTT} results are equally telling; \acp{RTT} for the \SI{60}{\hertz} setup were on average approx.\ \num{3} times those for the \SIlist{20;40}{\hertz} setups.
 
 These results stem from the contention for network resources, and hint at important trade-offs system designers will have to take into consideration when designing and developing \acp{NCS} for deployment on the edge.
 The edge will be \emph{multi-tenant} and \emph{multi-instance}. 
