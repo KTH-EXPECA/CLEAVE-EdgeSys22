@@ -17,16 +17,14 @@ These technologies meet two key requirements of \acp{CPS}: real-time capabilitie
 \acp{NCS}~\cite{Gupta2010NCSOverview}, a type of \ac{CPS} wherein multiple networked actuators and sensors form a part of the same automatic control system will benefit from the adoption of these technologies.
 Depending on the physical system being controlled, \acp{NCS} can have stringent timing and reliability requirements for communication that conventional cloud paradigms and cellular networks can't meet\cite{Wan2020Efficient}.
 
-There are multiple works dedicated to the modelling and performance characterization of \acp{NCS}~\cite{Zhang2013Survey,Zhang2016Survey}, improving NCSs by distributing control functions across networks, facilitating centralized coordination, control, and monitoring.
+\cite{Zhang2016Survey} is dedicated to the modelling and performance characterization of \acp{NCS}, improving NCSs by distributing control functions across networks, facilitating centralized coordination, control, and monitoring.
 
 % Most of the literature concerning \acp{NCS}, follows a theoretical approach, and only a small fraction of it deals with experimental studies.
 A number of works concerning \acp{NCS} deal with experimental studies.
 \acp{NCS} have an inherently inter-domain nature intertwining knowledge from the fields of communications, computing, and control theory in ways that cannot be studied in isolation, leading to various different approaches to such studies.
 One such approach uses setups in which the complete system is built on top of real hardware.
-This approach is employed in the works of  \textcite{Li2014Wireless,Baumann2018LowPower,Cuenca2019UAV}; in all of these, the authors implement their approach on physical testbeds.
-Conversely, other studies choose to instead use completely \emph{simulated} \ac{NCS} setups.
-\textcite{Wu2012NPC,Chen2015synccontrol,Ma2019DynamicSched} are examples of works in which the authors have opted for such completely virtualized approaches.
-These studies often employ combinations of physical and network simulation tools trying to capture the complex dynamics of \acp{NCS}.
+This approach is employed in the works of  \textcite{Baumann2018LowPower,Cuenca2019UAV}; in all of these, the authors implement their approach on physical testbeds.
+Conversely, other studies choose to instead use completely \emph{simulated} \ac{NCS} setups. The authors in \cite{Ma2019DynamicSched} have opted for such a completely virtualized approach. These studies often employ combinations of physical and network simulation tools trying to capture the complex dynamics of \acp{NCS}.
 Finally, some experimental studies instead employ \emph{virtualized} approaches, in which either
 \begin{enumerate*}[itemjoin={{; }}, itemjoin*={{; or }}]
     \item a real network interacts with a simulated or emulated control system~\cite{Wang2020VoltageControl}
