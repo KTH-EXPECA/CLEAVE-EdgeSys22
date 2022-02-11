@@ -16,12 +16,15 @@ These technologies meet two key requirements of \acp{CPS}: real-time capabilitie
 
 \acp{NCS}~\cite{Gupta2010NCSOverview}, a type of \ac{CPS} wherein multiple networked actuators and sensors form a part of the same automatic control system will benefit from the adoption of these technologies.
 Depending on the physical system being controlled, \acp{NCS} can have stringent timing and reliability requirements for communication that conventional cloud paradigms and cellular networks cannot meet~\cite{Wan2020Efficient}.
+This necessitates sophisticated tools for the performance evaluation of future system architectures, as well as novel NCS design paradigm.
 
-Due to their potential advantages for industrial and commercial settings, there exist works~\cite{Zhang2016Survey} dedicated to the modelling and performance characterization of \acp{NCS}, improving NCSs by distributing control functions across networks, facilitating centralized coordination, control, and monitoring.
+%Due to their potential advantages for industrial and commercial settings, there exist works~\cite{Zhang2016Survey} dedicated to the modelling and performance characterization of \acp{NCS}, improving NCSs by distributing control functions across networks, facilitating centralized coordination, control, and monitoring.
 
-% Most of the literature concerning \acp{NCS}, follows a theoretical approach, and only a small fraction of it deals with experimental studies.
-A number of works concerning \acp{NCS} deal with experimental studies.
-\acp{NCS} have an inherently inter-domain nature intertwining knowledge from the fields of communications, computing, and control theory in ways that cannot be studied in isolation, leading to various different approaches to such studies.
+One the one hand, related literature in \acp{NCS} leverages to a large extent theoretical models, at the price of being able to capture networked systems effects only on a coarse level. 
+%follows a theoretical approach, and only a small fraction of it deals with experimental studies.
+On the other, there exist several approaches when considering experimental methodologies. 
+%A number of works concerning \acp{NCS} deal with experimental studies.
+%\acp{NCS} have an inherently inter-domain nature intertwining knowledge from the fields of communications, computing, and control theory in ways that cannot be studied in isolation, leading to various different approaches to such studies.
 One such approach uses setups in which the complete system is built on top of real hardware.
 This approach is employed in the works of  \textcite{Baumann2018LowPower,Cuenca2019UAV}; in all of these, the authors implement their approach on physical testbeds.
 Conversely, other studies choose to instead use completely \emph{simulated} \ac{NCS} setups. The authors in \cite{Ma2019DynamicSched} have opted for such a completely virtualized approach. These studies often employ combinations of physical and network simulation tools trying to capture the complex dynamics of \acp{NCS}.
@@ -37,7 +40,7 @@ Furthermore, existing studies tend to focus on individual aspects and components
 This has caused a gap in knowledge pertaining to the reproducibility and comparison of experimental studies on these systems.
 
 \textcite{Zoppi2020NCSBench} made the first (and to the best of our knowledge, the only) attempt at tackling this challenge in their work.
-Their proposed platform \emph{NCSbench} is an open-source \ac{NCS} benchmarking platform, built utilizing LEGO\textregistered{}\ Mindstorms EV3 Core Set\texttrademark{}\ platform. It is reproducible because of its low-cost and accessibility. Although important for the reproducibility of \ac{NCS} benchmarks, we believe it is still inadequate given the reliance on specific hardware for the Plant which although flexible, limits the benchmarking to only those systems which can be physically implemented.
+Their proposed platform \emph{NCSbench} is an open-source \ac{NCS} benchmarking platform, built utilizing LEGO\textregistered{}\ Mindstorms EV3 Core Set\texttrademark{}\ platform. It is  because of its low-cost and accessibility. Although important for the reproducibility of \ac{NCS} benchmarks, we believe it is still inadequate given the reliance on specific hardware for the Plant which although flexible, limits the benchmarking to only those systems which can be physically implemented.
 It is \emph{not} scalable, and thus unsuitable for distributed \acp{NCS}.
 
 In this paper, we present the first fully-software-based framework for scalable and repeatable benchmarking of edge-native \ac{NCS}.
