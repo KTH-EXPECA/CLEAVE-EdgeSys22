@@ -2,7 +2,7 @@
 
 In this section, we detail our \ac{CLEAVE} framework for the performance evaluation of \aclp{NCS}, with an emphasis on edge deployments.
 Our design follows a virtualized emulation approach; providing a framework for the real-time \emph{emulation} of physical control systems and the easy implementation of softwarized controllers interacting with \emph{real} networks.
-\ac{CLEAVE} is thus, a platform with an easy-to-use \ac{API} on which a multitude of \ac{NCS} types can be emulated.
+\ac{CLEAVE} is thus a platform with an easy-to-use \ac{API} on which a multitude of \ac{NCS} types can be emulated.
 This allows for great flexibility, as the core components of the \ac{NCS} can be switched out while maintaining the realism of the network, the most complex and limiting component of edge \acp{NCS}.
 
 The framework is distributed as \emph{free and open-source} software through the \emph{GitHub} organization of the \emph{KTH ExPECA} research group\footnote{\url{https://github.com/KTH-EXPECA/CLEAVE}}.
@@ -64,7 +64,7 @@ These Python configuration files are then provided as arguments to the \texttt{c
 \ac{CLEAVE} imports and parses them, and then sets up and executes the emulation.
 
 Although the core design of \ac{CLEAVE} follows a single-loop approach, multi-loop scenarios can be easily implemented through the combination of multiple \ac{CLEAVE} instances.
-The framework doesn't assume the individual components other than the signatures of methods on the base classes that must be extended and implemented.
+The framework does not make any assumptions about the individual components other than the signatures of methods on the \acp{ABC} that must be extended and implemented.
 Combined with the Python emulation configuration scripts, this makes development of more complex scenarios merely a matter of implementing the desired functionality within the framework itself.
 
 \subsection{Current Implementations}
@@ -81,7 +81,7 @@ For the purpose of this work, we have used \ac{CLEAVE} to implement an emulated 
 We have chosen this system as an initial benchmark for its relative simplicity as well as prevalence in the field of automatic control as one of the fundamental examples of linear control.
 However, as mentioned above, we eventually plan to build an open library of emulated control loops.  
 
-The inverted pendulum plant \emph{State} is implemented as a real-time discrete-time physical emulation using CLEAVE's API and a 2D physics library\footnote{Pymunk: \url{http://www.pymunk.org/en/latest/}}, updated at a constant \SI{120}{\hertz} (this value is configurable; in this case it corresponds to the maximum achievable stable rate on the clients).
+The inverted pendulum plant \emph{State} is implemented as a real-time discrete-time physical emulation using CLEAVE's API and a 2D physics library\footnote{Pymunk: \url{http://www.pymunk.org/en/latest/}}, updated at a constant \SI{120}{\hertz} (this value is configurable; in this case it corresponds to the maximum achievable stable rate on our available hardware).
 \emph{Sensors} for the angle, position, angular velocity, and velocity of the \emph{State}, and an \emph{Actuator} for the horizontal force applied to the cart are implemented as ``perfect'', i.e.\ values are returned as-is, without any added noise.
 For the controller side, a proportional-differential strategy is implemented using the framework \emph{Controller} API and the \emph{NumPy} numeric computation library\footnote{NumPy: \url{https://numpy.org/}}.
 Plant and controller are then packaged into containers, for ease of orchestration and reparametrization, and to mimic real-world deployment.
