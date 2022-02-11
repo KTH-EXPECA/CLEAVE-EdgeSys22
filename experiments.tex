@@ -65,9 +65,7 @@ This is \ac{CLEAVE}'s first advantage over existing frameworks; it is designed w
         }\label{fig:single:rtt}
     \end{subfigure}%
     \caption[caption]{
-        Metrics for the single-loop scenarios.
-        % \labelcref{fig:single:topple} shows the fraction of plants that toppled, per experimental setup.
-        % \labelcref{fig:single:rms} shows the mean \ac{RMS} value of the angle with respect to the vertical axis in logarithmic scale; the red line indicates \( y = 180 \).
+        Baseline results.
         Error bars indicate \SI{95}{\percent} \acp{CI}.
         }%
     \label{fig:single}
@@ -117,11 +115,7 @@ Once again, repetitions of this scenario are executed automatically in batches u
         \caption{\acsp{RTT}.}\label{fig:video:rtt}
     \end{subfigure}%
     \caption{
-        Results for the realistic scenario.
-        % \labelcref{fig:video:toppled} shows the fraction of repetitions of each scenario in which \emph{at least} one plant failed to maintain stability and toppled.
-        % \labelcref{fig:video:rms} shows the \ac{RMS} for the pendulum angles for each scenario, only considering data from plants that did not topple.
-        % \labelcref{fig:video:drop} shows the fraction of \ac{UDP} datagrams dropped, averaged over all plants and repetitions per scenario.
-        % \labelcref{fig:video:rtt} shows the measured end-to-end plant-side \ac{RTT}, averaged over all plants and repetitions per scenario.
+        Multi-loop, resource-constrained setup results.
         Error bars indicate \SI{95}{\percent} \acp{CI} in all plots.
     }\label{fig:video:results}
 \end{figure}
@@ -132,15 +126,14 @@ Once again, repetitions of this scenario are executed automatically in batches u
 \cref{fig:video:drop} shows the fraction of \ac{UDP} datagrams dropped, averaged over all plants and repetitions per setup.
 \cref{fig:video:rtt} shows the measured end-to-end plant-side \ac{RTT}, averaged over all plants and repetitions per setup.
 
-These results are interesting in their counter-intuitiveness.
-Conventional wisdom would lead us to think that higher sampling rates are always better for the stability of control systems; however, \cref{fig:video:toppled,fig:video:rms} clearly show this not to be the case for \ac{NCS} in resource-constrained scenarios.
+These results are interesting in their counter-intuitiveness compared to the single-loop baseline results.
+While the baselines might lead us to think that higher sampling rates are always better for the stability of control systems, \cref{fig:video:toppled,fig:video:rms} show this not to be the case for \ac{NCS} in resource-constrained scenarios.
 \SI{60}{\hertz} was the least stable configuration, with at least one pendulum toppling in around \SI{16}{\percent} of the repetitions, and mean pendulum angle \ac{RMS} circa \num{3} times that of the \SI{40}{\hertz} scenario.
 \SI{40}{\hertz} was in turn the second worst configuration --- although it presented no toppled pendula, average angle \ac{RMS} doubled that of the \SI{20}{\hertz} setup.
 
-We can see an explanation for these behaviors in \cref{fig:video:drop,fig:video:rtt}.
+\cref{fig:video:drop,fig:video:rtt} explains these behaviors.
 Whereas both the \SIlist{20;40}{\hertz} setups show losses well below \SI{5}{\percent}, the \SI{60}{\hertz} scenario shows an average of around \SI{13}{\percent} of datagrams lost.
 The differences in \acp{RTT} results are equally telling; \acp{RTT} for the \SI{60}{\hertz} setup were on average approx.\ \num{3} times those for the \SIlist{20;40}{\hertz} setups.
-
-These results stem from the contention for network resources, and hint at important trade-offs system designers will have to take into consideration when designing and developing \acp{NCS} for deployment on the edge.
-The edge will be \emph{multi-tenant} and \emph{multi-instance}. 
+These results stem from the contention for network resources, and hint at important trade-offs system designers will have to take into consideration when designing and developing \acp{NCS} for deployment on the Edge.
+The Edge will be \emph{multi-tenant} and \emph{multi-instance}. 
 \ac{NCS} deployments will have to be designed with shared resources in mind, and given the complexity of these systems, experimental tools like \ac{CLEAVE} will be key for their succesful adoption and massification.
