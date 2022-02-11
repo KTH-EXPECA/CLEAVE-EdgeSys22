@@ -1,12 +1,12 @@
 \section{The \ac{CLEAVE} framework}\label{sec:approach}
 
-In this section, we present and detail our \ac{CLEAVE} framework for the performance evaluation of \aclp{NCS}, with a particular focus on edge deployments.
-Our design follows a virtualized emulation approach; we provide a framework for the real-time \emph{emulation} of physical control systems and the easy implementation of softwarized controllers which interact with \emph{real} networks.
-In other words, \ac{CLEAVE} is a platform with an easy-to-use \ac{API} on which a multitude of \ac{NCS} types can be emulated.
-This allows for great flexibility, as the core components of the \ac{NCS} can easily be switched out while maintaining the realism of the network, arguably the most complex and limiting component of edge \acp{NCS}.
+In this section, we detail our \ac{CLEAVE} framework for the performance evaluation of \aclp{NCS}, with an emphasis on edge deployments.
+Our design follows a virtualized emulation approach; providing a framework for the real-time \emph{emulation} of physical control systems and the easy implementation of softwarized controllers interacting with \emph{real} networks.
+\ac{CLEAVE} is thus, a platform with an easy-to-use \ac{API} on which a multitude of \ac{NCS} types can be emulated.
+This allows for great flexibility, as the core components of the \ac{NCS} can be switched out while maintaining the realism of the network, the most complex and limiting component of edge \acp{NCS}.
 
 The framework is distributed as \emph{free and open-source} software through the \emph{GitHub} organization of the \emph{KTH ExPECA} research group\footnote{\url{https://github.com/KTH-EXPECA/CLEAVE}}.
-Furthermore, we plan to eventually provide an open library of \ac{NCS} implementations, thus making the tool even more accessible to the community.
+We also plan to provide a library of \ac{NCS} implementations, making the tool even more accessible.
 
 \subsection{Design and Implementation}
 
@@ -28,29 +28,29 @@ Below we present a brief overview of the design and implementation of the core c
 
 %\begin{description}[style=nextline]
 %\begin{itemize}
-\textbf{State Base Class}\\
+\textbf{State Base Class}:
 \ac{ABC} with an abstract method
-\mintinline{python}{advance()} which users must extend with the implementation of discrete-time emulation of the plant.
+\mintinline{python}{advance()} which must be extended with the implementation of discrete-time emulation of the plant.
 The \mintinline{python}{advance()} method is called by the framework periodically according to the configured emulation update rate, and should perform a single time-step of the discrete-time emulation.
-Two optionally extensible methods, \mintinline{python}{initialize()} and \mintinline{python}{shutdown()} are provided for users to implement single-fire set-up and tear-down procedures.
+Two optionally extensible methods, \mintinline{python}{initialize()} and \mintinline{python}{shutdown()} are provided to implement single-fire set-up and tear-down procedures.
 
     % This class also provides functionality for the automatic tracking and updating of sensed and actuated values.
     % This is handled through special auxiliary classes, \emph{SensorVariable} and \emph{ActuatorVariable}, which when instantiated and assigned to an attribute of the \emph{State} allow the framework to track and modify them.
 
-\textbf{Controller Base Class}\\
-Defines a single abstract method \mintinline{python}{process()}, which takes a mapping of names to values corresponding to the sensed variables of the \emph{State}, and must return a similar mapping corresponding to the actuated variables.
-This method is called by \ac{CLEAVE} in an event-based manner whenever samples are received from the plant side; however, we intend to extend this implementation to time-interval-based approaches.
+\textbf{Controller Base Class}:
+Defines a single abstract method \mintinline{python}{process()}, taking a mapping of names to values corresponding to the sensed variables of the \emph{State}, and returning a similar mapping corresponding to the actuated variables.
+This method is called by \ac{CLEAVE} in an event-based manner whenever samples are received from the plant side; however, we intend to extend this to time-interval-based approaches.
 
-\textbf{Sensor Base Class}\\
-\emph{Sensors} implement the processing of monitored stated variables before sending them over the network to the \emph{Controller}.
+\textbf{Sensor Base Class}:
+Implements processing of monitored stated variables before sending them over the network to the \emph{Controller}.
 This base class must be initialized with a property name (corresponding to the monitored \emph{State} attribute) and a sampling rate in \si{\hertz}, and provides an abstract method \mintinline{python}{process_sample()} which must be extended with an implementation of the processing performed on each sample.
 
-\textbf{Actuator Base Class}\\
-Finally, \emph{Actuators} perform the processing of actuation values obtained over the network from the \emph{Controller}.
-The base class is initialized with a property name corresponding to the name of the actuated \emph{State} attribute, and provides two abstract methods which must be implemented by extending classes:
+\textbf{Actuator Base Class}:
+Performs the processing of actuation values obtained over the network from the \emph{Controller}.
+It is initialized with a property name corresponding to the name of the actuated \emph{State} attribute, and provides two abstract methods which must be implemented by extending classes:
 \begin{enumerate*}[itemjoin={{; }}, itemjoin*={{; and }}]
-\item \mintinline{python}{set_value()}, which is called by the framework whenever a new value for the corresponding actuated attribute is received
-\item \mintinline{python}{get_actuation()}, which is called on every time-step and must return a value to apply to the actuated attribute.
+\item \mintinline{python}{set_value()}, called by the framework whenever a new value for the corresponding actuated attribute is received
+\item \mintinline{python}{get_actuation()}, called on every time-step and must return a value to apply to the actuated attribute.
 \end{enumerate*}
 %\end{itemize}
 %\end{description}
@@ -59,13 +59,13 @@ The base class is initialized with a property name corresponding to the name of 
 \subsection{Configuring and Executing \iac{NCS}}
 
 Once the core components for the emulation have been defined and implemented, they need to be registered with the framework.
-This is done through Python scripts which simply define a number of required (and some optional) top-level variables, corresponding to emulation parameters such as the \emph{State}, \emph{Controller}, \emph{Sensor}, and \emph{Actuator} subclasses to use; the emulation update rate; the controller-side host and address; data output directories; \emph{et cetera}.
+This is done through Python scripts which define a number of required (and some optional) top-level variables, corresponding to emulation parameters such as the \emph{State}, \emph{Controller}, \emph{Sensor}, and \emph{Actuator} subclasses to use; the emulation update rate; the controller-side host and address; data output directories; \emph{et cetera}.
 These Python configuration files are then provided as arguments to the \texttt{cleave} command line provided by the framework.
 \ac{CLEAVE} imports and parses them, and then sets up and executes the emulation.
 
 Although the core design of \ac{CLEAVE} follows a single-loop approach, multi-loop scenarios can be easily implemented through the combination of multiple \ac{CLEAVE} instances.
-Furthermore, the framework makes no assumptions about the individual components other than the signatures of methods on the base classes that must be extended and implemented.
-Combined with the plain-Python emulation configuration scripts, this makes development of more complex scenarios merely a matter of implementing the desired functionality within the framework itself.
+The framework doesn't assume the individual components other than the signatures of methods on the base classes that must be extended and implemented.
+Combined with the Python emulation configuration scripts, this makes development of more complex scenarios merely a matter of implementing the desired functionality within the framework itself.
 
 \subsection{Current Implementations}
 
