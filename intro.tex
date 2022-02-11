@@ -18,38 +18,34 @@ A subcategory of \acp{CPS} which stands to particularly benefit from the adoptio
 Depending on the physical system being controlled, \acp{NCS} can have stringent timing and reliability requirements for the communication between components that conventional cloud paradigms and cellular networks are unable to meet~\cite{Wan2020Efficient}.
 
 Due to their potential advantages for industrial and commercial settings, a large body of work exists dedicated to the modelling and performance characterization of \acp{NCS}~\cite{Zhang2013Survey,Zhang2016Survey}.
-They improve and flexibilize existing control systems by allowing for the distribution of control functions over and across networks.
-This allows for, e.g.\ centralized coordination, control, and monitoring of potentially hundreds of devices.
+They improve and flexibilize existing control systems by allowing for the distribution of control functions across networks, allowing for centralized coordination, control, and monitoring of a multitude of devices.
 
 % Most of the literature concerning \acp{NCS}, follows a theoretical approach, and only a small fraction of it deals with experimental studies.
-An important fraction of the literature concerning \acp{NCS} deals with experimental studies.
-\acp{NCS} have an inherently inter-domain nature that intertwines knowledge from the fields of communications, computing, and control theory in ways that cannot be studied in isolation.
-Experimental research is therefore key to fully understanding the behavior of these systems in real-world deployments.
-This same inter-domain nature, however, has led to a number of different approaches to this kind of studies, as researchers attempt to tackle related research questions from different domains of knowledge.
-
+A number of works concerning \acp{NCS} deal with experimental studies.
+\acp{NCS} have an inherently inter-domain nature intertwining knowledge from the fields of communications, computing, and control theory in ways that cannot be studied in isolation, leading to various different approaches to such studies.
 One such approach uses setups in which the complete system is built on top of real hardware.
-This approach is employed in the works of, for instance, \textcite{Li2014Wireless,Baumann2018LowPower,Cuenca2019UAV}; in all of these, the authors implement and validate their results on physical testbeds.
+This approach is employed in the works of, for instance, \textcite{Li2014Wireless,Baumann2018LowPower,Cuenca2019UAV}; in all of these, the authors implement their approach on physical testbeds.
 Conversely, other studies choose to instead use completely \emph{simulated} \ac{NCS} setups.
 \textcite{Wu2012NPC,Chen2015synccontrol,Ma2019DynamicSched} are examples of works in which the authors have opted for such completely virtualized approaches.
 These studies often employ combinations of physical and network simulation tools to try to capture the complex dynamics of \acp{NCS}.
-Finally, a number of experimental studies instead employ \emph{virtualized} approaches, in which either
+Finally, some experimental studies instead employ \emph{virtualized} approaches, in which either
 \begin{enumerate*}[itemjoin={{; }}, itemjoin*={{; or }}]
     \item a real network interacts with a simulated or emulated control system~\cite{Wang2020VoltageControl}
-    \item an emulated or simulated network interacts with a real control system~\cite{Natale2004InvPendEthernet}.
+    \item a simulated network interacts with a real control system~\cite{Natale2004InvPendEthernet}.
 \end{enumerate*}
 
-As evidenced above, experimental research in \acp{NCS} includes a large variety of heterogeneous hardware and software platforms, as well as methodologies and \aclp*{KPI}.
+As evidenced above, experimental research in \acp{NCS} includes varied heterogeneous hardware and software platforms, methodologies and \aclp*{KPI}.
+
 This, in turn, leads to hardware, software, and methodology fragmentation, as different studies tend to prefer approaches more favored in their respective communities.
 Furthermore, existing studies tend to focus on individual aspects and components of a system, thus producing results which do not provide a complete image of the \ac{NCS}.
 This has caused a gap in knowledge pertaining to the reproducibility and comparison of experimental studies on these systems.
 
-\textcite{Zoppi2020NCSBench} made the first (and to the best of our knowledge, the only) attempt at tackling this challenge with their \emph{NCSbench} platform.
-\emph{NCSbench} is an open-source \ac{NCS} benchmarking platform, built on top of the LEGO\textregistered{}\ Mindstorms EV3 Core Set\texttrademark{}\ platform, with stated goals of reproducibility and ease of use.
-It achieves this thanks to its low-cost, accessibility, and ease of reconfiguration.
+\textcite{Zoppi2020NCSBench} made the first (and to the best of our knowledge, the only) attempt at tackling this challenge in their work.
+Their proposed platform \emph{NCSbench} is an open-source \ac{NCS} benchmarking platform, built utilizing LEGO\textregistered{}\ Mindstorms EV3 Core Set\texttrademark{}\ platform, with stated goals of reproducibility and ease of use.
+It achieves them thanks to its low-cost, accessibility, and ease of reconfiguration.
 
-Although \emph{NCSbench}~\cite{Zoppi2020NCSBench} is a relevant and important step towards the reproducibility of \ac{NCS} benchmarks, we believe it still falls short on some aspects.
-In particular, we argue the reliance of the tool on specific hardware for the Plant hampers the potential of the platform.
-The LEGO Mindstorms platform, although accessible and flexible, still fundamentally limits the physical systems that can be benchmarked to the kind of systems that can be physically implemented on it.
+Although it is an important step towards the reproducibility of \ac{NCS} benchmarks, we believe it still falls short on some aspects.
+In particular, we argue the reliance on specific hardware for the Plant which although flexible, limits the benchmarking to only those systems which can be physically implemented on it.
 Furthermore, it is \emph{not} scalable, and thus unsuitable for studies of larger, distributed \acp{NCS}.
 
 In this paper, we present the first fully-software-based framework for scalable and repeatable benchmarking of edge-native \ac{NCS}.
@@ -62,7 +58,7 @@ Our framework, \ac{CLEAVE}, aims to simplify the repeatable and scalable benchma
 The tool consists of a benchmarking framework and software development kit for the development of emulated physical systems and softwarized controllers.
 These virtual \acp{NCS} can then be deployed on real networks for reparametrizable, repeatable, and reproducible benchmarking of the complete system.
 
-\ac{CLEAVE} is built using \emph{Python 3.8}, making it highly extensible and able to harness the hundreds-of-thousands of already existing user-provided libraries.
+\ac{CLEAVE} is built using \emph{Python 3.8}, making it highly extensible and able to harness the multitude of already existing user-provided libraries.
 It is furthermore compatible with container technologies such as \emph{Docker}\footnote{Docker Engine: \url{https://www.docker.com/}}, making it suitable for automated deployment, scaling, and benchmarking on industry-standard edge setups using container orchestration solutions.
 
 The rest of this paper is structured as follows.
