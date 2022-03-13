@@ -8,6 +8,8 @@ This allows for great flexibility, as the core components of the \ac{NCS} can be
 The framework is distributed as \emph{free and open-source} software through the \emph{GitHub} organization of the \emph{KTH ExPECA} research group\footnote{\url{https://github.com/KTH-EXPECA/CLEAVE}}.
 We also plan to provide a library of \ac{NCS} implementations, making the tool even more accessible.
 
+\todo[inline]{List of assumptions?}
+
 \subsection{Design and Implementation}
 
 \cref{fig:cleave:ncs:struct} shows an overview of the conceptual structure and operation of \ac{CLEAVE}.
@@ -79,7 +81,11 @@ Combined with the Python emulation configuration scripts, this makes development
 
 For the purpose of this work, we have used \ac{CLEAVE} to implement an emulated \emph{inverted pendulum} control loop (see \cref{fig:invpend}), the goal of which is to balance the vertically free-swinging pendulum by applying horizontal forces on the cart.
 We have chosen this system as an initial benchmark for its relative simplicity as well as prevalence in the field of automatic control as one of the fundamental examples of linear control.
-However, as mentioned above, we eventually plan to build an open library of emulated control loops.  
+However, as mentioned above, we eventually plan to build an open library of emulated control loops.
+\todo[inline]{
+    Needs more arguments.
+    Add a more complex example.
+}
 
 The inverted pendulum plant \emph{State} is implemented as a real-time discrete-time physical emulation using CLEAVE's API and a 2D physics library\footnote{Pymunk: \url{http://www.pymunk.org/en/latest/}}, updated at a constant \SI{120}{\hertz} (this value is configurable; in this case it corresponds to the maximum achievable stable rate on our available hardware).
 \emph{Sensors} for the angle, position, angular velocity, and velocity of the \emph{State}, and an \emph{Actuator} for the horizontal force applied to the cart are implemented as ``perfect'', i.e.\ values are returned as-is, without any added noise.

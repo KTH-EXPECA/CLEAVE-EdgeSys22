@@ -7,6 +7,24 @@ We present the following use case scenario.
 A simple \ac{NCS} consisting of an \emph{inverted pendulum} plant controlled by a \emph{proportional-differential} controller is to be deployed on an Edge server.
 The connection between plant and server is over a WiFi (IEEE 802.11n) link.
 Moreover, there are a number of video-streaming applications running concurrently on the Edge setup.
+
+{
+    \color{ACMRed}
+    Why is this an interesting use-case?
+    \begin{itemize}
+        \item Inverted pendulum is broadly used as a benchmark in NCS (already mentioned); worth mentioning related work which does the same thing!
+        \item Easy to re-parameterize for different system dynamics.
+        \item Partly a reality, similar to deployments in industry right now (although I'm pretty sure industry uses ZigBee or WirelessHART).
+        \item WiFi is a bit of a problem - best case would've been to have 4G or 5G. Argument could however be that 4G at least has higher RTTS, so if it doesn't work for WiFi it will definitely not work for 4G\dots
+        \item Video streaming/analytics are core use-case for edge computing (already in text).
+    \end{itemize}
+}
+
+\todo[inline]{
+    More strongly argue why this is an interesting and general use-case scenario.
+    Paper needs to argue and describe why this use case chosen is one of general interest, addressing key aspects of demands, and should refer to a comparative view with related work.
+}
+
 Video analytics is one of the main proposed use cases for edge computing~\cite{Ananthanarayanan2017Analytics,Yi2017Analytics,Wang2018Analytics}, and thus we foresee edge \ac{NCS} deployments being deployed in parallel with such applications in the future.
 However, before deployment can become a reality, key questions such as: 
 ``what are the baseline requirements of the \ac{NCS}?''; ``what are the achievable best-case end-to-end latencies in the system?''; and
