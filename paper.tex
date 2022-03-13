@@ -49,19 +49,31 @@
 \end{acronym}
 
 % references
-\usepackage[
-  style=numeric-comp,
-  sorting=none,
-  sortcites,
-  hyperref,
-  mincitenames=1,
-  maxcitenames=2,
-  maxbibnames=2,
-  minbibnames=1,
-  citestyle=numeric-comp, % for [1, 2] instead of [1], [2]
-  backend=bibtex
-]{biblatex}
-\bibliography{bibliography.bib}
+% \usepackage[
+%   style=numeric-comp,
+%   sorting=none,
+%   sortcites,
+%   hyperref,
+%   mincitenames=1,
+%   maxcitenames=2,
+%   maxbibnames=2,
+%   minbibnames=1,
+%   citestyle=numeric-comp, % for [1, 2] instead of [1], [2]
+%   backend=bibtex
+% ]{biblatex}
+% \bibliography{bibliography.bib}
+% \AtBeginBibliography{\small}
+% \AtEveryBibitem{\clearfield{day}}
+% \AtEveryBibitem{\clearfield{isbn}}
+% \AtEveryBibitem{\clearfield{url}}
+% \AtEveryBibitem{\clearfield{series}}
+% \AtEveryBibitem{\clearlist{location}}
+% \AtEveryBibitem{\clearfield{doi}}
+
+% for dealing with ACM's stupid bibtex requirements
+% \usepackage{biblatex2bibitem}
+\usepackage[nosort,compress]{cite}
+
 \usepackage{orcidlink}
 \usepackage[all]{hypcap}
 \usepackage[capitalize,nameinlink,noabbrev]{cleveref}
@@ -77,14 +89,6 @@
   pdfstartview=Fit,
   breaklinks=true
 }
-
-\AtBeginBibliography{\small}
-\AtEveryBibitem{\clearfield{day}}
-\AtEveryBibitem{\clearfield{isbn}}
-\AtEveryBibitem{\clearfield{url}}
-\AtEveryBibitem{\clearfield{series}}
-\AtEveryBibitem{\clearlist{location}}
-\AtEveryBibitem{\clearfield{doi}}
 
 \title[CLEAVE]{CLEAVE:\@ Scalable and Edge-Native Benchmarking of\\{Networked Control Systems}}
 
@@ -139,5 +143,50 @@
 \input{experiments.tex}
 \input{conclusion.tex}
 \input{acks.tex}
-\printbibliography{}
+% \printbibliography{}
+% \printbibitembibliography{}
+
+\begin{thebibliography}{99}
+  %
+  \bibitem{Rajkumar2010CPS}
+  Ragunathan Rajkumar et al. “Cyber-physical systems: The next computing revolution”. In: \emph{Design Automation Conference}. 2010, pp. 731–736.
+  %
+  \bibitem{Satya2017Emergence}
+  Mahadev Satyanarayanan. “The Emergence of Edge Computing”. In: \emph{Computer} 50.1 (2017), pp. 30–39.
+  %
+  \bibitem{Gupta2010NCSOverview}
+  Rachana Ashok Gupta and Mo-Yuen Chow. “Networked Control System: Overview and Research Trends”. In: \emph{IEEE Transactions on Industrial Electronics} 57.7 (2010), pp. 2527–2535. %
+  \bibitem{Wan2020Efficient}
+  Shaohua Wan et al. “Efficient computation offloading for {Internet of Vehicles} in edge computing-assisted 5G networks”. In: \emph{The Journal of Supercomputing} 76.4 (2020), pp. 2518–2547. %
+  \bibitem{Baumann2018LowPower}
+  Dominik Baumann et al. “Evaluating Low-Power Wireless Cyber-Physical Systems”. In: \emph{Proceedings of the First IEEE Workshop on Benchmarking Cyber-Physical Networks and Systems (CPSBench’18)}. 2018, pp. 13–18.
+  %
+  \bibitem{Cuenca2019UAV}
+  Ángel Cuenca et al. “Periodic Event-Triggered Sampling and Dual-Rate Control for a Wireless Networked Control System With Applications to {UAVs}”. In: \emph{IEEE Transactions on Industrial Electronics} 66.4 (2019), pp. 3157–3166.
+  %
+  \bibitem{Ma2019DynamicSched}
+  Yehan Ma et al. “Optimal Dynamic Scheduling of Wireless Networked Control Systems”. In: \emph{Proceedings of the 10th ACM/IEEE International Conference on Cyber-Physical Systems}. Association for Computing Machinery, 2019, 77–86.
+  %
+  \bibitem{Wang2020VoltageControl}
+  Yu Wang et al. “Inverter-Based Voltage Control of Distribution Networks: A Three-Level Coordinated Method and Power Hardware-in-the-Loop Validation”. In: \emph{IEEE Transactions on Sustainable Energy} 11.4 (2020), pp. 2380–2391.
+  %
+  \bibitem{Natale2004InvPendEthernet}
+  O.R. Natale et al. “Inverted pendulum stabilization through the {Ethernet} network, performance analysis”. In: \emph{Proceedings of the 2004 American Control Conference}. Vol. 6. 2004, 4909–4914 vol.6.
+  %
+  \bibitem{Zoppi2020NCSBench}
+  Samuele Zoppi et al. “{NCSbench}: Reproducible Benchmarking Platform for Networked Control Systems”. In: \emph{Proceedings of the {17th} IEEE Annual Consumer Communications Networking Conference (CCNC’20)}. 2020, pp. 1–9.
+  %
+  \bibitem{Olguin2019EdgeDroid}
+  Manuel Osvaldo J. Olguín Muñoz et al. “{EdgeDroid: An Experimental Approach to Benchmarking Human-in-the-Loop Applications}”. In: \emph{Proceedings of the 20th International Workshop on Mobile Computing Systems and Applications}. ACM, 2019, pp. 93–98.
+  %
+  \bibitem{Ananthanarayanan2017Analytics}
+  Ganesh Ananthanarayanan et al. “Real-Time Video Analytics: The Killer App for Edge Computing”. In: \emph{Computer} 50.10 (2017), pp. 58–67.
+  %
+  \bibitem{Yi2017Analytics}
+  Shanhe Yi et al. “LAVEA: Latency-Aware Video Analytics on Edge Computing Platform”. In: \emph{Proceedings of the Second ACM/IEEE Symposium on Edge Computing}. Association for Computing Machinery, 2017.
+  %
+  \bibitem{Wang2018Analytics}
+  Junjue Wang et al. “Bandwidth-Efficient Live Video Analytics for Drones Via Edge Computing”. In: \emph{Proceedings of the Third IEEE/ACM Symposium on Edge Computing (SEC)}. Association for Computing Machinery, 2018, pp. 159–173.
+\end{thebibliography}
+
 \end{document}

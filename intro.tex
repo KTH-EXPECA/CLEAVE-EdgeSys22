@@ -26,7 +26,7 @@ On the other, there exist several approaches when considering experimental metho
 %A number of works concerning \acp{NCS} deal with experimental studies.
 %\acp{NCS} have an inherently inter-domain nature intertwining knowledge from the fields of communications, computing, and control theory in ways that cannot be studied in isolation, leading to various different approaches to such studies.
 One such approach uses setups in which the complete system is built on top of real hardware.
-This approach is employed in the works of  \textcite{Baumann2018LowPower,Cuenca2019UAV}; in all of these, the authors implement their approach on physical testbeds.
+This approach is employed in the works of Baumann \emph{et al.}~\cite{Baumann2018LowPower} and Cuenca \emph{et al.}~\cite{Cuenca2019UAV}; in both of these, the authors implement their approach on physical testbeds.
 Conversely, other studies choose to instead use completely \emph{simulated} \ac{NCS} setups. The authors in \cite{Ma2019DynamicSched} have opted for such a completely virtualized approach. These studies often employ combinations of physical and network simulation tools trying to capture the complex dynamics of \acp{NCS}.
 Finally, some experimental studies instead employ \emph{virtualized} approaches, in which either
 \begin{enumerate*}[itemjoin={{; }}, itemjoin*={{; or }}]
@@ -39,7 +39,7 @@ This, in turn, leads to hardware, software, and methodology fragmentation, as di
 Furthermore, existing studies tend to focus on individual aspects and components of a system, thus producing results which do not provide a complete image of the \ac{NCS}.
 This has caused a gap in knowledge pertaining to the reproducibility and comparison of experimental studies on these systems.
 
-\textcite{Zoppi2020NCSBench} made the first (and to the best of our knowledge, the only) attempt at tackling this challenge in their work.
+Zoppi \emph{et al.}~\cite{Zoppi2020NCSBench} made the first (and to the best of our knowledge, the only) attempt at tackling this challenge in their work.
 In their work, they proposed a platform called NCSBench, to be used for reproducible benchmarking in NCS.\ 
 Their methodology utilizes joint knowledge of control, computation, and communication. 
 In their work various architectural elements and the corresponding delays associated with the NCS are modelled. 
