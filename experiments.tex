@@ -8,6 +8,17 @@ A simple \ac{NCS} consisting of an \emph{inverted pendulum} plant controlled by 
 The connection between plant and server is over a WiFi (IEEE 802.11n) link.
 Moreover, there are a number of video-streaming applications running concurrently on the Edge setup.
 
+We believe this to be an interesting and representative use-case scenario for a number of reasons.
+Firstly, the inverted pendulum is broadly used as a benchmark in control-system literature.
+\todo[inline]{Examples}
+A key reason for this is that such a relatively simplistic system allows for straightforward reparametrization to obtain varied system dynamics, which in turn makes a broader range of experiments possible.
+Secondly, similar, albeit non-Edge-enabled, setups have been a reality in industry for almost two decades, as evidenced by
+\todo[inline]{citation here pls}.
+Thirdly, although real deployments would most assuredly employ mobile technologies due to the added benefits of mobility and range, the \acp{RTT} offered by these technologies are higher, or at best equal, those offered by WiFi.
+4G, for instance, has average \acp{RTT} of around a few hundred milliseconds, which is orders of magnitude greater than the values measured in our scenario, and current 5G deployments offer \ac{RTT} values barely matching the sub-\SI{10}{\milli\second} values we obtain for WiFi.
+Thus we argue that using WiFi allows for more experimental freedom, as the system can be tweaked to obtain worse \acp{RTT} more akin to those of mobile technologies while still allowing us the option to study best-case scenarios with very low-latencies.
+
+
 {
     \color{ACMRed}
     Why is this an interesting use-case?
