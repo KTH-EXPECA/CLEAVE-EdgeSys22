@@ -17,26 +17,7 @@ Secondly, similar, albeit non-Edge-enabled, setups have been a reality in indust
 Thirdly, although real deployments would most assuredly employ mobile technologies due to the added benefits of mobility and range, the \acp{RTT} offered by these technologies are higher, or at best equal, those offered by WiFi.
 4G, for instance, has average \acp{RTT} of around a few hundred milliseconds, which is orders of magnitude greater than the values measured in our scenario, and current 5G deployments offer \ac{RTT} values barely matching the sub-\SI{10}{\milli\second} values we obtain for WiFi.
 Thus we argue that using WiFi allows for more experimental freedom, as the system can be tweaked to obtain worse \acp{RTT} more akin to those of mobile technologies while still allowing us the option to study best-case scenarios with very low-latencies.
-
-
-{
-    \color{ACMRed}
-    Why is this an interesting use-case?
-    \begin{itemize}
-        \item Inverted pendulum is broadly used as a benchmark in NCS (already mentioned); worth mentioning related work which does the same thing!
-        \item Easy to re-parameterize for different system dynamics.
-        \item Partly a reality, similar to deployments in industry right now (although I'm pretty sure industry uses ZigBee or WirelessHART).
-        \item WiFi is a bit of a problem - best case would've been to have 4G or 5G. Argument could however be that 4G at least has higher RTTS, so if it doesn't work for WiFi it will definitely not work for 4G\dots
-        \item Video streaming/analytics are core use-case for edge computing (already in text).
-    \end{itemize}
-}
-
-\todo[inline]{
-    More strongly argue why this is an interesting and general use-case scenario.
-    Paper needs to argue and describe why this use case chosen is one of general interest, addressing key aspects of demands, and should refer to a comparative view with related work.
-}
-
-Video analytics is one of the main proposed use cases for edge computing~\cite{Ananthanarayanan2017Analytics,Yi2017Analytics,Wang2018Analytics}, and thus we foresee edge \ac{NCS} deployments being deployed in parallel with such applications in the future.
+Finally, video analytics is one of the main proposed use cases for edge computing~\cite{Ananthanarayanan2017Analytics,Yi2017Analytics,Wang2018Analytics}, and thus we foresee edge \ac{NCS} deployments being deployed in parallel with such applications in the future.
 However, before deployment can become a reality, key questions such as: 
 ``what are the baseline requirements of the \ac{NCS}?''; ``what are the achievable best-case end-to-end latencies in the system?''; and
 ``how does the concurrent video-streaming traffic affect \ac{NCS} stability?'' need to be answered.
