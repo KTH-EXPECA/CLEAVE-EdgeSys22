@@ -2,11 +2,27 @@
 
 The issue of repeatable and scalable benchmarks has been largely glossed over in \ac{NCS} literature, as existing experimental research studies tend to implement \emph{ad-hoc} solutions.
 
-In this work, we aim to tackle this issue by presenting a fully software-based framework for repeatable, reproducible, and easily scalable \ac{NCS} benchmarking with a particular focus on edge deployment.
-\todo[inline]{The conclusion needs to firmly argue WHY we achieved what we set out to do.}
-Our framework, \ac{CLEAVE}, allows for the easy implementation of emulated \acp{NCS} on real networks.
-It is fully parametrizable, extendable, and built with industry-standard edge technologies and paradigms in mind.
-We validate the utility of this tool through an example use case showcasing the ability of the framework to extract relevant metrics relating to the stability of the control system, as well as on the performance of the underlying network link.
+In this work, we aimed to tackle this issue through a fully software-based framework for repeatable, reproducible, and easily scalable \ac{NCS} benchmarking with a particular focus on edge deployment.
+We argue our approach, \ac{CLEAVE}, embodies a better solution than previous work for a number of reasons:
+\begin{enumerate}
+    \item Compared to fully physical approaches, such as those used in\ \cite{Baumann2018LowPower} and\ \cite{Cuenca2019UAV}, our approach allows for greater flexibility and scalability.
+    The aforementioned approaches rely on specialized and sometimes entirely custom-built physical platforms, and although flexible and cheap approaches such as Zoppi \emph{et al.'s} --- which uses a LEGO-based physical plant --- exist, these still do not reach the level of flexibility afforded by a fully software-based framework. 
+    Experimenters still would need copies of the hardware, making anything other than small-scale setups unfeasible.
+    In contrast, our approach requires only general-purpose computing platforms, and can be employed by basically anyone with access to a computer.
+    Scalable deployments can in turn easily and cheaply be set up using single-board computers and/or virtual cloud instances.
+    \item When compared to simulated approaches such as\ \cite{Ma2019DynamicSched}, \ac{CLEAVE} provides a higher level of realism, in particular with regards to the network segment of the system.
+    \item Finally, although it shares much in common with previous emulated approaches such as the one employed in\ \cite{Wang2020VoltageControl}, \ac{CLEAVE} has an advantage by specifically targeting a general-purpose approach using industry-standard, cloud- and edge-native tools and software.
+    The tool can easily be deployed and scaled using widely-used frameworks such as Docker Swarm and Kubernetes.
+\end{enumerate}
+
+We validate the utility of this tool through an example use case approximating a proposed edge deployment of inverted pendula control loops co-located with video analytics services.
+We argue such a use case represents a realistic scenario and appropriate benchmark for the tool, since
+\begin{enumerate*}[itemjoin={{; }}, itemjoin*={{; and }}]
+    \item the inverted pendulum plant is ubiquitous in \ac{NCS} research
+    \item similar setups exist in real-world industrial use
+    \item video analytics has long been proposed as a ``killer app'' for edge computing.
+\end{enumerate*}
+Our results showcase the ability of the framework to extract relevant metrics relating to the stability of the control system, as well as on the performance of the underlying network link.
 We believe \ac{CLEAVE} represents an important step towards enabling inexpensive and low-complexity scalable research for real-world deployment of edge-bound \acp{NCS}.
 
 There is still, however, work to be done.
