@@ -8,9 +8,20 @@ This allows for great flexibility, as the core components of the \ac{NCS} can be
 The framework is distributed as \emph{free and open-source} software through the \emph{GitHub} organization of the \emph{KTH ExPECA} research group\footnote{\url{https://github.com/KTH-EXPECA/CLEAVE}}.
 We also plan to provide a library of \ac{NCS} implementations, making the tool even more accessible.
 
-\todo[inline]{List of assumptions?}
+\subsection{Design and Implementation}\label{sec:design}
 
-\subsection{Design and Implementation}
+The design of \ac{CLEAVE} attempts to target a broad a set of different control systems as possible, and tries to minimize the number of assumptions made about the systems implemented on top of the framework.
+These are:
+\begin{enumerate}
+    \item Controllers can be stateful or stateless, but they exclusively control a single plant.
+    \item Plants and controllers interact in a ``request-response'' manner.
+    We currently don't support setups in which the controller generates an actuation command without there first being a request from the plant.
+    \item Controller and plant communicate over a TCP/IP network.
+    \item The physical state behavior of the plant can be implemented in a discrete-time manner.
+    \item Values associated to sensors and actuators can be represented by integers, floating point numbers, booleans, or arrays of bytes.
+    \item A plant has zero or more sensors attached to it, with potentially different sampling rates.
+    \item A plant has zero or more actuators attached to.
+\end{enumerate}
 
 \cref{fig:cleave:ncs:struct} shows an overview of the conceptual structure and operation of \ac{CLEAVE}.
 The \emph{State} implements the discrete-time behavior of the Plant.
@@ -81,13 +92,16 @@ Combined with the Python emulation configuration scripts, this makes development
 
 For the purpose of this work, we have used \ac{CLEAVE} to implement an emulated \emph{inverted pendulum} control loop (see \cref{fig:invpend}), the goal of which is to balance the vertically free-swinging pendulum by applying horizontal forces on the cart.
 We have chosen this system as an initial benchmark for its relative simplicity as well as prevalence in the field of automatic control as one of the fundamental examples of linear control.
-However, as mentioned above, we eventually plan to build an open library of emulated control loops.
-\todo[inline]{
-    Needs more arguments.
-    Add a more complex example.
-}
 
 The inverted pendulum plant \emph{State} is implemented as a real-time discrete-time physical emulation using CLEAVE's API and a 2D physics library\footnote{Pymunk: \url{http://www.pymunk.org/en/latest/}}, updated at a constant \SI{120}{\hertz} (this value is configurable; in this case it corresponds to the maximum achievable stable rate on our available hardware).
 \emph{Sensors} for the angle, position, angular velocity, and velocity of the \emph{State}, and an \emph{Actuator} for the horizontal force applied to the cart are implemented as ``perfect'', i.e.\ values are returned as-is, without any added noise.
 For the controller side, a proportional-differential strategy is implemented using the framework \emph{Controller} API and the \emph{NumPy} numeric computation library\footnote{NumPy: \url{https://numpy.org/}}.
 Plant and controller are then packaged into containers, for ease of orchestration and reparametrization, and to mimic real-world deployment.
+
+A previously mentioned, we eventually plan to build an open library of emulated control loops.\footnote{%
+    At the moment of writing, we are in the process of implementing \emph{model-predictive} as well as \emph{deep neural network} controllers for the inverted pendula plants.%
+}
+The inverted pendulum plant is merely a proof-of-concept, and \ac{CLEAVE} could be used to implement much more complex physical systems with even more stringent latency requirements.
+For instance, the flexibility afforded by the choice of programming language and the abstractions detailed in \cref{sec:design}, allow for relatively straightforward emulation of autonomous drone dynamics.
+Propeller dynamics could be implemented by \emph{Actuator} objects, gyroscopes by \emph{Sensors}, and the physical behavior of the plant could be modeled using a general purpose 3D physics engine (\emph{e.g.} the Panda3D\footnote{\url{https://docs.panda3d.org/1.10/python/programming/physics/builtin/index}{https://docs.panda3d.org/1.10/python/programming/physics/builtin/index}} engine).
+
